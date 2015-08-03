@@ -1,0 +1,155 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	
+	<div style="padding-right:10px" class="aplos-frontend-brochure-atom">
+		<div class="theme-floatcontent">
+			<div class="theme-triple-rounded-box-top">
+				<h1 class="pageHeader">Download Brochures:</h1>
+			</div>
+			<div class="theme-triple-rounded-box-content">
+			   <p>You can download one of the following brochures immediately in a PDF format or if you'd prefer, you can receive them by post by filling out the form below.</p>
+               	<br/>
+               	<p>To view PDF files you'll need Adobe Acrobat Reader which most computers already have. If you don't have it please use the &quot;Get Adobe Reader&quot; link to download it.</p>
+               	<br/>
+               	<div style="text-align:left">
+               		<a id="ctl00_ContentPlaceHolder1_hlGetAcrobatReader" title="Get Adobe Acrobat Reader" class="right" href="http://www.adobe.co.uk/products/acrobat/readstep.html" target="_blank">
+               			<h:graphicImage title="Get Adobe Acrobat Reader" url="/images/getacro.gif" style="text-align:right"/>
+               		</a>
+               	</div>
+			</div>
+			<div class="theme-triple-rounded-box-bottom">&#160;</div>
+		</div>
+			
+		<ui:repeat value="#{ brochureCmsAtom.sortedBrochureList }" var="brochure" >
+			<div class="theme-floatcontent">
+				<div class="theme-triple-rounded-box-top">
+					<h1 class="pageHeader">#{ brochure.brochureTitle }</h1>
+				</div>
+				<div class="theme-triple-rounded-box-content">
+					<table cellpadding="0" cellspacing="0" style="width:100%">
+						<tr>
+							<td style="width:340px">
+								<h:outputText value="#{ brochure.brochureDescription }" escape="false"/>
+								<aplos:panel rendered="#{ not (brochure.pdfDetails == null) }" >
+									<aploscc:ajaxButton value="Download this brochure" action="#{ brochure.pdfDetails.redirectToAplosUrl(true) }" target="_blank" />
+								</aplos:panel>
+							</td>
+							<td style="text-align:center">
+								<a href="#{ brochure.pdfDetails.getAplosUrl( true ) }" class="stdLink">
+									<h:graphicImage url="#{ brochure.getFullImageUrl( false ) }&amp;maxWidth=350" />
+								</a>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="theme-triple-rounded-box-bottom">&#160;</div>
+			</div>
+		</ui:repeat>
+		
+		
+		<div class="theme-floatcontent">
+			<div class="theme-triple-rounded-box-top">
+				<h1 class="pageHeader">Brochures by post:</h1>
+			</div>
+			<div class="theme-triple-rounded-box-content">
+				<aplos:panel rendered="#{ !brochureFeDmb.brochureRequestSent }" >
+					<table class="aplos-form-table aplos-form-table-with-required">
+						<tr>
+							<td class="aplos-label">First name</td>
+							<td class="aplos-required-asterisk">*</td>
+							<td class="aplos-field">
+								<h:inputText value="#{ brochureFeDmb.newAddress.contactFirstName }" 
+											 required="#{ brochureFeDmb.validationRequired }"
+											 requiredMessage="Please enter your first name" />
+							</td>
+							<td class="aplos-label">Company</td>
+							<td class="aplos-required-asterisk"></td>
+							<td class="aplos-field"><h:inputText value="#{ brochureFeDmb.newAddress.companyName }" /></td>
+						</tr>
+						<tr>
+							<td class="aplos-label">Surname</td>
+							<td class="aplos-required-asterisk">*</td>
+							<td class="aplos-field"><h:inputText value="#{ brochureFeDmb.newAddress.contactSurname }"
+															   required="#{ brochureFeDmb.validationRequired }"
+											 				   requiredMessage="Please enter your surname" /></td>
+							
+							<td class="aplos-label">Job title</td>
+							<td class="aplos-required-asterisk"></td>
+							<td class="aplos-field"><h:inputText value="#{ brochureFeDmb.position }" /></td>
+						</tr>
+						<tr>
+							
+							<td class="aplos-label">Address</td>
+							<td class="aplos-required-asterisk">*</td>
+							<td class="aplos-field"><h:inputText value="#{ brochureFeDmb.newAddress.line1 }" 
+																 required="#{ brochureFeDmb.validationRequired }"
+									 							 requiredMessage="Please enter your address"/></td>		 							 
+							<td class="aplos-label">Telephone</td>
+							<td class="aplos-required-asterisk"></td>
+							<td class="aplos-field"><h:inputText value="#{ brochureFeDmb.newAddress.phone }" /></td>
+						</tr>
+						<tr>
+							<td class="aplos-label"></td>
+							<td class="aplos-required-asterisk"></td>
+							<td class="aplos-field"><h:inputText value="#{ brochureFeDmb.newAddress.line2 }" /></td>
+							<td class="aplos-label">Fax</td>
+							<td class="aplos-required-asterisk"></td>
+							<td class="aplos-field"><h:inputText value="#{ brochureFeDmb.newAddress.fax }" /></td>
+						</tr>
+						<tr>
+								
+							<td class="aplos-label">City</td>
+							<td class="aplos-required-asterisk"></td>
+							<td class="aplos-field"><h:inputText value="#{ brochureFeDmb.newAddress.city }" /></td>	 							 
+							<td class="aplos-label">Email</td>
+							<td class="aplos-required-asterisk">*</td>
+							<td class="aplos-field"><h:inputText value="#{ brochureFeDmb.newAddress.subscriber.emailAddress }"
+																 required="#{ brochureFeDmb.validationRequired }"
+									 							 requiredMessage="Please enter your email address" /></td>
+						</tr>
+						<tr>
+							
+							<td class="aplos-label">Postcode</td>
+							<td class="aplos-required-asterisk"></td>
+							<td class="aplos-field"><h:inputText value="#{ brochureFeDmb.newAddress.postcode }" /></td>
+							<td class="aplos-label" rowspan="2">Comments</td>
+							<td class="aplos-required-asterisk" rowspan="2"></td>
+							<td class="aplos-field" rowspan="2">
+								<h:inputTextarea value="#{ brochureFeDmb.comments }" style="width:200px;height:60px" />
+							</td>
+						</tr>
+						<tr>
+							<td class="aplos-label">Country</td>
+							<td class="aplos-required-asterisk"></td>
+							<td class="aplos-field">
+								<h:selectOneMenu value="#{brochureFeDmb.newAddress.country}" converter="aplosAbstractBeanConverter">
+									<f:selectItems value="#{aplosModuleFilterer.countrySelectItems}" />
+								</h:selectOneMenu>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3"></td>
+							<td class="aplos-label"></td>
+							<td class="aplos-required-asterisk"></td>
+							<td class="aplos-field">
+								<aploscc:ajaxButton id="sendBrochureRequest" value="Send" action="#{ brochureFeDmb.sendBrochureByPost }" />
+								&#160;&#160;
+								<aploscc:ajaxButton value="Reset" action="#{ brochureFeDmb.resetFields }" />
+							</td>
+						</tr>
+					</table>
+				</aplos:panel>
+				<aplos:panel rendered="#{ brochureFeDmb.brochureRequestSent }" >
+					Thank you, your brochure request has been sent.
+				</aplos:panel>
+			</div>
+			<div class="theme-triple-rounded-box-bottom">&#160;</div>
+		</div>
+	</div>
+	
+</ui:composition>

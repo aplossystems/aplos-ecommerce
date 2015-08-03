@@ -1,0 +1,20 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+    <div class="aplos-checkout aplos-checkout-wizard-steps">
+      	<ul class="aplos-navigation">
+      		<ui:repeat value="#{ transaction.frontEndMenuWizard.menuSteps }" var="menuStep">
+	      		<li>
+	      			<aplos:panel rendered="#{ !menuStep.clickable }" layout="none">
+	      				<a href="" disabled="disabled"  class="#{ menuStep.styleClass }"><h:outputText value="#{ menuStep.label }"/></a>
+	      			</aplos:panel>
+	      			<h:commandLink id="transactionFrontEndMenuStep" action="#{ menuStep.redirectToMenuStep }" styleClass="#{ menuStep.styleClass }" rendered="#{ menuStep.clickable }" immediate="#{menuStep.immediate}">#{ menuStep.label }</h:commandLink>
+	      		</li>
+      		</ui:repeat>
+      	</ul>
+      	<br style="clear:both;" />
+    </div>
+</ui:composition>

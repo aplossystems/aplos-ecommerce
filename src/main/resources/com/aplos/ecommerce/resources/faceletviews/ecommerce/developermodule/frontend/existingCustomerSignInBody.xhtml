@@ -1,0 +1,55 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	<div class="aplos-checkout aplos-existing-customer-signin">
+		<aplos:panel rendered="#{ checkoutPasswordIncorrect != null }">
+			<h3>Would you like to sign up or have you forgotten your password? </h3>
+						
+			<div>
+				<aploscc:ajaxButton  value="Register"
+					action="#{existingCustomerSignInFeDmb.goToNewCustomerSignUp}" style="float:left;;" />
+				
+					<aploscc:ajaxButton value="Forgotten Password?"
+						action="#{existingCustomerSignInFeDmb.goToForgottenPassword}" style="float:left;margin-left:25px" />
+			</div>
+			<div style="clear:both" />
+			<hr style="margin-bottom:15px"/>
+		</aplos:panel>
+		<aplos:panel rendered="#{ emailVerificationRequired != null }">
+			<h3>You account is not yet verified.</h3>
+			<h3>Click the link below to resend the verification email.</h3>			
+			<h3>Then click on the link in the email to verify your account.</h3>
+			<div>
+				<aploscc:ajaxButton  value="Resend verification email"
+					action="#{ ecommerceUtil.sendCustomerEmailConfirmationEmail( customer, true ) }" style="float:left" />
+			</div>
+			<div style="clear:both" />
+			<hr style="margin-bottom:15px"/>
+		</aplos:panel>
+		<table class="aplos-form-table" style="margin-bottom:30px;">
+			<tr>
+				<td class="aplos-label">Email Address</td>
+				<td class="aplos-field">  
+					<h:inputText rendered="#{!existingCustomerSignInFeDmb.userPreSupplied}" value="#{existingCustomerSignInFeDmb.emailAddress}"/>
+					<h:outputText rendered="#{existingCustomerSignInFeDmb.userPreSupplied}" value="#{existingCustomerSignInFeDmb.emailAddress}"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Password</td>
+				<td class="aplos-field"> 
+					<h:inputSecret class="aplos-password" value="#{existingCustomerSignInFeDmb.password}" onkeyup="fireOnEnterPressedByClass(event, 'aplosSignInBtn' )"/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="aplos-sign-in-buttons">
+					<aploscc:ajaxButton styleClass="aplos-password-btn" action="#{ existingCustomerSignInFeDmb.goToForgottenPassword }" value="Forgotten Password?" />
+					<aploscc:ajaxButton styleClass="aplos-sign-in-btn" action="#{ existingCustomerSignInFeDmb.signinHomeOrCheckout }" value="Sign In" />
+				</td>
+			</tr>
+		</table>
+	</div>
+</ui:composition>

@@ -1,0 +1,27 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:200px">Type Category Name</td>
+				<td class="aplos-field"><h:inputText value="#{productType.name}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-description" colspan="2">Examples would be woman's clothing or shoes</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Size Type</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{productType.productSizeType}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{productSizeType.selectItemBeansWithNotSelected}" />   
+					</h:selectOneMenu>
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>

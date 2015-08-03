@@ -1,0 +1,20 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	<ui:repeat value="#{ favouriteProductListsCmsAtom.sortedFavouriteProductLists }" var="favourite" >
+		<a href="#{request.contextPath}#{favourite.generatorMenuItem.generatorMenuUrl}.aplos?type=category" class="theme-narrow-box-link">
+			<div class="theme-narrow-floatcontent">
+	          	<div class="theme-narrow-rounded-box-top">
+	            	#{favourite.generatorMenuItem.displayName}
+	          	</div>
+	          	<div class="theme-narrow-rounded-box-content narrow-fixed-height-box-content" >
+					<img src="#{favourite.generatorMenuItem.fullMenuItemImageUrl}&amp;maxWidth=150&amp;maxHeight=160&amp;provideDefaultIfMissing=true" alt="#{favourite.generatorMenuItem.displayName}" style="border-width:0px" />
+	          	</div>
+	        	<div class="theme-narrow-rounded-box-bottom">&#160;</div>
+        	</div>
+		</a>
+	</ui:repeat>
+</ui:composition>

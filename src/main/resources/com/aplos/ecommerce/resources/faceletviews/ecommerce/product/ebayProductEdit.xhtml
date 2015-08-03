@@ -1,0 +1,154 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	
+	<ui:define name="editHead">	
+		<h:outputScript library="jsLibraries" name="ckeditor/aplosckeditor.js" target="head" />
+		<script type="text/javascript">
+			function createCKEditors() {
+				$j('.aplos_ckeditor').each(function() {
+					var editor = CKEDITOR.replace( this.id, { width:"750", height:"150" } );
+				});
+			}
+		
+			$j(document).ready(function() {
+				createCKEditors();
+			} );
+		
+			function updateEditors() {
+				$j('.aplos_ckeditor').each(function() {
+					if (CKEDITOR.instances[this.id]) {
+						CKEDITOR.instances[this.id].updateElement();
+					}
+				});
+			}
+		</script>
+	</ui:define>
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label" width="150px" style="width:150px">Title</td>
+				<td class="aplos-field"><h:inputText value="#{ebayManager.workingProduct.title}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Long Description</td>
+				<td class="aplos-field"><h:inputTextarea id="description"
+						styleClass="aplos_ckeditor" 
+						value="#{ebayManager.workingProduct.description}" style=""></h:inputTextarea></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Price (#{ebayManager.workingProduct.currency})</td>
+				<td class="aplos-field"><h:inputText value="#{ebayManager.workingProduct.startPrice.value}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Ebay Category</td>
+				<td>
+					<h:selectOneListbox size="1" value="#{ebayManager.category}">
+						<f:selectItems value="#{ebayManager.ebayCategoryManager.categorySelectItems}" /> 
+					</h:selectOneListbox>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Quantity to list on eBay</td>
+				<td class="aplos-field"><h:inputText value="#{ebayManager.workingProduct.quantity}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Start Date for Listing</td>
+				<td class="aplos-field">
+					<h:selectOneMenu id="listDate" value="#{ebayManager.workingProductScheduleTime}">
+						<f:selectItems value="#{ebayManager.listingDateSelectItems}" />   
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Listing Duration</td>
+				<td class="aplos-field">
+					<h:selectOneMenu id="duration" value="#{ebayManager.workingProduct.listingDuration}">
+						<f:selectItems value="#{ebayManager.listingDurationSelectItems}" />   
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Item Location and Postcode</td>
+				<td class="aplos-field"><h:inputText value="#{ebayManager.workingProduct.location}" />  <h:inputText value="#{ebayManager.workingProduct.postalCode}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Maximum dispatch (handling) time</td>
+				<td class="aplos-field"><h:inputText value="#{ebayManager.workingProduct.dispatchTimeMax}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Domestic Shipping Charge</td>
+				<td class="aplos-field">
+					<h:inputText value="#{ebayManager.domesticShippingCharge}">
+						<f:validateDoubleRange minimum="0" />
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">International Shipping</td>
+				<td class="aplos-field">
+					<h:selectBooleanCheckbox value="#{ebayManager.internationalShippingOffered}"> 
+						
+					</h:selectBooleanCheckbox>
+					Do you want to offer international shipping?
+				</td>
+			</tr>
+				<tr>
+					<td class="aplos-label">International Shipping Charge</td>
+					<td class="aplos-field">
+						<h:inputText value="#{ebayManager.internationalShippingCharge}">
+							<f:validateDoubleRange minimum="0" />
+						</h:inputText>
+					</td>
+				</tr>
+		
+			<tr>
+				<td class="aplos-label">Returns Acceptance</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{ebayManager.workingProduct.returnPolicy.returnsAcceptedOption}">
+						<f:selectItems value="#{ebayManager.returnsSelectItems}" />   
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Returns Accepted Within</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{ebayManager.workingProduct.returnPolicy.returnsWithinOption}">
+						<f:selectItems value="#{ebayManager.returnsDurationSelectItems}" />   
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Returns Refund Type</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{ebayManager.workingProduct.returnPolicy.refundOption}">
+						<f:selectItems value="#{ebayManager.returnsTypeSelectItems}" />   
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Returns Shipping Paid For By</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{ebayManager.workingProduct.returnPolicy.shippingCostPaidByOption}">
+						<f:selectItems value="#{ebayManager.returnsShippingPaidBySelectItems}" />   
+					</h:selectOneMenu>
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+	
+<ui:define name="editButtons">
+	<aploscc:controlPanel>
+		<f:facet name="upperRightControlPanel">		
+			<aploscc:ajaxButton action="#{ebayManager.submitEbayListing}" value="Submit to Ebay" />
+			<aploscc:ajaxButton action="#{ebayManager.cancelBtnAction}" value="Cancel" />
+		</f:facet>
+	</aploscc:controlPanel>
+</ui:define>
+	</ui:define>
+</ui:composition>
+

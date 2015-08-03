@@ -1,0 +1,122 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	
+	<style type="text/css">
+		.helpText {
+			color:black;
+			font-size:10px;
+			font-weight:normal;
+			text-align:left;
+		}
+	</style>
+	<script type="text/javascript">
+		$j(document).ready(function() {
+			if( CKEDITOR.instances["conditionReciecedReportTxt"] != null ) {
+				CKEDITOR.instances["conditionReciecedReportTxt"].destroy();
+				alert( "hello" );
+				CKEDITOR.replace( "test2", editorOptions );
+				editorOptions = { 
+						filebrowserBrowseUrl : aploraFilebrowserBrowseUrl, 
+						filebrowserUploadUrl : aploraFilebrowserUploadUrl,
+						autoUpdateElement : true,
+						height : "400",
+						width : "700",
+						toolbar : CKEDITOR.config.toolbar_LimitedToolbar
+				};
+				CKEDITOR.replace( "conditionReciecedReportTxt", editorOptions );
+			} else {
+				ckEditorHelper.createLimitedToolbarCKEditors( '#{ request.contextPath }', { width : "500px", height : "245px" } );
+			}
+		}); 
+	</script>
+	
+	<table class="aplos-form-table">
+		<tr>
+			<td class="aplos-label" style="width:200px">Print/Send document</td>
+			<td>
+				<h:commandLink action="#{ backingPage.redirectToConditionReceivedReportPrintSend }"><img src="#{request.contextPath}/images/download32.32.png" border="0"/></h:commandLink>
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label">
+				Condition Received Report Details
+				<div class="helpText" style="padding-top:10px">
+					a) Items returned &amp; condition.<br />
+					b) Condition of packaging.<br />
+					c) Findings from initial testing.<br />
+					d) When can the unit be repaired.<br />
+					e) If the fault is under guarantee.<br />
+					f) Our estimate for repair.<br />
+					g) Date and initials of technician.
+				</div>
+				<div class="helpText">
+					<span style="padding-top:10px; font-style:italic"><br />Example:<br /></span>
+					a) 1 x OZR1700 (scratch on top, glass smashed), 1 x OZW5020 (OK), 1 x OZA1120 (OK)<br />
+					b) 1 very thin box with foam chips, damaged in transit, inadequate strength.<br />
+					c) The OZL1700 does not power on and screen is obviously broken.<br />
+					d) Awaiting screem; 1 week.<br />
+					e) Not under guarantee.<br />
+					f) &#163;300 + &#163;30 labour + P&amp;P (estimate)<br />
+					g) 02/02/2009 NR
+				</div>
+			</td>
+			<td class="aplos-field">
+				<h:inputTextarea id="conditionReciecedReportTxt" styleClass="aplos_ckeditor" value="#{ realizedProductReturn.conditionReceivedReportDetails }" />
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Photo 1</td>
+			<td class="aplos-field">
+
+					<aploscc:imageUploader2 resizeWidth="1000" owner="#{realizedProductReturn}" key="PHOTO_ONE" />
+	
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Photo 1 text</td>
+			<td class="aplos-field"><h:inputTextarea value="#{ realizedProductReturn.photo1Text }" style="width:380px; height:50px" /></td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Photo 2</td>
+			<td class="aplos-field">
+		
+					<aploscc:imageUploader2 resizeWidth="1000" owner="#{realizedProductReturn}" key="PHOTO_TWO" />
+	
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Photo 2 text</td>
+			<td class="aplos-field"><h:inputTextarea value="#{ realizedProductReturn.photo2Text }" style="width:380px; height:50px" /></td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Photo 3</td>
+			<td class="aplos-field">
+		
+					<aploscc:imageUploader2 resizeWidth="1000" owner="#{realizedProductReturn}" key="PHOTO_THREE" />
+			
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Photo 3 text</td>
+			<td class="aplos-field"><h:inputTextarea value="#{ realizedProductReturn.photo3Text }" style="width:380px; height:50px" /></td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Photo 4</td>
+			<td class="aplos-field">
+				
+					<aploscc:imageUploader2 resizeWidth="1000" owner="#{realizedProductReturn}" key="PHOTO_FOUR" />
+		
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Photo 4 text</td>
+			<td class="aplos-field"><h:inputTextarea value="#{ realizedProductReturn.photo4Text }" style="width:380px; height:50px" /></td>
+		</tr>
+	</table>
+</ui:composition>

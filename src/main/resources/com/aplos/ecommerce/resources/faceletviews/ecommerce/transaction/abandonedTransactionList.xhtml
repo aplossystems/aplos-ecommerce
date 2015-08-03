@@ -1,0 +1,49 @@
+
+<ui:composition template="#{ themeManager.listTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="listContent">
+
+		<aploscc:wrappedDataTable2 dataTableState="#{ backingPage.dataTableState }">
+			<p:column sortBy="#{ tableBean.transactionType }">
+				<f:facet name="header">Type</f:facet>
+				<div style="position:relative;color:#{ backingPage.dataTableState.lazyDataModel.rowTextColor }">
+					<div style="left:10px;top:-6px;width:15px;height:15px;-moz-border-radius:10px;webkit-border-radius:10px; background-color:#{ tableBean.transactionType.colourCode }" title="#{tableBean.transactionType.label}"/>
+				</div>
+			</p:column>
+			<p:column sortBy="#{ tableBean.ecommerceShoppingCart.customer.subscriber.firstName }" filterBy="#{ tableBean.ecommerceShoppingCart.customer.subscriber.firstName }">
+				<f:facet name="header">#{ contextListener.translate( 'ecommerce.beans.Customer' ) } First Name</f:facet>
+				#{tableBean.ecommerceShoppingCart.customer.subscriber.firstName}
+			</p:column>
+			<p:column sortBy="#{ tableBean.ecommerceShoppingCart.customer.subscriber.surname }" filterBy="#{ tableBean.ecommerceShoppingCart.customer.subscriber.surname }">
+				<f:facet name="header">#{ contextListener.translate( 'ecommerce.beans.Customer' ) } Surname</f:facet>
+				#{tableBean.ecommerceShoppingCart.customer.subscriber.surname}
+			</p:column>
+			<p:column>
+				<f:facet name="header">#{ contextListener.translate( 'ecommerce.beans.Company' ) }</f:facet>
+				#{tableBean.customerCompanyName}
+			</p:column>
+			<p:column>
+				<f:facet name="header">Reason*</f:facet>
+				#{tableBean.ecommerceShoppingCart.abandonmentIssue.displayName}
+			</p:column>
+			<p:column sortBy="#{ tableBean.ecommerceShoppingCart.lastRecordedPageEntry }">
+				<f:facet name="header">Final Page</f:facet>
+				#{tableBean.ecommerceShoppingCart.lastRecordedPageEntry.name}
+			</p:column>
+			<p:column sortBy="#{ tableBean.dateCreated }">
+				<f:facet name="header">Date</f:facet>
+				<aplos:standardDateTableCell value="#{tableBean.dateCreated}" /> 
+			</p:column>
+		</aploscc:wrappedDataTable2>
+		
+		<small>* Reason denotes the mostly likely reason this order was abandoned based on the last area the
+		customer was in and the last user-interaction issue recorded by the system. It is not a concrete reason.</small>
+	</ui:define>
+</ui:composition>

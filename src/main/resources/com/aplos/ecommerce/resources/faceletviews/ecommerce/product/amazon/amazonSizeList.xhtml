@@ -1,0 +1,36 @@
+
+<ui:composition template="#{ themeManager.listTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="listContent">
+		<aploscc:wrappedDataTable2 dataTableState="#{ backingPage.dataTableState }">
+			<p:column sortBy="#{ tableBean.name }" filterBy="#{ tableBean.name }">
+				<f:facet name="header">Size</f:facet>
+				#{tableBean.name}
+			</p:column>
+			<p:column sortBy="#{ tableBean.amazonProductType }" filterBy="#{ tableBean.amazonProductType }">
+				<f:facet name="header">Amazon product type</f:facet>
+				#{tableBean.amazonProductType.name()}
+			</p:column>
+			<p:column sortBy="#{ tableBean.positionIdx }">
+				<f:facet name="header">Position</f:facet>
+				#{tableBean.positionIdx}
+			</p:column>
+		</aploscc:wrappedDataTable2>
+		<br/>
+		<table>
+			<tr>
+				<td style="vertical-align:top">
+					<p:fileUpload mode="simple" value="#{ backingPage.uploadedFile }"> </p:fileUpload>
+				</td>
+				<td><aploscc:ajaxButton value="Import amazon sizes" action="#{ backingPage.importAmazonSizes }" /></td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>

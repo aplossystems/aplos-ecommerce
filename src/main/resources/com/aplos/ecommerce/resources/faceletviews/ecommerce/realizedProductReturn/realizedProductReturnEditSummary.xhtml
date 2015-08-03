@@ -1,0 +1,104 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	
+	<table>
+		<tr>
+			<td colspan="4"></td>
+			<td>Last printed</td>
+		</tr>
+		<tr>
+			<td class="aplos-label" style="width:180px">Returns authorisation note</td>
+			<td>
+				<h:commandLink action="#{ realizedProductReturn.redirectToReturnsAuthorisationNotePDF }" target="_blank">
+					<img src="#{request.contextPath}/images/download32.32.png" title="You can right click me and choose Save As to save me on your computer" border="0"/>
+				</h:commandLink>
+			</td>
+			<td>
+				<h:commandLink action="#{ realizedProductReturn.redirectToReturnsAuthorisationNotePrintingUrl }" target="_blank" >
+					<img src="#{request.contextPath}/images/printer32.32.png" border="0"/>
+				</h:commandLink>
+			</td>
+			<td>
+				<h:commandLink action="#{ realizedProductReturn.generateReturnsAuthorisationNotePDFAndSendEmail }">
+					<img src="#{request.contextPath}/images/mail32.32.png" border="0"/>
+				</h:commandLink>
+			</td>
+			<td>
+				<h:outputText value="#{ realizedProductReturn.returnsAuthorisationNotePrintedDate }" />
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Condition received report</td>
+			<td>
+				<h:commandLink action="#{ realizedProductReturn.redirectToConditionReceivedReportPDF }" target="_blank">
+					<img src="#{request.contextPath}/images/download32.32.png" title="You can right click me and choose Save As to save me on your computer" border="0"/>
+				</h:commandLink>
+			</td>
+			<td>
+				<h:commandLink action="#{ realizedProductReturn.redirectToConditionReceivedReportPrintingUrl }" target="_blank" >
+					<img src="#{request.contextPath}/images/printer32.32.png" border="0"/>
+				</h:commandLink>
+			</td>
+			<td>
+				<h:commandLink action="#{ realizedProductReturn.generateConditionReceivedReportPDFAndSendEmail }">
+					<img src="#{request.contextPath}/images/mail32.32.png" border="0"/>
+				</h:commandLink>
+			</td>
+			<td>
+				<h:outputText value="#{ realizedProductReturn.conditionReceivedReportPrintedDate }" />
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Repair Report</td>
+			<td>
+				<h:commandLink action="#{ realizedProductReturn.redirectToRepairReportPDF }" target="_blank">
+					<img src="#{request.contextPath}/images/download32.32.png" title="You can right click me and choose Save As to save me on your computer" border="0"/>
+				</h:commandLink>
+			</td>
+			<td>
+				<h:commandLink action="#{ realizedProductReturn.redirectToRepairReportPrintingUrl }" target="_blank" >
+					<img src="#{request.contextPath}/images/printer32.32.png" border="0"/>
+				</h:commandLink>
+			</td>
+			<td>
+				<h:commandLink action="#{ realizedProductReturn.generateRepairReportPDFAndSendEmail }">
+					<img src="#{request.contextPath}/images/mail32.32.png" border="0"/>
+				</h:commandLink>
+			</td>
+			<td>
+				<h:outputText value="#{ realizedProductReturn.repairReportPrintedDate }" />
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Calibration certificate</td>
+			<td>
+				<h:commandLink action="#{ realizedProductReturn.redirectToCalibrationCertificatePDF }" target="_blank">
+					<img src="#{request.contextPath}/images/download32.32.png" title="You can right click me and choose Save As to save me on your computer" border="0"/>
+				</h:commandLink>
+			</td>
+			<td>
+				<h:commandLink action="#{ realizedProductReturn.redirectToCalibrationCertificatePrintingUrl }" target="_blank" >
+					<img src="#{request.contextPath}/images/printer32.32.png" border="0"/>
+				</h:commandLink>
+			</td>
+			<td>
+				<h:commandLink action="#{ realizedProductReturn.generateCalibrationCertificatePDFAndSendEmail }">
+					<img src="#{request.contextPath}/images/mail32.32.png" border="0"/>
+				</h:commandLink>
+			</td>
+			<td>
+				<h:outputText value="#{ realizedProductReturn.calibrationCertificatePrintedDate }" />
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Dispatch details</td>
+			<td class="aplos-field" colspan="4"><textarea disabled="disabled" style="width:400px;height:150px">#{ realizedProductReturn.despatchDetails }</textarea></td>
+		</tr>
+	</table>
+	<div style="float:right">
+	</div>
+</ui:composition>

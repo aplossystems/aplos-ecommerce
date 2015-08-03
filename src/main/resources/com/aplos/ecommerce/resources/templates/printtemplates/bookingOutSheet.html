@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Booking out sheet</title>
+<style type="text/css">
+
+	body {
+		font-family:verdana;
+	}
+	
+	th {
+		font-size:10pt;
+	}
+	
+	.bold {
+		font-weight:bold;
+	}
+	
+	.bookingOutSheetTable {
+		border-collapse: collapse;
+	}
+	
+	.bookingOutSheetTable td {
+		border-top: solid 1pt;
+		border-bottom: solid 1pt;
+	}
+	
+	.lineNumberTD {
+		border-right:solid 1px;
+	}
+	
+	.rotated{
+		
+		-webkit-transform: rotate(90deg);
+		-moz-transform: rotate(90deg);
+		transform: rotate(90deg);
+		position: absolute;
+		filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+		margin-top:-14pt;
+		margin-left:-18pt;
+	}
+	
+	p {
+		margin:0;
+		padding:0;
+	}
+		
+</style>
+</head>
+
+<body>
+
+	<div style="max-width:505pt;min-width:505pt;width:505pt;max-height:900pt;min-height:900pt;height:900pt">
+		<div style="margin-left:50pt; color:red; font-weight:bold; font-size:20pt;height:30pt;min-height:30pt;max-height:30pt;">
+			Booking out sheet
+		</div>
+		<table class="bookingOutSheetTable" style="width:100%;height:600pt;min-height:600pt;max-height:600pt;margin-bottom:5pt">
+			<tr>
+				<th style="height:70pt;vertical-align:bottom">Qty</th>
+				<th style="vertical-align:bottom">Serial #</th>
+				<th style="vertical-align:bottom">Part #</th>
+				<th style="padding:10pt">
+					<div class="rotated"><p>Packing</p><p style="font-weight:normal">Initial / date</p>
+					</div>
+				</th>
+				<th style="padding:10pt">
+					<div class="rotated"><p>Stores</p><p style="font-weight:normal">Initial / date</p>
+					</div>
+				</th>
+				<th style="padding:10pt">
+					<div class="rotated"><p>Serial entry</p><p style="font-weight:normal">Initial / date</p>
+					</div>
+				</th>
+				<th style="padding:10pt">
+					<div class="rotated"><p>Loan return</p><p style="font-weight:normal">Initial / date</p>
+					</div>
+				</th>
+				<th style="padding:10pt">
+					<div class="rotated"><p>Stokit return</p><p style="font-weight:normal">Initial / date</p>
+					</div>
+				</th>
+			</tr>
+			{TABLE_CONTENT}
+		</table>
+		<table style="width:100%;height:270pt;min-height:270pt;max-height:270pt;border:solid 1px">
+			<tr>
+				<td colspan="5" style="font-weight:bold;vertical-align:top; font-size:18pt">Packing Box Details</td>
+			</tr>
+			<tr>
+				<td class="bold">Code</td>
+				<td class="bold">Dimensional weight</td>
+				<td class="bold">Actual weight</td>
+				<td class="bold">Part #</td>
+				<td class="bold">Quantity</td>
+			</tr>
+			<tr>
+				<td class="bold">A</td>
+				<td>(1.10kg) <span class="bold">2kg</span></td>
+				<td>________</td>
+				<td>901-101</td>
+				<td>________</td>
+			</tr>
+			<tr>
+				<td class="bold">B</td>
+				<td>(3.20kg) <span class="bold">4kg</span></td>
+				<td>________</td>
+				<td>901-102</td>
+				<td>________</td>
+			</tr>
+			<tr>
+				<td class="bold">C</td>
+				<td>(3.92kg) <span class="bold">4kg</span></td>
+				<td>________</td>
+				<td>901-103</td>
+				<td>________</td>
+			</tr>
+			<tr>
+				<td><span class="bold">C</span> (D/W)</td>
+				<td>(4.43kg) <span class="bold">5kg</span></td>
+				<td>________</td>
+				<td>901-111</td>
+				<td>________</td>
+			</tr>
+			<tr>
+				<td class="bold">D</td>
+				<td>(8.10kg) <span class="bold">9kg</span></td>
+				<td>________</td>
+				<td>901-110</td>
+				<td>________</td>
+			</tr>
+			<tr>
+				<td class="bold">E</td>
+				<td>(10.65kg) <span class="bold">11kg</span></td>
+				<td>________</td>
+				<td>901-105</td>
+				<td>________</td>
+			</tr>
+			<tr>
+				<td class="bold">E2</td>
+				<td>(7.70kg) <span class="bold">8kg</span></td>
+				<td>________</td>
+				<td>901-112</td>
+				<td>________</td>
+			</tr>
+			<tr>
+				<td class="bold">F</td>
+				<td>(18.76kg) <span class="bold">19kg</span></td>
+				<td>________</td>
+				<td>901-106</td>
+				<td>________</td>
+			</tr>
+			<tr>
+				<td class="bold">F2</td>
+				<td>(13.55kg) <span class="bold">14kg</span></td>
+				<td>________</td>
+				<td>901-113</td>
+				<td>________</td>
+			</tr>
+			<tr>
+				<td class="bold">H</td>
+				<td>(17.00kg) <span class="bold">6kg</span></td>
+				<td>________</td>
+				<td>901-108</td>
+				<td>________</td>
+			</tr>
+			<tr>
+				<td colspan="5">&#160;</td>
+			</tr>
+			<tr>
+				<td class="bold">Mail Lite 1</td>
+				<td />
+				<td>________</td>
+				<td>931-010</td>
+				<td>________</td>
+			</tr>
+			<tr>
+				<td class="bold">Mail Lite 2</td>
+				<td />
+				<td>________</td>
+				<td>931-011</td>
+				<td>________</td>
+			</tr>
+			<tr>
+				<td class="bold">Mail Lite 5</td>
+				<td />
+				<td>________</td>
+				<td>931-012</td>
+				<td>________</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="editContent">
+		<style>
+			.editLabelColumn {
+				width: 120px;
+			}
+		</style>
+		
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label editLabelColumn">Company name</td>
+				<td class="aplos-field"><h:inputText value="#{company.companyName}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Company type</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{company.companyType}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{backingPage.companyTypeSelectItemBeans}" />
+						<p:ajax process="@form" event="change" update="companyTypeDiscountPanel" />
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Address Status</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{company.addressStatus}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{backingPage.addressStatusSelectItemBeans}" />
+					</h:selectOneMenu>
+				</td>
+			</tr>
+		</table>
+		<div style="clear:both"/>
+		<aplos:panel autoUpdate="true">
+			<table class="aplos-form-table">
+				<tr>
+					<td class="aplos-label editLabelColumn formSubHeading">Billing Address</td>
+					<td>
+						<aplos:panel rendered="#{ !(company.duplicateAddresses.ordinal() == 0) }">
+							<h:selectBooleanCheckbox value="#{ backingPage.usingShippingAddressForBilling }" >
+								<p:ajax process="@form" event="click" listener="#{ backingPage.usingShippingAddressForBillingChanged() }" update="billingAddress" />
+							</h:selectBooleanCheckbox>
+							 use #{contextListener.translate('SHIPPING_ADDRESS')}
+						</aplos:panel>
+					</td>
+				</tr>
+			</table>
+		</aplos:panel>
+		<div style="clear:both"/>
+		<aplos:panel id="billingAddress">
+			<aplos:panel rendered="#{ !(company.duplicateAddresses.ordinal() == 1) }">
+				<aploscc:address validation="false" bean="#{company.billingAddress}" phone="true" phone2="true" mobile="true" fax="true" email="true" ecommerceFieldsRequired="true" />
+			</aplos:panel>
+		</aplos:panel>
+		<div style="clear:both"/>
+		<aplos:panel autoUpdate="true">
+			<table class="aplos-form-table">
+				<tr>
+					<td class="aplos-label editLabelColumn formSubHeading">#{contextListener.translate('SHIPPING_ADDRESS')}</td>
+					<td>
+						<aplos:panel rendered="#{ !(company.duplicateAddresses.ordinal() == 1) }">
+							<h:selectBooleanCheckbox value="#{ backingPage.usingBillingAddressForShipping }" >
+								<p:ajax process="@form" event="click" listener="#{ backingPage.usingBillingAddressForShippingChanged() }" update="shippingAddress" />
+							</h:selectBooleanCheckbox>
+							 use billing address
+						</aplos:panel>
+					</td>
+				</tr>
+			</table>
+		</aplos:panel>
+		<div style="clear:both"/>
+		<aplos:panel id="shippingAddress">
+			<aplos:panel rendered="#{ !(company.duplicateAddresses.ordinal() == 0) }">
+				<aploscc:address validation="false" bean="#{company.shippingAddress}" phone="true" phone2="true" mobile="true" fax="true" email="true" ecommerceFieldsRequired="true" />
+			</aplos:panel>
+		</aplos:panel>
+		<aplos:panel autoUpdate="true">
+			<table>
+				<tr>
+					<td class="aplos-label formSubHeading">Alternative #{contextListener.translate('SHIPPING_ADDRESS')}</td>
+					<td></td>
+					<td class="aplos-field">
+						<h:selectBooleanCheckbox value="#{ company.usingAlternativeAddress }" >
+							<p:ajax process="@form" event="click" update="alternativeShippingAddress" />
+						</h:selectBooleanCheckbox>
+						 use alternative shipping address
+					</td>
+				</tr>
+			</table>
+		</aplos:panel>
+		<aplos:panel id="alternativeShippingAddress">
+			<aplos:panel rendered="#{ company.usingAlternativeAddress }">
+				<aploscc:address validation="false" bean="#{company.altShippingAddress}" phone="true" phone2="true" mobile="true" fax="true" email="true" ecommerceFieldsRequired="true" />
+			</aplos:panel>
+		</aplos:panel>
+		
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label">Courier reference</td>
+				<td class="aplos-field"><h:inputText value="#{company.courierReference}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Website URL</td>
+				<td class="aplos-field"><h:inputText value="#{company.websiteUrl}" /></td>
+			</tr>	
+			<tr>
+				<td class="aplos-label editLabelColumn">VAT number</td>
+				<td class="aplos-field"><h:inputText value="#{company.vatNumber}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label editLabelColumn">Allow company type discount</td>
+				<td>
+					<h:selectBooleanCheckbox
+						value="#{ company.companyTypeDiscountAllowed }">
+						<p:ajax process="@form" event="click" update="companyTypeDiscountPanel" />
+					</h:selectBooleanCheckbox> 
+					<aplos:panel id="companyTypeDiscountPanel">
+						<h:outputText value="#{ company.companyType.discountAllowance.discountPercentage }% discount applied" rendered="#{ company.companyTypeDiscountAllowed }" />
+					</aplos:panel>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Extra Discount</td>
+				<td class="aplos-field" style="width:240px"><h:inputText value="#{company.discountPercentage}" />&#160;%</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Is credit allowed</td>
+				<td class="aplos-field">
+					<h:selectBooleanCheckbox value="#{ company.creditAllowed }">
+						<p:ajax process="@form" event="change" update="creditLimitText creditLimitField" />
+					</h:selectBooleanCheckbox></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">
+					<aplos:panel id="creditLimitText">
+						<h:outputText value="Credit limit" rendered="#{ company.creditAllowed  }" />
+					</aplos:panel>
+				</td>
+				<td class="aplos-field">
+					<aplos:panel id="creditLimitField">
+						<h:inputText value="#{ company.creditLimit }" rendered="#{ company.creditAllowed }" style="width:60px" />
+					</aplos:panel>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Company notes</td>
+				<td class="aplos-field">
+					<h:inputTextarea id="companyNotes" value="#{company.notes}" style="width:400px ; height:100px ;" /> <!-- ceffcf" /> -->
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Follow up status</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{company.followUpStatus}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{backingPage.followUpStatusSelectItemBeans}" />
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Promotion type</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{company.promotionType}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{backingPage.promotionTypeSelectItemBeans}" />
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td class="aplos-label">Image 1</td>
+				<td class="aplos-field">
+					<div style="float:left ; width:200px">
+						<aploscc:imageUploader2 resizeWidth="1000" owner="#{company}" key="IMAGE_ONE" />
+					</div>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td class="aplos-label">Image 2</td>
+				<td class="aplos-field">
+					<div style="float:left ; width:200px">
+						<aploscc:imageUploader2 resizeWidth="1000" owner="#{company}" key="IMAGE_TWO" />
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Description</td>
+				<td class="aplos-field">
+					<h:inputTextarea style="width:400px ; height:100px" id="companyAbout" value="#{company.description}" />
+				</td>
+			</tr>
+			<tr valign="top">
+				<td class="aplos-label">Logo</td>
+				<td class="aplos-field">
+					<div style="float:left ; width:200px">
+						<aploscc:imageUploader2 resizeWidth="1000" owner="#{company}" key="LOGO" />
+					</div>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td class="aplos-label">Photo</td>
+				<td class="aplos-field">
+					<div style="float:left ; width:200px">
+						<aploscc:imageUploader2 resizeWidth="1000" owner="#{company}" key="PHOTO" />
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Show on website</td>
+				<td class="aplos-field">
+					<h:selectBooleanCheckbox value="#{ company.isShowingOnWebsite }" />
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>

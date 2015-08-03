@@ -1,0 +1,13 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	<!-- This head file defines what content we show on facebook when somebody clicks share -->
+	<h:panelGroup rendered="#{singleProductFeDmb.currentRealizedProduct != null}">
+		<!-- not including this has fb use the page <title> tag <meta property="og:title" content="title" /> -->
+		<meta property="og:description" content="#{singleProductFeDmb.strippedTagsDescription}" />
+		<meta property="og:image" content="#{singleProductFeDmb.fullLargeImageUrl}&amp;maxWidth=308&amp;maxHeight=421" />
+	</h:panelGroup>
+</ui:composition>

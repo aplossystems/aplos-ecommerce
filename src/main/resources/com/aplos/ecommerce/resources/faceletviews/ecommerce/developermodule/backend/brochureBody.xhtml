@@ -1,0 +1,73 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+		
+	<script type="text/javascript">
+		$j(document).ready(function() {
+			ckEditorHelper.addAdditionalSave("brochureText");
+			ckEditorHelper.createLimitedToolbarCKEditors( '#{ request.contextPath }', null, "brochureText" );
+		}); 
+	</script>
+	<hr/>
+	<table>
+		<tr>
+			<td class="aplos-label" style="width:140px">Brochures:</td>
+			<td>
+				<h:selectOneListbox size="1" converter="aplosAbstractBeanConverter" valueChangeListener="#{brochureBeDmb.positionedBeanHelper.changeCurrentPositionedBean}"
+				onchange="submit();ckEditorHelper.destroyEditors('brochureText');" immediate="true" value="#{brochureBeDmb.positionedBeanHelper.selectedPositionedBean}">
+					<f:selectItems value="#{ brochureBeDmb.positionedBeanHelper.positionedBeanSelectItems }" />
+				</h:selectOneListbox>
+				
+				<aploscc:ajaxButton value="New brochure" action="#{ brochureBeDmb.positionedBeanHelper.addNewPositionedBean }" />
+				<aplos:panel rendered="#{ brochureBeDmb.positionedBeanHelper.currentPositionedBean != null }">
+					<aploscc:ajaxButton value="Delete brochure" action="#{ brochureBeDmb.positionedBeanHelper.deleteCurrentPositionedBean }" />
+				</aplos:panel>  
+			</td>
+		</tr>
+	</table>
+	<hr />
+	<aplos:panel id="jobOfferFields" rendered="#{ brochureBeDmb.positionedBeanHelper.currentPositionedBean != null }">
+		<table>
+			<tr>
+				<td class="aplos-label" style="width:110px">Title</td>
+				<td class="aplos-field">
+					<h:inputText id="brochureTitle" value="#{brochureBeDmb.positionedBeanHelper.currentPositionedBean.brochureTitle}" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Description</td>
+				<td class="aplos-field">
+					<h:inputTextarea id="brochureText" style="width:100%; height:100%" styleClass="brochureText aplos_ckeditor" value="#{brochureBeDmb.positionedBeanHelper.currentPositionedBean.brochureDescription}"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Image</td>
+				<td class="aplos-field">
+				
+					<aploscc:imageUploader2 resizeWidth="1000" owner="#{brochureBeDmb.positionedBeanHelper.currentPositionedBean}" key="IMAGE" />
+
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Pdf file</td>
+				<td class="aplos-field">
+					<aploscc:fileUploader2 types="pdf" key="PDF" style="width:300px" owner="#{ brochureBeDmb.positionedBeanHelper.currentPositionedBean }"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Position on Page</td>
+				<td>
+					<h:selectOneMenu value="#{brochureBeDmb.positionedBeanHelper.currentPositionedBean.positionIdx}">
+						<f:selectItems value="#{brochureBeDmb.positionedBeanHelper.positionIdxSelectItems}" />   
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			
+		</table>
+	</aplos:panel>
+</ui:composition>

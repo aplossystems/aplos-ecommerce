@@ -1,0 +1,106 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	<ui:define name="head">
+		<h:outputScript library="jsLibraries" name="ckeditor/aplosckeditor.js" target="head" />
+		<h:outputScript library="scripts" name="ckEditorHelper.js" target="head" />
+		<script type="text/javascript">
+			$j(document).ready(function() {
+				ckEditorHelper.createLimitedToolbarCKEditors( '#{ request.contextPath }' );
+			}); 
+		</script>
+	</ui:define>
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<!--<tr>
+				<td class="aplos-label">Parent Type</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{productType.parentProductType}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{backingPage.parentTypeSelectItemBeans}" />   
+					</h:selectOneMenu>
+				</td>
+			</tr>-->
+			<tr>
+				<td class="aplos-label">Type Name</td>
+				<td class="aplos-field"><h:inputText value="#{productType.name}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Size Type</td>
+				<td class="aplos-field"> 
+					<h:selectOneMenu id="stypes" value="#{productType.productSizeType}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{productSizeType.selectItemBeansWithNotSelected}" />   
+					</h:selectOneMenu>
+				</td>
+			</tr>
+		</table>
+		<aplos:panel rendered="#{ ecommerceConfiguration.moduleConfiguration.ecommerceSettings.usingPlayCom }">
+			<table class="aplos-form-table">
+				<tr>
+					<td class="aplos-label">Play product type</td>
+					<td class="aplos-field">
+						<aploscc:aplosBeanMenu label="Play product type" value="#{ productType.playMainGenre }" selectItems="#{ backingPage.playMainGenreSelectItems }" />
+					</td>
+				</tr>
+			</table>
+		</aplos:panel>
+		<aplos:panel rendered="#{ ecommerceConfiguration.moduleConfiguration.ecommerceSettings.usingAmazon }">
+			<table class="aplos-form-table">
+				<tr>
+					<td class="aplos-label">Amazon product type</td>
+					<td class="aplos-field"> 
+						<h:selectOneMenu id="amazonProductType" label="Amazon product type" value="#{productType.amazonProductType}">
+							<f:selectItems value="#{backingPage.amazonProductTypeSelectItems}" />   
+						</h:selectOneMenu>
+					</td>
+				</tr>
+			</table>
+		</aplos:panel>
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label">Image (238px x 175px)</td>
+				<td class="aplos-field"> 
+					<aploscc:imageUploader2 owner="#{productType}" key="SMALL_IMAGE" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Image (822px x 380px)</td>
+				<td class="aplos-field"> 
+					<aploscc:imageUploader2 owner="#{productType}" key="MEDIUM_IMAGE" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Feature</td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{productType.isFeatured}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Description</td>
+				<td class="aplos-field">
+					<h:inputTextarea styleClass="aplos_ckeditor" id="typeDescription" value="#{productType.description}" ></h:inputTextarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">SEO title</td>
+				<td class="aplos-field">
+					<h:inputText id="seoTitle" value="#{productType.metaTitle}" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">SEO description</td>
+				<td class="aplos-field">
+					<h:inputTextarea id="seoDescription" value="#{productType.metaDescription}" ></h:inputTextarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">SEO keywords</td>
+				<td class="aplos-field">
+					<h:inputTextarea id="seoKeywords" value="#{productType.metaKeywords}" ></h:inputTextarea>
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>

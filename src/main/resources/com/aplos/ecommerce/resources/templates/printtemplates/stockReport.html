@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Serial numbers</title>
+<style type="text/css">
+
+	.main {
+		max-height:940pt;
+	 	min-height:940pt;
+	 	height:940pt;
+	 	max-width:505pt;
+	 	min-width:505pt;
+	 	width:505pt;
+	 	padding-top:8pt;
+	 	padding-left:8pt;
+	 	margin-left:40pt
+	}
+	
+	table {
+		border-collapse:collapse;
+	}
+	
+	p {
+		margin:0;
+		padding:0;
+	}
+	
+	@page {
+		margin: 0pt;
+		padding: 0pt;
+	}
+	
+	.strongField,th { font-weight:bold; }
+	
+</style>
+</head>
+<body style="margin:0px;padding:0px;">
+	<table class="main" style="font-family: Verdana, Geneva, sans-serif ; font-size:12px;" cellspacing="0" cellpadding="0">
+		<tr>
+			<td width="20%" height="91"><h1>Free Stock</h1></td>    
+			<td class="strongField" style="text-align:right">{TRUE_AT_DATE}</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<table style="border:1px solid black;width:505pt">
+					<thead>
+						<tr>
+							<th>Part #</th>
+							<th></th>
+							<th>Discontinued</th>
+							<th>Level</th>
+							<th>List Price</th>
+							<th>Stock Value</th>
+							<th>Stock Cost</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- BEGIN DYNAMIC : stock_part -->
+						<tr>
+							<td class="strongField">{PART_NR_REPEATED}</td>
+							<td>{PART_NAME_REPEATED}</td>
+							<td>{DISCONTINUED_REPEATED}</td>
+							<td>{QUANTITY_REPEATED}</td>
+							<td class="strongField">{LIST_PRICE_REPEATED}</td>
+							<td>{STOCK_VALUE_REPEATED}</td>
+							<td>{STOCK_COST_REPEATED}</td>
+						</tr>
+						<!-- END DYNAMIC : stock_part -->
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="5" style="text-align:right">Total</td>
+							<td>{STOCK_VALUE_TOTAL}</td>
+							<td>{STOCK_COST_TOTAL}</td>
+						</tr>
+					</tfoot>
+				</table>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

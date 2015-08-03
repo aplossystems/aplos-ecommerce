@@ -1,0 +1,42 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	<table style="width:100%">
+		<tr>
+			<td>Show details for</td>
+			<td>
+				<h:selectOneMenu value="#{myDetailsBeDmb.myDetailsAtom.userToDetail}" converter="aplosAbstractBeanConverter">
+					<f:selectItems value="#{myDetailsBeDmb.customerSelectItemBeans}" /> 
+				</h:selectOneMenu>
+			</td>
+		</tr>
+		<tr>
+			<td>Show the user's Full Name</td>
+			<td>
+				<h:selectBooleanCheckbox value="#{myDetailsBeDmb.myDetailsAtom.includeFullName}" />
+			</td>
+		</tr>
+		<tr>
+			<td>Show the user's Email</td>
+			<td>
+				<h:selectBooleanCheckbox value="#{myDetailsBeDmb.myDetailsAtom.includeEmail}" />
+			</td>
+		</tr>
+		<tr>
+			<td>Show the user's Company Name (if relevant)</td>
+			<td>
+				<h:selectBooleanCheckbox value="#{myDetailsBeDmb.myDetailsAtom.includeCompanyName}" />
+			</td>
+		</tr>
+		<tr>
+			<td>Show the user's Company Vat Number (if relevant)</td>
+			<td>
+				<h:selectBooleanCheckbox value="#{myDetailsBeDmb.myDetailsAtom.includeVatNumber}" />
+			</td>
+		</tr>
+	</table>
+</ui:composition>
+

@@ -1,0 +1,53 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<style>
+		.innerEditLabelColumn {
+		 	width : 120px;
+		}
+	</style>
+	
+	<div style="clear:both"></div>
+
+	<table id="deliveryAddressTable">
+		<tr>
+			<td class="aplos-label innerEditLabelColumn">Current customer</td>
+			<td class="aplos-field">
+				<aplos:autoComplete id="endCustomerAc" value="#{backingPage.selectedEndCustomer}"   
+                    completeMethod="#{backingPage.suggestEndCustomers}" var="autoBean" itemValue="#{autoBean}" itemLabel="#{ backingPage.getEndCustomerDisplayStr( autoBean ) }" converter="autoCompleteBeanConverter">
+                   <p:ajax process="@form" event="itemSelect" listener="#{backingPage.setEndCustomer}" update="endCustomerAc,endCustomerAddressPanel,removeEndCustomerBtn"/>  
+                </aplos:autoComplete>
+				
+			</td>
+		</tr>
+	</table>
+	<aplos:panel  id="endCustomerAddressPanel">
+		<aplos:panel rendered="#{ realizedProductReturn.serialNumber.currentCustomer != null }">
+			<table>
+				<tr>
+					<td class="aplos-label innerEditLabelColumn">First name</td>
+					<td class="aplos-field">#{ realizedProductReturn.serialNumber.currentCustomer.subscriber.firstName }</td>
+				</tr>
+				<tr>  
+					<td class="aplos-label">Surname</td>
+					<td class="aplos-field">#{ realizedProductReturn.serialNumber.currentCustomer.subscriber.surname }</td>
+				</tr>  
+			</table>
+			<aplos:panel rendered="#{ transactionEditPage.isCustomerACompanyContact( realizedProductReturn.serialNumber.currentCustomer ) }"> 
+				<table >
+					<tr>
+						<td class="aplos-label innerEditLabelColumn">Returns Company</td>
+						<td class="aplos-field">#{ realizedProductReturn.serialNumber.currentCustomer.company.companyName }</td>
+					</tr>
+				</table>
+			</aplos:panel>
+			<aploscc:address bean="#{ realizedProductReturn.serialNumber.currentCustomer.determineShippingAddress }" contactName="false" disabled="true" ecommerceFieldsRequired="true" />
+		</aplos:panel>
+	</aplos:panel>
+</ui:composition>

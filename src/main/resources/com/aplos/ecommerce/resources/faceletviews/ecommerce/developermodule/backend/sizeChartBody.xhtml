@@ -1,0 +1,50 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	<div class="aplos-associated-products-atom-backend aplos-atom-backend">
+		<table class="aplos-form-table-with-required aplos-form-table">
+			<tr>
+				<td class="aplos-label">Number of Columns</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:inputText required="true" requiredMessage="You must enter the nubmer of columns to display" validatorMessage="You must display at least one column" value="#{sizeChartBeDmb.sizeChartModule.maxColumns}">
+						<f:validateLongRange minimum="1" />
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Note</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-description">
+					The name of the measurement is a column in addition to this value. Number of columns is the
+					number of values to display in each table for each measurement type.
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Tolerance</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:inputText required="true" requiredMessage="You must enter the tolerance" validatorMessage="The maximum tolerance is 4" value="#{sizeChartBeDmb.sizeChartModule.columnTolerance}">
+						<f:validateLongRange maxiumum="4" />
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">About Tolerance</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-description">
+					The size chart atom creates multiple tables if the table would be too wide for its content area.
+					It will split the values into tables with the number of columns specified, however when it gets
+					to the last table you may find you only have one or two columns. Having only two columns in a
+					table can look out of place so tolerance is used. If you have a tolerance of two, then, if there
+					are less than 3 columns - ie, 1 column or two columns - the atom will place these on the previous 
+					table and the sizes will adjust to fit. It may be a good idea to set the number of columns one
+					lower than would actually fit when using tolerance. Maximum tolerance is 4. 
+				</td>
+			</tr>
+		</table>
+	</div>
+</ui:composition>

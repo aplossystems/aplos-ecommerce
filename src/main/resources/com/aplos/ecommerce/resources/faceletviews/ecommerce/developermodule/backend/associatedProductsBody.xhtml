@@ -1,0 +1,53 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	<div class="aplos-associated-products-atom-backend aplos-atom-backend">
+		<table class="aplos-form-table-with-required aplos-form-table">
+			<tr>
+				<td class="aplos-label">Title</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:inputText value="#{associatedProductsBeDmb.associatedProductsModule.title}" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Title Image / Icon</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<aploscc:imageUploader2 resizeWidth="1000" owner="#{ associatedProductsBeDmb.associatedProductsModule }" key="TITLE_IMAGE" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Number of items to display</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:inputText required="true" requiredMessage="You must enter the nubmer of items to display" validatorMessage="You must display at least one item" value="#{associatedProductsBeDmb.associatedProductsModule.numberOfItemsToDisplay}">
+						<f:validateLongRange minimum="1" />
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Bind to Product</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{ associatedProductsBeDmb.associatedProductsModule.realizedProduct }" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{ realizedProduct.selectItemBeansWithNotSelected }" />
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label"></td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field aplos-align-left">
+					Usual behaviour is to display products associated with the product in the session as this
+					atom would usually be used on the individual products page. if you select a product above the atom
+					will always display products associated with the one selected and will ignore the product in the session.
+				</td>
+			</tr>
+		</table>
+	</div>
+</ui:composition>

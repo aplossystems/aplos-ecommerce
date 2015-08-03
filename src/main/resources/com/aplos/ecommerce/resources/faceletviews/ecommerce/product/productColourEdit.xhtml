@@ -1,0 +1,41 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label">Colour Name</td>
+				<td class="aplos-field"><h:inputText value="#{productColour.name}" /></td>
+			</tr>
+		</table>
+		
+		<aplos:panel rendered="#{ ecommerceConfiguration.moduleConfiguration.ecommerceSettings.usingPlayCom }">
+			<table class="aplos-form-table">
+				<tr>
+					<td class="aplos-label">Play colour</td>
+					<td class="aplos-field">
+						<aploscc:aplosBeanMenu label="Play colour" value="#{ productColour.playColour }" selectItems="#{ backingPage.playColourSelectItems }" />
+					</td>
+				</tr>
+			</table>
+		</aplos:panel>
+		
+		<aplos:panel rendered="#{ ecommerceConfiguration.moduleConfiguration.ecommerceSettings.usingAmazon }">
+			<table class="aplos-form-table">
+				<tr>
+					<td class="aplos-label">Amazon colour</td>
+					<td class="aplos-field">
+						<h:selectOneMenu  label="Amazon colour" value="#{ productColour.amazonColour }">
+							<f:selectItems value="#{ backingPage.amazonColourSelectItems }" />   
+						</h:selectOneMenu>
+					</td>
+				</tr>
+			</table>
+		</aplos:panel>
+	</ui:define>
+</ui:composition>

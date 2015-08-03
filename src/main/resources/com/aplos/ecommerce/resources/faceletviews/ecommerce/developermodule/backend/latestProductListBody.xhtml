@@ -1,0 +1,13 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+
+	Display products added within how many days previous?<hr/>
+	<h:selectOneMenu value="#{latestProductListModule.daysToDisplay}">
+		<f:selectItems value="#{latestProductListBeDmb.daysToDisplaySelectItems}" />  
+	</h:selectOneMenu>
+
+</ui:composition>

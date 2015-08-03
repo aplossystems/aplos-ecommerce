@@ -1,0 +1,17 @@
+<table width="670" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+	<tr>
+	  <td>
+	  	<p>Hello, {RECIPIENT_NAME},</p><br />
+	  	<p>Exciting news - {BUYER_NAME} has sent you a gift voucher to redeem at {COMPANY_NAME}!</p>
+	  	<ul style="list-style:none">
+	  		<!-- BEGIN DYNAMIC : voucherList -->
+	  			<li>{VOUCHER_VALUE_REPEATED}</li>
+	  		<!-- END DYNAMIC : voucherList -->
+	  	</ul>
+	  	<p>Congratulations and we hope you enjoy your purchase(s). To get started, redeem your voucher by visiting</p>
+	  	<p><a href="{REDEEM_URL}">{REDEEM_URL}</a></p><br/>
+	  	<p>Enjoy!</p>
+	  	<p>- The {COMPANY_NAME} staff</p>
+	</td>
+  </tr>
+</table>

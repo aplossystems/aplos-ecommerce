@@ -1,0 +1,78 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+
+	<ui:define name="editHead">
+		<h:outputScript library="jsLibraries" name="ckeditor/aplosckeditor.js" target="head" />
+		<h:outputScript library="scripts" name="ckEditorHelper.js" target="head" />   
+			
+		<script type="text/javascript">
+			$j(document).ready(function() {
+				ckEditorHelper.createLimitedToolbarCKEditors( '#{ request.contextPath }', null, "aplos_ckeditor" );
+			}); 
+		</script>
+	</ui:define>
+	
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:140px">Brand</td>
+				<td class="aplos-field"><h:inputText value="#{productBrand.name}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Description</td>
+				<td class="aplos-field"><h:inputTextarea id="brandDescription"
+						styleClass="aplos_ckeditor" 
+						value="#{productBrand.description}" style="width:400px;height:400px"></h:inputTextarea></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Small image</td>
+				<td class="aplos-field">
+					<aploscc:imageUploader2 resizeWidth="1000" owner="#{productBrand}" key="SMALL" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Medium image </td>
+				<td class="aplos-field">
+					<aploscc:imageUploader2 resizeWidth="1000" owner="#{productBrand}" key="MEDIUM" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Company discount</td>
+				<td class="aplos-field"><h:inputText value="#{productBrand.companyDiscountPercentage}" style="width:40px" />%</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Allow extra company discount</td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{productBrand.allowExtraCompanyDiscount}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Free postage</td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{productBrand.isFreePostage}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">SEO title</td>
+				<td class="aplos-field">
+					<h:inputText id="seoTitle" value="#{productBrand.metaTitle}" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">SEO description</td>
+				<td class="aplos-field">
+					<h:inputTextarea id="seoDescription" value="#{productBrand.metaDescription}" ></h:inputTextarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">SEO keywords</td>
+				<td class="aplos-field">
+					<h:inputTextarea id="seoKeywords" value="#{productBrand.metaKeywords}" ></h:inputTextarea>
+				</td>
+			</tr>
+
+		</table>
+	</ui:define>
+</ui:composition>

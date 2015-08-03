@@ -1,0 +1,49 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	
+	<ui:define name="editContent">
+		<style>
+			.editLabelColumn {
+				width: 130px;
+			}
+		</style>
+		<table class="aplos-form-table-with-required edit">
+			<tr>
+				<td class="aplos-label editLabelColumn" style="width:130px">Name</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:inputText value="#{paymentMethod.name}" required="true" requiredMessage="Please enter a name for the payment method" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label" style="width:140px">Position</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{paymentMethodEditPage.positionedBeanHelper.currentPositionedBean.positionIdx}">
+						<f:selectItems value="#{paymentMethodEditPage.positionedBeanHelper.positionIdxSelectItems}" />   
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label" style="width:140px">System payment required?</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:selectBooleanCheckbox value="#{ paymentMethod.systemPaymentRequired }">
+					</h:selectBooleanCheckbox>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label" style="width:140px">Is showing on website?</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:selectBooleanCheckbox value="#{ paymentMethod.visibleFrontend }">
+					</h:selectBooleanCheckbox>
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>

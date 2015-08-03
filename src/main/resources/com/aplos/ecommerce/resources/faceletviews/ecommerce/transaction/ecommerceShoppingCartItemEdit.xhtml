@@ -1,0 +1,30 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label">Name</td>
+				<td class="aplos-field"><h:inputText value="#{companyType.name}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Description</td>
+				<td class="aplos-field">
+					<h:inputTextarea id="description" value="#{companyType.description}" style="width:400px ; height:100px" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Discount allowance</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{companyType.discountAllowance}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{discountAllowance.selectItemBeansWithNotSelected}" />
+					</h:selectOneMenu>
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>

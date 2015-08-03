@@ -1,0 +1,136 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	<div class="aplos-friend-referral-atom-backend aplos-atom-backend">
+		<h4 class="aplos-title">Frontend Description</h4>
+		<p style="background-color:#eaeaea; padding:10px">"<h:outputText id="genDesc" value="#{friendReferralBeDmb.friendReferralModule.generatedDescription}" escape="false" />"</p>
+		<h4 class="aplos-title">Terms and Conditions</h4>
+		<ul class="aplos-terms" style="list-style:none; background-color:#eaeaea; padding:10px"><h:outputText id="genTandCs" value="#{friendReferralBeDmb.friendReferralModule.termsAndConditionsHtmlListItems}" escape="false" /></ul>
+		<br/><hr/><br/>
+		<h3 class="aplos-title">Basic Scheme</h3>
+		<table class="aplos-form-table-with-required aplos-form-table">
+			<tr>
+				<td class="aplos-label">Payment Method</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:selectOneRadio id="methodRadBtns" value="#{friendReferralBeDmb.friendReferralModule.referralPayoutPercentage}" layout="pageDirection">
+						 <f:selectItems value="#{friendReferralBeDmb.paymentMethodSelectItems}" />
+<p:ajax process="@form" event="change" update="creditLabel genDesc" /> 
+				    </h:selectOneRadio>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label"><h:outputText value="#{friendReferralBeDmb.creditPayoutLabelText}" id="creditLabel" /></td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:inputText required="#{backingPage.isValidationRequired}" requiredMessage="You must enter the amount you will be paying per referral" value="#{friendReferralBeDmb.friendReferralModule.referralPayout}">
+<p:ajax process="@form" event="change" update="genDesc" /> 
+					</h:inputText>
+				</td>
+			</tr>
+		</table>
+		<h3 class="aplos-title">Limitations</h3>
+		<table class="aplos-form-table-with-required aplos-form-table">
+			<tr>
+				<td class="aplos-label">Minimum Spend Requirement</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:inputText required="#{backingPage.isValidationRequired}" requiredMessage="You must enter the minimum spend requirement. Enter 0 if there is no minimum spend requirement." value="#{friendReferralBeDmb.friendReferralModule.referreeMinimumSpend}">
+<p:ajax process="@form" event="change" update="genDesc" /> 
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Allow Referrals via Email Address ?</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:selectBooleanCheckbox value="#{friendReferralBeDmb.friendReferralModule.allowEmailReferrals}" />
+				</td>
+			</tr>	
+			<tr>
+				<td class="aplos-label">Allow Referrals via Physical Address ?</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:selectBooleanCheckbox value="#{friendReferralBeDmb.friendReferralModule.allowAddressReferrals}" />
+				</td>
+			</tr>	
+			<tr>
+				<td class="aplos-label">Limit Referrals Per Month</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:inputText required="#{backingPage.isValidationRequired}" requiredMessage="You must enter the monthly referral limit. Enter 0 if there is no limit." value="#{friendReferralBeDmb.friendReferralModule.referralLimitPerCalendarMonth}">
+<p:ajax process="@form" event="change" update="genDesc genTandCs" /> 
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"></td><td style="text-align:left" class="aplos-description">
+					You can optionally limit how many friends and customer can limit within a calendar month. 
+					If you do not wish to impose a limit, leave this at zero. 	
+				</td>
+			</tr>
+		</table>
+		<h3 class="aplos-title">Bonuses</h3>
+		<table class="aplos-form-table-with-required aplos-form-table">
+			<tr>
+				<td class="aplos-label">Bonus Amount (fixed)</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:inputText required="#{backingPage.isValidationRequired}" requiredMessage="You must enter the bonus amount." value="#{friendReferralBeDmb.friendReferralModule.referralBonus}">
+<p:ajax process="@form" event="change" update="genDesc" /> 
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Threshold</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:inputText required="#{backingPage.isValidationRequired}" requiredMessage="You must enter the referral bonus threshold. Enter 0 if there are no bonuses." value="#{friendReferralBeDmb.friendReferralModule.referralBonusThreshold}">
+<p:ajax process="@form" event="change" update="genDesc" /> 
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"></td><td style="text-align:left" class="aplos-description">
+					You can optionally award bonus payouts to those who refer several friends. 
+					The bonus will be paid each time anyone completes then number of referrals specified
+					in the threshold field. If you do not wish to offer bonuses, leave the threshold at zero. 	
+				</td>
+			</tr>
+		</table>
+		<h3 class="aplos-title">Other Terms and Conditions</h3>
+		<table class="aplos-form-table-with-required aplos-form-table">
+			<tr>
+				<td class="aplos-label"></td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+				<aplos:panel id="tandcsTableWrapper">
+					<p:dataTable id="tandcsTable" value="#{ friendReferralBeDmb.friendReferralModule.termsAndConditionsList }" var="tableBean" styleClass="listDatatable" style="width:100%; border-top:1px solid silver;"> <p:column>
+							#{tableBean}
+						</p:column>
+						<p:column width="24px">
+							<h:commandButton action="#{ friendReferralBeDmb.removeTermOrCondition }" image="/images/action_delete.gif" reRender="tandcsTableWrapper,genTandCs" />
+						</p:column>
+					</p:dataTable>
+				</aplos:panel>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label"></td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:inputText value="#{ friendReferralBeDmb.newTermOrCondition }" />
+					<aploscc:ajaxButton ajaxEnabled="true" action="#{ friendReferralBeDmb.addTermOrCondition }" value="Add" reRender="tandcsTable,genTandCs" />
+				</td>
+			</tr>
+		</table>
+	</div>
+</ui:composition>
+
+ 
+

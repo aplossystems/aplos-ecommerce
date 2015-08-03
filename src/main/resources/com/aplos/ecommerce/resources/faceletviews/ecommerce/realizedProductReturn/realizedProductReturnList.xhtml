@@ -1,0 +1,53 @@
+<ui:composition template="#{ themeManager.listTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="listContent">
+		<div>
+			<table>
+				<tr>
+					<td>
+						&#160;Status&#160; 
+						<h:selectOneMenu value="#{ backingPage.dataTableState.lazyDataModel.currentlyShowingReturnStatus }" converter="aplosAbstractBeanConverter">
+							<f:selectItems value="#{ backingPage.returnStatusSelectItemBeans }" />				
+							<p:ajax process="@form" event="change" update=":listForm:wrappedDataTable:mojarraBugFixPnl" />
+						</h:selectOneMenu>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<aploscc:wrappedDataTable2 id="wrappedDataTable" dataTableState="#{ backingPage.dataTableState }">
+			<p:column>
+				<f:facet name="header">Status</f:facet>
+				<div style="position:relative;color:#{ tableBean.realizedProductReturnStatus.colorName }">
+					<div style="left:10px;top:-6px;width:15px;height:15px;-moz-border-radius:10px;webkit-border-radius:10px; background-color:#{ tableBean.realizedProductReturnStatus.colorName }" title="#{tableBean.realizedProductReturnStatus.name}"/>
+				</div>
+			</p:column>
+			<p:column>
+				<f:facet name="header">Customer name</f:facet>
+				#{tableBean.customerOrCompanyName}
+			</p:column>
+			<p:column>
+				<f:facet name="header">Part #</f:facet>
+				#{tableBean.determineReturnProduct().determineItemCode}
+			</p:column>
+			<p:column sortBy="#{ tableBean.determineReturnProduct().productInfo.product.name }" filterBy="#{ tableBean.returnProduct.productInfo.product.name }">
+				<f:facet name="header">Product name</f:facet>
+				#{tableBean.determineReturnProduct().productInfo.product.name}
+			</p:column>
+			<p:column sortBy="#{ tableBean.serialNumber.id }" filterBy="#{ tableBean.serialNumber.id }">
+				<f:facet name="header">Serial #</f:facet>
+				#{tableBean.serialNumber.id}
+			</p:column>
+			<p:column sortBy="#{ tableBean.dateCreated }">
+				<f:facet name="header">Date</f:facet>
+				<aplos:standardDateTableCell value="#{tableBean.dateCreated}" />
+			</p:column>
+		</aploscc:wrappedDataTable2>
+	</ui:define>
+</ui:composition>

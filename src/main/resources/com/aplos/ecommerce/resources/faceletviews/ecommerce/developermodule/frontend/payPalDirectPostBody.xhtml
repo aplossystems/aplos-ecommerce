@@ -1,0 +1,12 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	<div class="aplos-checkout aplos-paypal-direct-post">
+       	<p>You are currently being redirect to paypal for payment.</p>
+       	<iframe src="#{ request.contextPath }/ecommerce/developermodule/frontend/payPalDirectPostIFrameContent.jsf">
+		</iframe>
+	</div>
+</ui:composition>

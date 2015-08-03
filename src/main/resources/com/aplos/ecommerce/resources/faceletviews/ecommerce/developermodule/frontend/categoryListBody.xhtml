@@ -1,0 +1,28 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+    <div id="products_container">
+      <div id="designers_a_z">
+      	<ui:repeat value="#{categoryListFeDmb.groups}" var="group">
+			
+			<div class="alphabetical">
+				<h1>#{group}</h1>
+	            <div class="line_designers"> </div>
+	            <div class="listblock">
+	            <ui:repeat value="#{categoryListFeDmb.nodeListByGroup}" var="node">
+	            	<p><img src="links/product_arrow.gif" alt="More" /> <a href="#{node.cmsPage.mapping}.aplos">#{node.cmsPage.name}</a></p>
+	            </ui:repeat>
+	            </div>
+	            <div class="line_designers"> </div>
+	        </div>	
+	        
+		</ui:repeat>	
+
+      </div>
+      <div class="space"> </div>
+    </div>
+
+</ui:composition>

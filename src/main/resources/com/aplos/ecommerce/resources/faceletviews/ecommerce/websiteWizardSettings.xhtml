@@ -1,0 +1,79 @@
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:p="http://primefaces.org/ui">
+	<aplos:panel id="ecommercepanel">
+		<h:panelGroup rendered="#{backingPage.cmsProject}">
+			<h3>Ecommerce Details</h3>
+			<table class="aplos-form-table">
+				<tr>
+					<td class="aplos-label" style="width:300px">Are we using Ecommerce?</td>
+					<td class="aplos-field">
+						<h:selectBooleanCheckbox value="#{backingPage.isEcommerceProject}" id="using_ecommerce">
+							<p:ajax event="change" render="ecommerceoptions" /> 
+						</h:selectBooleanCheckbox>
+					</td>
+				</tr>
+			</table>
+			<aplos:panel id="ecommerceoptions">
+				<h:panelGroup rendered="#{backingPage.isEcommerceProject}">
+					<table class="aplos-form-table">
+						<tr>
+							<td class="aplos-label" style="width:300px">Are we using Colours?</td>
+							<td class="aplos-field">
+								<h:selectBooleanCheckbox value="#{backingPage.usingColours}" id="using_colours" />
+							</td>
+						</tr>
+						<tr>
+							<td class="aplos-label">Are we using Sizes?</td>
+							<td class="aplos-field">
+								<h:selectBooleanCheckbox value="#{backingPage.usingSizes}" id="using_sizes">
+									<f:ajax event="change" render="using_size_categories" />
+								</h:selectBooleanCheckbox>
+							</td>
+						</tr>
+						<tr>
+							<td class="aplos-label">Are we using Size Categories?</td>
+							<td class="aplos-field">
+								<h:selectBooleanCheckbox disabled="#{!backingPage.usingSizes}" value="#{backingPage.usingSizeCategories}" id="using_size_categories" />
+							</td>
+						</tr>
+						<tr>
+							<td class="aplos-label">Are we using Product FAQs?</td>
+							<td class="aplos-field">
+								<h:selectBooleanCheckbox value="#{backingPage.usingFaqs}" id="using_faqs" />
+							</td>
+						</tr>
+						<tr>
+							<td class="aplos-label">Are we using Product Reviews?</td>
+							<td class="aplos-field">
+								<h:selectBooleanCheckbox value="#{backingPage.usingProductReviews}" id="using_reviews" />
+							</td>
+						</tr>
+						<tr>
+							<td class="aplos-label">Are we using Gift Vouchers?</td>
+							<td class="aplos-field">
+								<h:selectBooleanCheckbox value="#{backingPage.usingGiftVouchers}" id="using_gift_vouchers" />
+							</td>
+						</tr>
+						<tr>
+							<td class="aplos-label" style="width:300px">Are we displaying abandoned transactions?</td>
+							<td class="aplos-field">
+								<h:selectBooleanCheckbox value="#{backingPage.showingAbandonedOrders}" id="using_abandoned" />
+							</td>
+						</tr>
+						<tr>
+							<td class="aplos-label">Display Transactions tab as 'Orders'?</td>
+							<td class="aplos-field">
+								<h:selectBooleanCheckbox value="#{backingPage.displayingTransactionsAsOrders}" id="using_orders" />
+							</td>
+						</tr>
+					</table>
+				</h:panelGroup>
+			</aplos:panel>
+		</h:panelGroup>
+	</aplos:panel>
+</ui:composition>

@@ -1,0 +1,54 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+
+	<hr/>
+	<table>
+		<tr>
+			<td class="aplos-label" style="width:140px">Product type reviews:</td>
+			<td>
+				<h:selectOneListbox size="1" converter="aplosAbstractBeanConverter" valueChangeListener="#{productTypeReviewBeDmb.positionedBeanHelper.changeCurrentPositionedBean}"
+					onchange="submit();" immediate="true" value="#{productTypeReviewBeDmb.positionedBeanHelper.selectedPositionedBean}">
+					<f:selectItems value="#{ productTypeReviewBeDmb.positionedBeanHelper.positionedBeanSelectItems }" />
+				</h:selectOneListbox>
+				
+				<aploscc:ajaxButton value="Add a product type" action="#{ productTypeReviewBeDmb.positionedBeanHelper.addNewPositionedBean }" />
+				<aplos:panel rendered="#{ productTypeReviewBeDmb.positionedBeanHelper.currentPositionedBean != null }">
+					<aploscc:ajaxButton value="Remove product type" action="#{ productTypeReviewBeDmb.positionedBeanHelper.deleteCurrentPositionedBean }" />
+				</aplos:panel>  
+			</td>
+		</tr>
+	</table>
+	<hr />
+	<aplos:panel id="productTypeReviewsPanel" rendered="#{ productTypeReviewBeDmb.positionedBeanHelper.currentPositionedBean != null }">
+		<table>
+			<tr>
+				<td class="aplos-label">Product Type</td>
+				<td class="aplos-field">
+					<h:selectOneMenu converter="aplosAbstractBeanConverter" 
+						value="#{productTypeReviewBeDmb.positionedBeanHelper.currentPositionedBean.productType}">
+						<f:selectItems value="#{ productTypeReviewBeDmb.productTypeSelectItemBeans }" />
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label"></td>
+				<td class="aplos-field">
+					<h:commandLink value="Edit reviews" action="#{ productTypeReviewBeDmb.goToCustomerReviewListPage }" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Position in Arrangement</td>
+				<td>
+					<h:selectOneMenu value="#{productTypeReviewBeDmb.positionedBeanHelper.currentPositionedBean.positionIdx}">
+						<f:selectItems value="#{productTypeReviewBeDmb.positionedBeanHelper.positionIdxSelectItems}" />   
+					</h:selectOneMenu>
+				</td>
+			</tr>
+		</table>
+	</aplos:panel>
+</ui:composition>

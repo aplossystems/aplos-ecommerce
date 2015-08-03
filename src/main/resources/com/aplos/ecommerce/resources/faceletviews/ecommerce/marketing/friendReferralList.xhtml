@@ -1,0 +1,38 @@
+
+<ui:composition template="#{ themeManager.listTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:define name="listContent">
+		<aploscc:wrappedDataTable2 dataTableState="#{ backingPage.dataTableState }">
+			<p:column sortBy="#{ tableBean.address.contactFirstName }" filterBy="#{ tableBean.address.contactFirstName }">
+				<f:facet name="header">Recipient First Name</f:facet>
+				#{tableBean.address.contactFirstName}
+			</p:column>
+			<p:column sortBy="#{ tableBean.address.contactSurname }" filterBy="#{ tableBean.address.contactSurname }">
+				<f:facet name="header">Recipient Surname</f:facet>
+				#{tableBean.address.contactSurname}
+			</p:column>
+			<p:column sortBy="#{ tableBean.referrer.subscriber.firstName }" filterBy="#{ tableBean.referrer.subscriber.firstName }">
+				<f:facet name="header">Referrer First Name</f:facet>
+				#{tableBean.referrer.subscriber.firstName}
+			</p:column>
+			<p:column sortBy="#{ tableBean.referrer.subscriber.surname }" filterBy="#{ tableBean.referrer.subscriber.surname }">
+				<f:facet name="header">Referrer Surname</f:facet>
+				#{tableBean.referrer.subscriber.surname}
+			</p:column>
+			<p:column sortBy="#{ tableBean.sent }" filterBy="#{ tableBean.sent }">
+				<f:facet name="header">Sent</f:facet>
+				#{backingPage.sentYesNoString}
+			</p:column>
+			<p:column>
+				<f:facet name="header">Credit Issued</f:facet>
+				#{backingPage.creditYesNoString}
+			</p:column>
+		</aploscc:wrappedDataTable2>
+	</ui:define>
+</ui:composition>

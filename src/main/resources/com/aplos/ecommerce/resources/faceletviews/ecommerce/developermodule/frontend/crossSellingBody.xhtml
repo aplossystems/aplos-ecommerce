@@ -1,0 +1,39 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	<div class="aplos-cross-selling-atom">
+		<h:panelGroup layout="none" rendered="#{crossSellingModule.associatedProductList.size() &gt; 0}">
+			<h4 class="aplos-title"><h:outputText value="#{crossSellingModule.title}" /></h4>
+		</h:panelGroup>
+ 		<ui:repeat var="realProduct" value="#{crossSellingModule.associatedProductList}">
+			<div class="aplos-list-product">
+        		<a href="#{request.contextPath}/#{productListFeDmb.productMapping}">
+					<img src="#{realProduct.defaultProductListImageUrl}&amp;maxWidth=143&amp;maxHeight=196" alt="" />
+				</a>
+				<div> 
+					<h3 class="aplos-list-product-name">
+						<a href="#{request.contextPath}/#{productListFeDmb.productMapping}">
+							<h:outputText value="#{realProduct.productInfo.product.name}" />
+						</a>
+					</h3>
+					<span class="aplos-details">
+						<span class="aplos-price">
+							<span class="aplos-crossout"><h:outputText style="margin-right:8px;" rendered="#{realProduct.hasCrossoutPrice}" value="#{currency.prefix}#{realProduct.convertedDeterminedCrossoutPriceStr}#{currency.suffix}" /></span>
+							<h:outputText value="#{currency.prefix}#{realProduct.convertedDeterminedPriceStr}#{currency.suffix}" />
+						</span>
+						<!-- cant use config.cartDisplayName as 'shopping bag' is too long to fit -->
+						<aploscc:ajaxButton rendered="#{crossSellingModule.displayAddButton}" value="Add this item" action="#{crossSellingFeDmb.addToCart}" />
+					</span>
+				</div>
+			</div>
+		</ui:repeat>
+	</div>
+	
+	
+	
+</ui:composition>
+

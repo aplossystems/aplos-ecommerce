@@ -1,0 +1,68 @@
+
+      <table width="670" border="0" cellspacing="10" cellpadding="0">
+        <tr>
+          <td><p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px;  line-height:15px; color: #231F20; margin:0px; margin-bottom:10px;">Payment for an order at {COMPANY_NAME} has been unsuccessful. <br />
+The unique reference for this transaction is: <strong>ORDER_{ORDER_NUMBER}</strong></p>
+<p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px;  line-height:15px; color: #666666; margin:0px; margin-bottom:10px;"><strong>Customer :</strong> {CUSTOMER_FULLNAME}</p>
+<p style="font-family: Arial, Helvetica, sans-serif; font-size: 16px;  line-height:21px; color: #666666; margin:0px; margin-bottom:10px;"><strong>Order Total: {ORDER_TOTAL_PRICE_DOUBLE} {CURRENCY_SYMBOL}<br />
+Payment Status : Failed</strong></p>
+<p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px;  line-height:15px; color: #666666; margin:0px; margin-bottom:10px;"><strong>Reason : {ERROR_TXT}</strong></p>
+<p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px;  line-height:15px; color: #000000; margin:0px; margin-bottom:10px;"><strong>Order date and time:</strong> {ORDER_DATETIME}
+<!-- <br />
+ 
+  <strong>Payment method:</strong> {PAYMENT_METHOD_CARDTYPE} --></p>
+  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 18px;  line-height:21px; color: #666666; margin:0px; margin-bottom:10px;"><strong>The Order</strong></p>
+ 
+  <!--BODY TABLE --><table width="650" border="0" cellspacing="5" cellpadding="0">
+  <tr>
+    <td width="39" valign="top"><p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px;  line-height:10px; color: #000000; margin:0px; margin-bottom:10px;"><strong>S.No </strong></p></td>
+    <td width="207" valign="top"><p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px;  line-height:10px; color: #000000; margin:0px; margin-bottom:10px;"><strong>Product name </strong></p></td>
+    <td width="59" valign="top"><p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px;  line-height:10px; text-align:right; color: #000000; margin:0px; margin-bottom:10px;"><strong>Quantity</strong></p></td>
+    <td width="149" valign="top"><p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px;  line-height:10px;text-align:right;  color: #000000; margin:0px; margin-bottom:10px;"><strong>Price</strong></p></td>
+    <td width="96" valign="top"><p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px;  text-align:right; line-height:10px; color: #000000; margin:0px; margin-bottom:10px;"><strong>Total price ({CURRENCY_PREFIX_SUFFIX})</strong></p></td>
+  </tr>
+  <!-- BEGIN DYNAMIC : productList -->
+  <tr>
+    <td valign="top"><p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px;  line-height:10px; color: #666666; margin:0px; margin-bottom:10px;">{PRODUCT_CODE_REPEATED}</p></td>
+    <td valign="top"><p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px;  line-height:10px; color: #666666; margin:0px; margin-bottom:10px;">{PRODUCT_BRAND_AND_NAME_REPEATED}</p></td>
+    <td valign="top"><p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; text-align:right; line-height:10px; color: #666666; margin:0px; margin-bottom:10px;">{PRODUCT_QUANTITY_REPEATED}</p></td>
+    <td valign="top"><p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; text-align:right; line-height:10px; color: #666666; margin:0px; margin-bottom:10px;">{PRODUCT_PRICE_DOUBLE_REPEATED}</p></td>
+    <td valign="top"><p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; text-align:right; line-height:10px; color: #666666; margin:0px; margin-bottom:10px;">{PRODUCT_SUBTOTAL_DOUBLE_REPEATED}</p></td>
+  </tr>
+  <!-- END DYNAMIC : productList -->
+  <tr>
+    <td valign="top">&nbsp;</td>
+    <td valign="top">&nbsp;</td>
+    <td valign="top">&nbsp;</td>
+    <td valign="top">&nbsp;</td>
+    <td valign="top"><p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; text-align:right; line-height:15px; color: #666666; margin:0px; margin-bottom:10px;">Total Product Price ({CURRENCY_PREFIX_SUFFIX})</p></td>
+    <td valign="top">&nbsp;</td>
+    <td valign="top"><p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; text-align:right; line-height:15px; color: #666666; margin:0px; margin-bottom:10px;">{PRODUCT_TOTAL_PRICE_DOUBLE}</p></td>
+  </tr>
+  <tr>
+    <td valign="top">&nbsp;</td>
+    <td valign="top">&nbsp;</td>
+    <td valign="top">&nbsp;</td>
+    <td valign="top">&nbsp;</td>
+    <td valign="top"><p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; text-align:right; line-height:15px; color: #666666; margin:0px; margin-bottom:10px;">P&amp;P Cost ({CURRENCY_PREFIX_SUFFIX})</p></td>
+    <td valign="top">&nbsp;</td>
+    <td valign="top"><p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; text-align:right; line-height:15px; color: #666666; margin:0px; margin-bottom:10px;">{SHIPPING_COST_DOUBLE}</p></td>
+  </tr>
+  <tr>
+    <td valign="top">&nbsp;</td>
+    <td valign="top">&nbsp;</td>
+    <td valign="top">&nbsp;</td>
+    <td valign="top">&nbsp;</td>
+    <td valign="top"><p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; text-align:right; line-height:15px; color: #666666; margin:0px; margin-bottom:10px;">Net Total Order Amount ({CURRENCY_PREFIX_SUFFIX})</p></td>
+    <td valign="top">&nbsp;</td>
+    <td valign="top"><p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px; text-align:right; line-height:15px; color: #666666; margin:0px; margin-bottom:10px;">{ORDER_TOTAL_PRICE_DOUBLE}</p></td>
+  </tr>
+</table>
+ <!--BODY TABLE END-->
+ <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px;  line-height:15px; color: #231F20; margin:0px; margin-bottom:10px;"><strong>Shipping:</strong> {SHIPPING_METHOD_NAME}</p>
+   <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px;  line-height:15px; color: #231F20; margin:0px; margin-bottom:10px;"><strong>Delivery Address:</strong> {SHIPPING_ADDRESS_STRING}</p>
+    <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px;  line-height:15px; color: #231F20; margin:0px; margin-bottom:10px;"><strong>Billing Address:</strong> {BILLING_ADDRESS_STRING}</p>
+  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 10px;  line-height:13px; color: #666666; margin:0px; margin-bottom:10px;">If you have any questions regarding your order, delivery details or items purchased, please contact <a href="mailto:{COMPANY_EMAIL}" style="color:#666666;">{COMPANY_EMAIL}</a><br />
+If you have any issues regarding you order please contact {COMPANY_WEBSITE} limited directly. </p></td>
+        </tr>
+      </table>

@@ -1,0 +1,36 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	
+	<ui:define name="editContent">
+		<style>
+			.editLabelColumn {
+				width: 130px;
+			}
+		</style>
+		<table class="aplos-form-table-with-required edit">
+			<tr>
+				<td class="aplos-label editLabelColumn" style="width:130px">Name</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:inputText value="#{discountAllowance.name}" required="true" requiredMessage="Please enter a name for the discount allowance" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Percentage</td>
+				<td></td>
+				<td class="aplos-field" style="width:240px">
+					<h:inputText value="#{discountAllowance.discountPercentage}" 
+						requiredMessage="Please enter a percentage between 1 and 100 for the discount allowance" 
+						converterMessage="Please enter a percentage between 1 and 100 for the discount allowance"
+						validatorMessage="Please enter a percentage between 1 and 100 for the discount allowance" >	
+						<f:validateLongRange minimum="0" maximum="100" />
+					</h:inputText> %
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>

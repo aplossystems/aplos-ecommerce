@@ -1,0 +1,53 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	
+	<style type="text/css">
+		.helpText {
+			color:black;
+			font-size:10px;
+			font-weight:normal;
+			text-align:left;
+		}
+	</style>
+	<script type="text/javascript">
+		$j(document).ready(function() {
+			ckEditorHelper.createLimitedToolbarCKEditors( '#{ request.contextPath }', { width : "500px", height : "245px" } );
+		}); 
+	</script>
+	
+	<table class="aplos-form-table">
+		<tr>
+			<td class="aplos-label" style="width:200px">Print/Send document</td>
+			<td>
+				<h:commandLink action="#{ backingPage.redirectToRepairReportPrintSend }"><img src="#{request.contextPath}/images/download32.32.png" border="0"/></h:commandLink>
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label">
+				Repair Report details
+				<div class="helpText" style="padding-top:10px">
+					a) The fault.<br />
+					b) How we think it happened.<br />
+					c) What we did to repair it.<br />
+					d) If the fault is under guarantee.<br />
+					e) How much we are charging.<br />
+					f) Date and initials.<br />
+				</div>
+				<div class="helpText">
+					<span style="padding-top:10px; font-style:italic"><br />Example:<br /></span>
+					a) The LCD screen was dead.<br />
+					b) Component failure.<br />
+					c) We replaced the screen and returned the faulty screen to the manufacturer.<br />
+					d) Is is under guarantee.<br />
+					e) No charge.<br />
+					f) 26/06/02 NR
+				</div>
+			</td>
+			<td class="aplos-field"><h:inputTextarea id="repairReportTxt" styleClass="aplos_ckeditor" value="#{ realizedProductReturn.repairReportDetails }" /></td>
+		</tr>
+	</table>
+</ui:composition>

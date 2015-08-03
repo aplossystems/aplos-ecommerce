@@ -1,0 +1,33 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	<ui:define name="editContent">
+		<table class="aplos-form-table-with-required aplos-form-table" style="width:100%;">
+			<tr>
+				<td><strong>Recipient</strong></td>
+				<td><strong>Address</strong></td>
+			</tr>
+			<tr>
+				<td><span style="text-transform:capitalize;">
+					<h:outputText rendered="#{catalogueRequest.customer == null}" value="#{catalogueRequest.address.contactFullName}" />
+					<h:commandLink rendered="#{catalogueRequest.customer != null}" value="#{catalogueRequest.address.contactFullName}" action="#{backingPage.viewCustomer}" />
+					</span>&#160;(#{catalogueRequest.determinedEmail})
+				</td>
+				<td rowspan="3">
+					<aploscc:address bean="#{catalogueRequest.address}" contactName="false" ecommerceFieldsRequired="true" />
+				</td>
+			</tr>
+			<tr>
+				<td><strong>Request Date</strong> <br/> #{catalogueRequest.dateCreatedStdStr}</td>
+			</tr>
+			<tr>
+				<td style="vertical-align:bottom"><h:selectBooleanCheckbox value="#{catalogueRequest.sent}" /> has the catalogue been sent?</td>
+			</tr>
+		</table>	
+	
+	</ui:define>
+</ui:composition>

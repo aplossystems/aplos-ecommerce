@@ -1,0 +1,26 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:130px">Shipping Method Name</td>
+				<td class="aplos-field"><h:inputText value="#{staticShippingService.name}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Shipping Charge</td>
+				<td class="aplos-field"><h:inputText value="#{staticShippingService.charge}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Show on website</td>
+				<td class="aplos-field">
+					<h:selectBooleanCheckbox value="#{staticShippingService.showingOnWebsite}" />
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>

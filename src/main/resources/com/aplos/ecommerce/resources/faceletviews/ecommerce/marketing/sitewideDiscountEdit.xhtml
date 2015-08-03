@@ -1,0 +1,42 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	<ui:define name="editContent">
+		<table class="aplos-form-table-with-required aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:200px;">Percentage Discount</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:inputText required="#{backingPage.isValidationRequired}" validatorMessage="Percentage discount must be between 0.25% and 99.75%" 
+					requiredMessage="Percentage Discount is required" value="#{sitewideDiscount.discountPercentage}">
+						<f:validateDoubleRange minimum="0.25" maximum="99.75" />
+					</h:inputText>
+				</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td class="aplos-label" style="width:200px;">Brand Affected</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{sitewideDiscount.productBrand}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{backingPage.productBrandSelectItems}" />   
+					</h:selectOneMenu>
+				</td>
+				<td></td>
+			</tr> 
+			<tr>
+				<td class="aplos-label" style="width:200px;">Product Type Affected</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{sitewideDiscount.productType}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{backingPage.productTypeSelectItems}" />   
+					</h:selectOneMenu>
+				</td>
+				<td></td>
+			</tr> 
+		</table>
+	</ui:define>
+</ui:composition>

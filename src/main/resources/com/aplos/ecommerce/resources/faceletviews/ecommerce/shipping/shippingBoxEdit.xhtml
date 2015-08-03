@@ -1,0 +1,56 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:130px">Name</td>
+				<td class="aplos-field"><h:inputText value="#{shippingBox.name}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Width</td>
+				<td class="aplos-field">
+					<h:inputText value="#{shippingBox.width}" 
+						validatorMessage="Please enter a width greater than or equal to zero"
+						convertorMessage="Please enter a width greater than or equal to zero">
+						<f:validateLongRange minimum="0" />
+<p:ajax process="@form" event="keyup" update="volumeText" />
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Depth</td>
+				<td class="aplos-field">
+					<h:inputText value="#{shippingBox.depth}" 
+						validatorMessage="Please enter a depth greater than or equal to zero"
+						convertorMessage="Please enter a depth greater than or equal to zero">
+						<f:validateLongRange minimum="0" />
+<p:ajax process="@form" event="keyup" update="volumeText" />
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Height</td>
+				<td class="aplos-field">
+					<h:inputText value="#{shippingBox.height}" 
+						validatorMessage="Please enter a height greater than or equal to zero"
+						convertorMessage="Please enter a height greater than or equal to zero" >
+						<f:validateLongRange minimum="0" />
+<p:ajax process="@form" event="keyup" update="volumeText" />
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Volume cm<sup>3</sup></td>
+				<td class="aplos-field">
+					<h:outputText id="volumeText" value="#{ shippingBox.calculateVolume() }" />
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>

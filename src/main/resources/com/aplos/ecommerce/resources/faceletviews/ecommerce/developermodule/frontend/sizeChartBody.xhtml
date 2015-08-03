@@ -1,0 +1,58 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	<h:panelGroup rendered="#{ sizeChartFeDmb.sizeChart != null }">
+		<div id="aplos-size-chart-atom-contents" class="aplos-size-chart-atom">
+			<div class="aplos-header-container">
+				<div class="aplos-product-name" >#{realizedProduct.productInfo.product.name}</div>
+				<div class="aplos-measurement-links">
+					<h:commandLink action="#{ sizeChartFeDmb.setCurrentMeasurementType( 'CENTIMETRES' ) }" rendered="#{ sizeChartFeDmb.sizeChart.usingCentimetres }">
+						<f:ajax event="action" render="aplos-size-chart-atom-contents"/>
+						CM
+						<img class="aplos-measurement-circle" src="#{ sizeChartFeDmb.getCircleImagePath( 'CENTIMETRES' ) }" />
+					</h:commandLink>
+					<h:commandLink action="#{ sizeChartFeDmb.setCurrentMeasurementType( 'INCHES' ) }" rendered="#{ sizeChartFeDmb.sizeChart.usingInches }">
+						<f:ajax event="action" render="aplos-size-chart-atom-contents"/>
+						INCHES
+						<img class="aplos-measurement-circle" src="#{ sizeChartFeDmb.getCircleImagePath( 'INCHES' ) }" />
+					</h:commandLink>
+				</div>
+			</div>
+			<h:panelGroup display="block" id="aplos-size-chart-atom-contents" styleClass="aplos-size-chart-atom">
+				<ui:repeat value="#{sizeChartFeDmb.tablePages}" var="tablePage">
+				 	<table class="aplos-ecommerce-size-chart #{sizeChartFeDmb.fillWidthClass}">
+			        	<thead>
+			            	<tr>
+			              		<th>&#160;</th>
+			             		<ui:repeat value="#{sizeChartFeDmb.columnLabelsPaged}" var="columnLabel">
+			             			<th>#{columnLabel.name}</th>
+			             		</ui:repeat>
+			             	</tr>
+			            </thead>
+			            <tbody>
+			              	<ui:repeat value="#{sizeChartFeDmb.sizeChart.rowLabels}" var="rowLabel">
+			               		<tr>
+			                		<td class="aplos-measurement">
+					                	#{ rowLabel.name }
+			                		</td>
+			              			<ui:repeat value="#{sizeChartFeDmb.columnLabelsPaged}" var="columnLabel">
+			              				<td class="aplos-size-chart-atom-measurement">
+			              					<h:outputText styleClass="aplos-value" value="#{sizeChartFeDmb.cellValue}" />
+			              				</td>
+			              			</ui:repeat>
+			                	</tr>     
+			                </ui:repeat>
+			            </tbody>
+			        </table>
+		        </ui:repeat>
+			</h:panelGroup>
+		</div>
+	</h:panelGroup>
+	<h:panelGroup rendered="#{ sizeChartFeDmb.sizeChart == null }">
+		I'm sorry but the measurements for this item haven't been uploaded yet, please contact staff for more details.
+	</h:panelGroup>
+</ui:composition>
+

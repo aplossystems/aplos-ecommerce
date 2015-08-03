@@ -1,0 +1,22 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+     <form action="#{ payPalConfigurationDetails.payPalServerType.directPostUrl }" method="post" ID="form1" NAME="form1" target="_parent">
+		<input type="hidden" name="cmd" value="_cart" />
+		<input type="hidden" name="upload" value="1" />
+		<input type="hidden" name="return" value="#{ payPalConfigurationDetails.frontEndSuccessfulRedirectionUrl }" />
+		<input type="hidden" name="cancel_return" value="#{ payPalConfigurationDetails.frontEndFailedRedirectionUrl }" />
+		<input type="hidden" name="business" value="#{ payPalConfigurationDetails.accountEmailAddress }" />
+		<input type="hidden" name="lc" value="GB" />
+		<input type="hidden" name="item_name_1" value="Cart" />
+		<input type="hidden" name="item_number_1" value="#{ transaction.id }" />
+		<input type="hidden" name="amount_1" value="#{ transaction.ecommerceShoppingCart.cachedNetTotalAmount }" />
+		<input type="hidden" name="currency_code" value="GBP" />
+	</form>
+	<script language="javascript">
+		document.form1.submit();
+	</script>
+</ui:composition>

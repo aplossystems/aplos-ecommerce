@@ -1,0 +1,165 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<style>
+		.editTableLabelCell {
+		 	width: 160px;
+		}
+	</style>
+	<table class="aplos-form-table-with-required">
+		<tr>
+			<td class="aplos-label editTableLabelCell">
+				Delivery required by
+			</td>
+			<td class="aplos-field">
+				<aploscc:dateTime id="deliveryRequiredDateInput" startYearDiff="#{0}" endYearDiff="#{1}" showCheckbox="#{true}" value="#{ transaction.deliveryRequiredByDate }"  />
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label editTableLabelCell">Product Weights</td>
+			<td class="aplos-field" style="width:650px">
+				<p:dataTable id="productWeightTable" value="#{ transactionEditDeliveryMethodPage.relevantCartItems }" var="tableBean" styleClass="listDatatable" style="width:100%"> 
+					<p:column sortBy="#{ tableBean.itemName }" style="width:80px">
+						<f:facet name="header">Name</f:facet>
+						#{tableBean.itemName}
+					</p:column>
+					<p:column style="width:80px">
+						<f:facet name="header">Packaged weight</f:facet>
+						#{formatUtilJsfHelper.formatNumber(tableBean.singleItemWeight)}
+					</p:column>
+					<p:column style="width:80px">
+						<f:facet name="header">Volume cm<sup>3</sup></f:facet>
+						#{formatUtilJsfHelper.formatNumber(tableBean.singleItemVolume)}
+					</p:column>
+					<p:column sortBy="#{ tableBean.quantity }" style="width:80px">
+						<f:facet name="header">Quantity</f:facet>
+						#{tableBean.quantity}
+					</p:column>
+					<p:column style="width:80px">
+						<f:facet name="header">Total weight</f:facet>
+						#{formatUtilJsfHelper.formatNumber(tableBean.cachedTotalWeight)}
+					</p:column>
+					<p:column style="width:80px">
+						<f:facet name="header">Total volume</f:facet>
+						#{formatUtilJsfHelper.formatNumber(tableBean.cachedTotalVolume)}
+					</p:column>
+				</p:dataTable>
+			</td>
+		</tr>
+	</table>
+	<aplos:panel id="standardWeightPanel" rendered="#{ transactionEditDeliveryMethodPage.showingStandardWeight }" >
+		<table class="aplos-form-table-with-required">
+			<tr>
+				<td class="aplos-label editTableLabelCell">Add additional weight (g)</td>
+				<td class="aplos-field">
+					<h:inputText value="#{ transaction.ecommerceShoppingCart.additionalWeight }" style="width:60px" >
+<p:ajax process="@form" event="blur" update="calculatedWeight shippingMethodDdl" listener="#{ transactionEditDeliveryMethodPage.additionalWeightUpdated() }" />
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Calculated weight (g)</td>
+				<td class="aplos-field"><h:outputText id="calculatedWeight" value="#{ transaction.ecommerceShoppingCart.cachedWeight }" /></td>
+			</tr>
+		</table>
+	</aplos:panel>
+	<aplos:panel id="volumetricWeightPanel" rendered="#{ transactionEditDeliveryMethodPage.showingVolumetricWeight }" >
+		<table class="aplos-form-table-with-required">
+			<tr>
+				<td class="aplos-label">Product volume (cm<sup>3</sup>)</td>
+				<td class="aplos-field"><h:outputText value="#{ transaction.ecommerceShoppingCart.cachedVolume }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label editTableLabelCell">Boxes</td>
+				<td class="aplos-field">
+					<aplos:panel id="shippingBoxTableWrapper">
+						<p:dataTable id="shippingBoxTable" value="#{ transaction.ecommerceShoppingCart.shippingBoxOrderList }" var="tableBean" styleClass="listDatatable" style="width:100%">
+							<p:column style="width:80px">
+								<f:facet name="header">Name</f:facet>
+								#{tableBean.shippingBox.name}
+							</p:column>
+							<p:column style="width:80px">
+								<f:facet name="header">Volume cm<sup>3</sup></f:facet>
+								#{formatUtilJsfHelper.formatNumber(tableBean.shippingBox.calculateVolume())}
+							</p:column>
+							<p:column style="width:80px">
+								<f:facet name="header">Quantity</f:facet>
+								#{tableBean.quantity}
+							</p:column>
+							<p:column style="width:80px">
+								<f:facet name="header">Total volume</f:facet>
+								#{formatUtilJsfHelper.formatNumber(tableBean.calculateTotalVolume())}
+							</p:column>
+							<p:column width="24px">
+								<h:commandButton action="#{ transactionEditDeliveryMethodPage.removeShippingBoxOrder }" image="/images/action_delete.gif" reRender="shippingBoxTableWrapper,shippingMethodDdl" />
+							</p:column>
+						</p:dataTable>
+					</aplos:panel>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label"></td>
+				<td class="aplos-field">
+					<h:selectOneListbox size="1" id="productFaqList" value="#{transactionEditDeliveryMethodPage.selectedShippingBox}" converter="aplosAbstractBeanConverter" collectionType="java.util.ArrayList">
+						<f:selectItems value="#{transactionEditDeliveryMethodPage.shippingBoxSelectItemBeans}" />   
+					</h:selectOneListbox>
+					<h:inputText value="#{transactionEditDeliveryMethodPage.shippingBoxQuantity}" />
+					<aploscc:ajaxButton ajaxEnabled="true" action="#{ transactionEditDeliveryMethodPage.addShippingBoxOrder }" value="Add" reRender="shippingBoxTable,shippingMethodDdl" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Box volume (cm<sup>3</sup>)</td>
+				<td class="aplos-field"><h:outputText value="#{ transaction.ecommerceShoppingCart.cachedBoxVolume }" /></td>
+			</tr>
+		</table>
+	</aplos:panel>
+	<table class="aplos-form-table-with-required">
+		<tr>
+			<td class="aplos-label editTableLabelCell">Shipping method</td>
+			<td class="aplos-field">
+				<h:selectOneMenu id="shippingMethodDdl" value="#{ transactionEditDeliveryMethodPage.availableShippingService }" converter="aplosAbstractBeanConverter">
+<p:ajax process="@form" event="change" update="shippingReferenceTxt shippingCostTxt" listener="#{ transactionEditDeliveryMethodPage.shippingServiceUpdated() }" />
+					<f:selectItems value="#{ transactionEditDeliveryMethodPage.shippingSelectItems }" />
+				</h:selectOneMenu>
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Shipping Reference</td>
+			<td class="aplos-field">
+				<h:inputText id="shippingReferenceTxt" value="#{ transaction.courierServiceName }"  />
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Shipping Cost</td>
+			<td class="aplos-field">
+				<h:inputText id="shippingCostTxt" value="#{ transaction.ecommerceShoppingCart.deliveryCost }"  >
+<p:ajax process="@form" event="change" listener="#{ transaction.ecommerceShoppingCart.updateCachedDeliveryVatValue() }" />
+				</h:inputText>
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Special delivery instructions</td>
+			<td class="aplos-field">
+				<h:inputTextarea value="#{ transaction.specialDeliveryInstructions }" style="width:400px;height:150px" />
+			</td>
+		</tr>
+	</table>
+	<h:panelGroup rendered="#{ backingPage.isTransactionALoan() }" layout="none">
+		<table>
+			<tr>
+				<td class="aplos-label editTableLabelCell">Loan return date
+				</td>
+				<td class="aplos-field">
+					<aploscc:dateTime id="loanReturnDateInput" startYearDiff="#{0}" endYearDiff="#{5}" showCheckbox="#{false}" value="#{ transaction.loanReturnDate }" />
+				</td>
+			</tr>
+		</table>
+	</h:panelGroup>
+	
+</ui:composition>

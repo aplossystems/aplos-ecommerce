@@ -1,0 +1,130 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+
+	<ui:define name="title">Edit News Article</ui:define>
+	<ui:define name="editHead">
+		<h:outputScript library="jsLibraries" name="ckeditor/aplosckeditor.js" target="head" />
+		<h:outputScript library="scripts" name="ckEditorHelper.js" target="head" />
+		<script type="text/javascript">
+			$j(document).ready(function() {
+				ckEditorHelper.createLimitedToolbarCKEditors( '#{ request.contextPath }', null, 'newsTextarea' );
+				ckEditorHelper.createLimitedToolbarCKEditors( '#{ request.contextPath }', { 'websiteId' : '#{currentWebsite.id}'}, 'infoPackEmailTextArea' );
+			}); 
+		</script>
+	</ui:define>
+	
+	<ui:define name="editContent">
+
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label">Title</td>
+				<td class="aplos-field"><h:inputText value="#{newsEntry.title}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Show this article in the news rotator?</td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{newsEntry.showsInNewsRotator}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Show this article in the news feed page?</td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{newsEntry.showsInNewsPage}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Initial Image</td>
+				<td class="aplos-field">
+					<aploscc:imageUploader2 resizeWidth="1000" owner="#{newsEntry}" key="INITIAL" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Initial Content</td>
+				<td class="aplos-field"><h:inputTextarea id="description"
+						styleClass="newsTextarea" 
+						value="#{newsEntry.content}" style="width:700px;height:400px"></h:inputTextarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Include Video</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{ newsEntry.video }" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{backingPage.videoSelectItemBeans}" />
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Middle Image</td>
+				<td class="aplos-field">
+					<aploscc:imageUploader2 resizeWidth="1000" owner="#{newsEntry}" key="MIDDLE" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Middle Content</td>
+				<td class="aplos-field"><h:inputTextarea id="descriptionMid"
+						styleClass="newsTextarea" 
+						value="#{newsEntry.contentMid}" style="width:700px;height:400px"></h:inputTextarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Footer Image</td>
+				<td class="aplos-field">
+					<aploscc:imageUploader2 resizeWidth="1000" owner="#{newsEntry}" key="FOOTER" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Footer Content</td>
+				<td class="aplos-field"><h:inputTextarea id="descriptionFoot"
+						styleClass="newsTextarea" 
+						value="#{newsEntry.contentBottom}" style="width:700px;height:400px"></h:inputTextarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Info Pack PDF</td>
+				<td class="aplos-field">
+					<aploscc:fileUploader2 key="PDF" types="pdf" owner="#{ newsEntry }"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Info Pack PDF Title</td>
+				<td class="aplos-field">
+					<h:inputText value="#{newsEntry.pdfTitle}" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Info Pack Email Subject</td>
+				<td class="aplos-field">
+					<h:inputText value="#{newsEntry.emailSubject}" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Info Pack Email Body</td>
+				<td class="aplos-field"><h:inputTextarea id="emailBody"
+						styleClass="infoPackEmailTextArea" 
+						value="#{newsEntry.emailBody}" style="width:700px;height:400px"></h:inputTextarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Link with a Product</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{ newsEntry.product }" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{backingPage.realizedProductSelectItemBeans}" />
+					</h:selectOneMenu>
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+

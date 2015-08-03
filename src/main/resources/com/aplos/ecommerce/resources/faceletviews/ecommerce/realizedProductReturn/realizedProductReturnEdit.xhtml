@@ -1,0 +1,53 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	
+	<ui:define name="head">
+		<h:outputScript library="jsLibraries" name="ckeditor/aplosckeditor.js" target="head" />
+		<h:outputScript library="scripts" name="ckEditorHelper.js" target="head" />
+	</ui:define>
+	
+	<ui:define name="editContent">
+		<div style="width:900px;max-width:900px">
+			<aplos:panel id="summaryPanel" >
+				<ui:include src="/ecommerce/realizedProductReturn/realizedProductReturnEditTopBox.xhtml" />
+			</aplos:panel>
+			
+			<aplos:panel layout="block" id="returnsMenuPanel" >	
+				<ul style="list-style-type:none;float:left;padding:0px 0px 0px 15px">
+					<ui:repeat value="#{ realizedProductReturn.menuWizard.menuSteps }" var="menuStep">
+						<h:panelGroup rendered="#{ menuStep.clickable }" layout="none" >
+							<li style="background-color:#{ menuStep.backgroundColour };padding:5px 10px;margin:1px">
+								<h:commandLink value="#{ menuStep.label }" action="#{ menuStep.redirectToMenuStep }" style="text-decoration:none;" onclick="ckEditorHelper.destroyEditors()" /><br />
+							</li>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{ not menuStep.clickable }" layout="none">
+							<li style="background-color:#ede8d9;padding:5px 10px;margin:1px">
+								<h:outputText value="#{ menuStep.label }" style="font-size:11px;" /><br />
+							</li>
+						</h:panelGroup>
+					</ui:repeat>
+				</ul>
+			</aplos:panel>
+			
+			<aplos:panel id="rightContentPanel" style="float:left;padding-left:30px;padding-top:10px;max-width:700px">
+				<ui:include src="#{ realizedProductReturn.menuWizard.currentViewUrl }.xhtml"></ui:include>
+			</aplos:panel>
+		</div>
+	</ui:define>
+	
+	
+<ui:define name="editButtons">
+	<aploscc:controlPanel>
+		<f:facet name="upperRightControlPanel">
+		<aploscc:ajaxButton action="#{backingPage.applyBtnAction}" onclick="ckEditorHelper.updateEditors();" value="Apply" />
+		<aploscc:ajaxButton action="#{backingPage.okBtnAction}" onclick="ckEditorHelper.updateEditors();" value="Ok" />
+		<aploscc:ajaxButton action="#{backingPage.cancelBtnAction}" immediate="true" value="Cancel" />
+	</f:facet>
+	</aploscc:controlPanel>
+</ui:define>
+</ui:composition>

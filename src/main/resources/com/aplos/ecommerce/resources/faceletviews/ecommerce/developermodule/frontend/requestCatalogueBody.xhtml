@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	<div class="aplos-request-catalogue-atom">
+		<h3 class="aplos-title">Request a Catalogue</h3>
+		<h:panelGroup rendered="#{ requestCatalogueFeDmb.catalogueAlreadyRequested }">
+			<div style="padding:10px 20px 20px;">
+				Thank you for requesting a catalogue, if you haven't received your catalogue within 14 days please contact us.
+			</div>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{ !requestCatalogueFeDmb.catalogueAlreadyRequested }">
+			<div style="padding-left:15px;">
+				Enter your details, or the details of a friend, and we will send a copy of our catalogue to that address.
+			</div>
+			<aploscc:address bean="#{requestCatalogueFeDmb.address}" ecommerceFieldsRequired="true" />
+		    <table class="aplos-form-table-with-required aplos-form-table">
+		     	<tr>
+	                <td class="aplos-label">Email</td>
+	                <td class="aplos-required-asterisk">*</td>
+	            	<td class="aplos-field">
+	            		<h:inputText 
+	            			value="#{ requestCatalogueFeDmb.emailAddress }" 
+	            			required="#{requestCatalogueFeDmb.validationRequired}" >
+						</h:inputText>
+					</td>
+					<td></td>
+		     	</tr>
+				<tr>
+	            	<td class="aplos-label" style="text-align:right;" colspan="3">
+		           		<aploscc:ajaxButton value="Request Catalogue" id="requestCatalogueButton" rendered="#{ !requestCatalogueFeDmb.catalogueRequest.sent }" action="#{ requestCatalogueFeDmb.requestCatalogue }" />
+					</td>
+					<td></td>
+		        </tr>
+		    </table>
+		</h:panelGroup>   
+    </div>
+</ui:composition>

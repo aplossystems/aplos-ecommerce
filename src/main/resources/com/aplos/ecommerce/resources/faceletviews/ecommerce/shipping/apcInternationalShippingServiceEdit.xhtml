@@ -1,0 +1,58 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:130px">Shipping Method Name</td>
+				<td class="aplos-field"><h:inputText value="#{ apcInternationalShippingService.name }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label" style="width:130px">Extra .5Kg Cost</td>
+				<td class="aplos-field">
+					<h:inputText value="#{apcInternationalShippingService.extraPoint5KgCost}" style="width:40px" converterMessage="Please enter a number greater than -1" validatorMessage="Please enter a number greater than -1">
+						<f:validateLongRange minimum="0"  />
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label" style="width:150px">Country</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{apcInternationalShippingService.country}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{aplosModuleFilterer.countrySelectItems}" />
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Shipping cost steps:</td>
+				<td class="aplos-field" style="padding:20px 0px 0px 0px" >
+					<aplos:panel id="shippingStepsSection">
+						<aplos:panel rendered="#{ apcInternationalShippingService.shippingSteps.size() gt 0 }">
+							<p:dataTable id="shippingStepsTable" value="#{ apcInternationalShippingService.weightSortedShippingSteps }" var="tableBean" styleClass="listDatatable" style="margin-top:-12px;width:100%">
+								<p:column>
+									<f:facet name="header">Maximum weight (g)</f:facet>
+									<h:inputText value="#{tableBean.maxWeight}" required="true" />
+								</p:column>
+								<p:column>
+									<f:facet name="header">Cost (&#163;)</f:facet>
+									<h:inputText value="#{tableBean.cost}" required="true" /> 
+								</p:column>
+							</p:dataTable>
+						</aplos:panel>
+					</aplos:panel>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Show on website</td>
+				<td class="aplos-field">
+					<h:selectBooleanCheckbox value="#{apcInternationalShippingService.showingOnWebsite}" />
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>

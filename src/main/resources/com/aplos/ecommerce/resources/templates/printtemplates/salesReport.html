@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Serial numbers</title>
+<style type="text/css">
+
+	.aplos-total { background-color:#EAEAEA; }
+	.aplos-grand-total { background-color:#D0D0D0; }
+	.aplos-unimportant { color:#CACACA; }
+	
+</style>
+</head>
+<body style="margin:0px;padding:0px;">
+	<table class="main" style="font-family: Verdana, Geneva, sans-serif ; font-size:12px;" cellspacing="0" cellpadding="0">
+		<tr>
+			<td><h1>Sales Report, Week Commencing {WEEK_COMMENCING_DATE}</h1></td>    
+		</tr>
+		<tr>
+			<td>
+				<table style="border:1px solid black;width:505pt">
+					<thead>
+						<tr>
+							<th class="aplos-grand-total">Type</th>
+							<!-- BEGIN DYNAMIC : header_cell -->
+								<th class="aplos-grand-total">{CELL_TEXT}</th>
+							<!-- END DYNAMIC : header_cell -->
+							<th class="aplos-grand-total">Week</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- BEGIN DYNAMIC : type_values -->
+						<tr>
+							<td>{TYPE_NAME}</td>
+							<td>{MONDAY}</td>
+							<td>{TUESDAY}</td>
+							<td>{WEDNESDAY}</td>
+							<td>{THURSDAY}</td>
+							<td>{FRIDAY}</td>
+							<td>{SATURDAY}</td>
+							<td>{SUNDAY}</td>
+							<td class="aplos-total">{WEEK}</td>
+						</tr>
+						<!-- END DYNAMIC : type_values -->
+					</tbody>
+					<tfoot>
+						<tr>
+							<td class="aplos-total">Totals</td>
+							<!-- BEGIN DYNAMIC : footer_cell -->
+								<td class="aplos-total">{CELL_TEXT}</td>
+							<!-- END DYNAMIC : footer_cell -->
+							<td class="aplos-grand-total">{GRAND_TOTAL}</td>
+						</tr>
+					</tfoot>
+				</table>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

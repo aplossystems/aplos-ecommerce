@@ -1,0 +1,77 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	<style>
+		#deliveryAddressTable td {
+			height:25px;
+		}
+	</style>
+	<div style="text-align:center;">
+		<div style="float:left">
+			<aploscc:ajaxButton value="Use original customer" action="#{ backingPage.useOriginalCustomerDeliveryDetails }" ajaxEnabled="true" reRender="rightContentPanel" rendered="#{ realizedProductReturn.serialNumber.originalCustomer != null }" /><br />
+			<aploscc:ajaxButton value="Use current customer" action="#{ backingPage.useCurrentCustomerDeliveryDetails }" ajaxEnabled="true" reRender="rightContentPanel" rendered="#{ realizedProductReturn.serialNumber.currentCustomer != null }" /><br />
+			<aploscc:ajaxButton value="Clear delivery details" action="#{ backingPage.clearDeliveryDetails }" ajaxEnabled="true" reRender="rightContentPanel" />
+		</div>
+		<div style="float:left;max-width:400px">
+			<p>Enter the delivery details where the product will be returned to once it has been dealt with.</p>
+			<p style="font-style:italic">For Switchcom products sold by Switchcom, there will be no record eg no invoice, in the system.</p>
+		</div>
+	</div>
+	<div style="clear:both"></div>
+	<div style="float:left;padding-top:23px;">
+		<aploscc:address bean="#{ realizedProductReturn.returnAddress }" phone="true" mobile="true" fax="true" email="true" companyName="true" ecommerceFieldsRequired="true" />
+	</div>
+	<div style="float:left">
+		<table id="deliveryAddressTable">
+			<tr>
+				<td class="aplos-label" style="text-align:left;width:200px">Current Customer</td>
+			</tr>					
+			<tr>
+				<td class="aplos-field">#{ backingPage.addParenthesesIfNecessary( realizedProductReturn.serialNumber.currentCustomer.subscriber.firstName ) }</td>
+			</tr>
+			<tr>
+				<td class="aplos-field">#{ backingPage.addParenthesesIfNecessary( realizedProductReturn.serialNumber.currentCustomer.subscriber.surname ) }</td>
+			</tr>
+			<tr>
+				<td class="aplos-field">#{ backingPage.addParenthesesIfNecessary( backingPage.customerCompanyName ) }</td>
+			</tr>
+			<tr>
+				<td class="aplos-field">#{ backingPage.addParenthesesIfNecessary( realizedProductReturn.serialNumber.currentCustomer.determineShippingAddress.country ) }</td>
+			</tr>
+			<tr>
+				<td class="aplos-field">#{ backingPage.addParenthesesIfNecessary( realizedProductReturn.serialNumber.currentCustomer.determineShippingAddress.line1 ) }</td>
+			</tr>
+			<tr>
+				<td class="aplos-field">#{ backingPage.addParenthesesIfNecessary( realizedProductReturn.serialNumber.currentCustomer.determineShippingAddress.line2 ) }</td>
+			</tr>
+			<tr>
+				<td class="aplos-field">#{ backingPage.addParenthesesIfNecessary( realizedProductReturn.serialNumber.currentCustomer.determineShippingAddress.line3 ) }</td>
+			</tr>
+			<tr>
+				<td class="aplos-field">#{ backingPage.addParenthesesIfNecessary( realizedProductReturn.serialNumber.currentCustomer.determineShippingAddress.city ) }</td>
+			</tr>
+			<tr>
+				<td class="aplos-field">#{ backingPage.addParenthesesIfNecessary( realizedProductReturn.serialNumber.currentCustomer.determineShippingAddress.state ) }</td>
+			</tr>
+			<tr>
+				<td class="aplos-field">#{ backingPage.addParenthesesIfNecessary( realizedProductReturn.serialNumber.currentCustomer.determineShippingAddress.postcode ) }</td>
+			</tr>
+			<tr>
+				<td class="aplos-field">#{ backingPage.addParenthesesIfNecessary( realizedProductReturn.serialNumber.currentCustomer.determineShippingAddress.subscriber.emailAddress ) }</td>
+			</tr>
+			<tr>
+				<td class="aplos-field">#{ backingPage.addParenthesesIfNecessary( realizedProductReturn.serialNumber.currentCustomer.determineShippingAddress.phone ) }</td>
+			</tr>
+			<tr>
+				<td class="aplos-field">#{ backingPage.addParenthesesIfNecessary( realizedProductReturn.serialNumber.currentCustomer.determineShippingAddress.mobile ) }</td>
+			</tr>
+			<tr>
+				<td class="aplos-field">#{ backingPage.addParenthesesIfNecessary( realizedProductReturn.serialNumber.currentCustomer.determineShippingAddress.fax ) }</td>
+			</tr>
+		</table>
+	</div>
+</ui:composition>

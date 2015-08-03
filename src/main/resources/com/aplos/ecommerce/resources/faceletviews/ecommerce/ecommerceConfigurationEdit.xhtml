@@ -1,0 +1,264 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="editContent">
+		<style>
+			.editLabelColumn {
+				width : 140px;
+			}
+		</style>
+		<table class="aplos-form-table aplos-form-table-with-required">
+			<tr>
+				<td class="aplos-label formSubHeading">Shipping Settings</td>
+				<td></td>
+				<td class="aplos-field"></td>
+			</tr>
+			<tr>
+				<td class="aplos-label editLabelColumn">Additional shipping cost</td>
+				<td style="text-align:right">&#163;</td>
+				<td class="aplos-field" style="width:300px">
+					<h:inputText value="#{ ecommerceSettings.additionalShippingCost }" required="true"
+						validatorMessage="Please enter an additional shipping cost greater or equal to 0"
+						converterMessage="Please enter an additional shipping cost greater or equal to 0" >
+						<f:validateLongRange minimum="0" />
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label editLabelColumn">Additional shipping weight</td>
+				<td style="text-align:right"></td>
+				<td class="aplos-field" style="width:300px">
+					<h:inputText id="additonalShippingWeight" label="additional shipping weight" value="#{ ecommerceSettings.additionalShippingWeightPercentage }" required ="true" 
+						validatorMessage="Please enter an additional shipping weight between 0 and 100"
+						converterMessage="Please enter an additional shipping weight between 0 and 100" >
+						<f:validateLongRange minimum="0" maximum="100" />
+					</h:inputText>&#160;%
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Allow free postage</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.everythingFreeShipping }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Add packaging VAT</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.vatAddedToPackaging }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Allow out of stock product on order</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.outOfStockProductAllowedOnOrder }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Use packaged weight</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.usingPackagedWeight }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Show volumetric prices frontend</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.showingVolumetricPricesFrontend }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label formSubHeading">Payment settings</td>
+				<td></td>
+				<td class="aplos-field"></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Overseas admin charge</td>
+				<td style="text-align:right">&#163;</td>
+				<td class="aplos-field">
+					<h:inputText value="#{ ecommerceSettings.overseasAdminCharge }" 
+						validatorMessage="Please enter an overseas admin charge greater or equal to 0"
+						converterMessage="Please enter an overseas admin charge greater or equal to 0" >
+						<f:validateLongRange minimum="0" /> on bank transfers and cheques
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Credit card fee</td>
+				<td></td>
+				<td class="aplos-field">
+					<h:inputText value="#{ ecommerceSettings.creditCardFeePercentage }" 
+						validatorMessage="Please enter an credit card fee between to 0 and 100"
+						converterMessage="Please enter an credit card fee between 0 and 100" >
+						<f:validateLongRange minimum="0" maximum="100"/>
+					</h:inputText>&#160;%
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label formSubHeading">Email Settings</td>
+				<td></td>
+				<td class="aplos-field"></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Default transaction cc addresses</td>
+				<td></td>
+				<td class="aplos-field"><h:inputText value="#{ ecommerceSettings.defaultTransactionCcAddresses }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Default returns cc addresses</td>
+				<td></td>
+				<td class="aplos-field"><h:inputText value="#{ ecommerceSettings.defaultReturnsCcAddresses }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Send registration email</td>
+				<td></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.sendRegistrationEmails }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label formSubHeading">Product settings</td>
+				<td></td>
+				<td class="aplos-field"></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Group product list page items by colour</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.productListGroupByColour }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Using product colours</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.usingProductColours }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Using product sizes</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.usingProductSizes }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Using customer reference</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.usingCustomerReference }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Using serial numbers</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.usingSerialNumbers }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Using commodity code</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.usingCommodityCodes }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Using item codes</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.usingItemCodes }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Are kit items fixed</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.kitItemsFixed }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Using play com</td> 
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.usingPlayCom }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Using amazon</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.usingAmazon }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label formSubHeading">Payment settings</td>
+				<td></td>
+				<td class="aplos-field"></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Show VAT</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.showingVat }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Is out of stock transaction authorisation required</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.outOfStockTxnAuthRequired }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Default frontend payment method</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:selectOneMenu converter="aplosAbstractBeanConverter" value="#{ ecommerceConfiguration.defaultFrontendPaymentMethod }">
+						<f:selectItems value="#{ paymentMethod.selectItemBeansWithNotSelected }" />				
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label formSubHeading">System settings</td>
+				<td></td>
+				<td class="aplos-field"></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Is business to business</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.businessToBusiness }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Using store credits</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.usingStoreCredit }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Allow gift items</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.allowGiftItems }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Allow gift vouchers</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.allowGiftVouchers }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label formSubHeading">Misc</td>
+				<td></td>
+				<td class="aplos-field"></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Update customer addresses from transaction</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.updatingCustomerAddressesFromTransaction }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Is customer email confirmation required</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.customerEmailConfirmationRequired }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Is admin emailed on frontend order</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ ecommerceSettings.emailAlertAdminOnFrontendOrder }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Abandoned Order Timeout</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:inputText value="#{ ecommerceSettings.abandonedOrderAlertTimeout }" label="Abandoned order timeout">
+					<f:validateLongRange minimum="5" maximum="250000" />
+				</h:inputText> minutes</td>
+			</tr>
+			<tr>
+				<td class="aplos-label"></td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-description">
+					To be notified of abandoned orders, please make sure the admin has started the AbandonedOrderEmailerJob scheduled job in the context listener.
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+	
+	<ui:define name="editButtons">
+	<aploscc:controlPanel>
+		<f:facet name="upperRightControlPanel">
+		<aploscc:ajaxButton value="Apply" action="#{ backingPage.applyBtnAction }" />
+	</f:facet>
+	</aploscc:controlPanel>
+</ui:define>
+
+</ui:composition>

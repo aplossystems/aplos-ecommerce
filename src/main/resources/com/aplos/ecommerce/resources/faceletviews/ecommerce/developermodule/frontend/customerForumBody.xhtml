@@ -1,0 +1,79 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	<div class="aplos-forum-atom">
+		<h:outputScript library="jsLibraries" name="ckeditor/aplosckeditor.js" target="head" />
+		<h:outputScript library="scripts" name="ckEditorHelper.js" target="head" />
+		<script type="text/javascript">
+			$j(document).ready(function() {
+				ckEditorHelper.createLimitedToolbarCKEditors( '#{ request.contextPath }' );
+			}); 
+		</script>
+		<h:panelGroup rendered="#{customerForumFeDmb.currentThread == null and customerForumFeDmb.currentPost == null}" layout="none">
+			<h1 class="aplos-title">Forums</h1>
+			<!--# {customerForumFeDmb.forumUser.loggedIn}" -->		
+			<aploscc:wrappedDataTable2 idColHeader="Thread Id" dataTableState="#{ customerForumFeDmb.forumLazyDataModel.dataTableState }">
+				<p:column sortBy="#{ tableBean.name }" filterBy="#{ tableBean.name }">
+					<f:facet name="header">Discussion</f:facet>
+					<h:commandLink value="#{tableBean.topic}" action="#{customerForumFeDmb.forumLazyDataModel.selectBean}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">Last post</f:facet>
+					<h:outputText value="#{customerForumFeDmb.lastPostText}" escape="false" />
+				</p:column>
+			</aploscc:wrappedDataTable2>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{customerForumFeDmb.currentThread != null and customerForumFeDmb.currentPost == null}" layout="none">
+			<h3 class="aplos-title"><h:outputText value="#{customerForumFeDmb.currentThread.topic}" /></h3>
+			<ui:repeat value="#{customerForumFeDmb.currentThread.posts}" var="forumPost">
+				<h:panelGroup layout="none" rendered="#{ forumPost.active }">
+	      			<div class="aplos-forum-post">
+			      		<a name="#{forumPost.id}"></a>
+			      		<div class="aplos-forum-post-header">
+			      			<h1 class="aplos-title"><h:outputText value="#{ forumPost.poster.fullName }" /></h1>
+			      			<p class="aplos-forum-post-date"><h:outputText value="#{ customerForumFeDmb.datePostedStr }" /></p>
+			        	</div>
+			            <p class="aplos-forum-post-message"><h:outputText value="#{ forumPost.message }" escape="false" /></p>
+			        </div>
+		        </h:panelGroup>
+      		</ui:repeat>
+			<aploscc:ajaxButton action="#{customerForumFeDmb.cancelReadThread}" value="Back" />
+			<aploscc:ajaxButton action="#{customerForumFeDmb.addReply}" value="Reply" /> 
+		</h:panelGroup>
+		<h:panelGroup rendered="#{customerForumFeDmb.currentPost != null}" layout="none">
+			<h3 class="aplos-title"><h:outputText rendered="#{!customerForumFeDmb.currentThread.isNew()}" value="#{customerForumFeDmb.currentThread.topic}" /> New Post</h3>
+			<table class="aplos-form-table aplos-form-table-with-required">
+				<h:panelGroup layout="none" rendered="#{customerForumFeDmb.currentThread.isNew()}" >
+					<tr>
+						<td class="aplos-label">Discussion Topic</td>
+						<td class="aplos-required-asterisk">*</td>
+						<td class="aplos-field"><h:inputText required="#{customerForumFeDmb.validationRequired}" requiredMessage="You must a topic for your discussion"
+						value="#{customerForumFeDmb.currentThread.topic}" /></td>
+					</tr>
+				</h:panelGroup>
+				<tr>
+					<td class="aplos-label">Message</td>
+					<td class="aplos-required-asterisk">*</td>
+					<td class="aplos-field">
+						<h:inputTextarea styleClass="aplos_ckeditor" id="message" required="#{customerForumFeDmb.validationRequired}" requiredMessage="You must enter some text for your post" 
+						value="#{customerForumFeDmb.currentPost.message}" ></h:inputTextarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="aplos-label"></td>
+					<td class="aplos-required-asterisk"></td>
+					<td class="aplos-field">
+						<aploscc:ajaxButton id="submitForumPost" action="#{customerForumFeDmb.addPost}" value="Submit Post" />
+						<aploscc:ajaxButton action="#{customerForumFeDmb.cancelPost}" value="Cancel" />
+					</td>
+				</tr>
+			</table>
+			
+		</h:panelGroup>
+	</div>
+</ui:composition>

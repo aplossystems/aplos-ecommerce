@@ -1,0 +1,150 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<style>
+		.editLabelColumn {
+			width : 140px;
+		}
+	</style>
+	
+	<aplos:panel id="topBoxPanel">
+		
+		<table style="float:left;width:400px">
+			<tr>
+				<td class="aplos-label editLabelColumn">Returns #</td>
+				<td class="aplos-field">#{ realizedProductReturn.id }</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Returns date</td>
+				<td class="aplos-field">#{ realizedProductReturn.dateCreatedStdStr }</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Serial #</td>
+				<td class="aplos-field">
+					<aploscc:quickView text="#{ realizedProductReturn.serialNumber.id }" bean="#{ realizedProductReturn.serialNumber }" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Product name</td>
+				<td class="aplos-field">#{ realizedProductReturn.determineReturnProduct().productInfo.product.name }</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Part number</td>
+				<td class="aplos-field">
+					<aploscc:quickView text="#{ realizedProductReturn.determineReturnProduct().determineItemCode }" bean="#{ realizedProductReturn.determineReturnProduct() }" action="#{ teletestRealizedProductEditPage.redirectToPage( realizedProductReturn.determineReturnProduct() ) }" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Build date</td>
+				<td class="aplos-field">#{ realizedProductReturn.serialNumber.buildDate }</td>
+			</tr>
+		</table>
+			
+		<aplos:panel rendered="#{ realizedProductReturn.serialNumber.originalCustomer != null }" >
+			<table>
+				<tr>
+					<td class="aplos-label editLabelColumn">Original customer name</td>
+					<td class="aplos-field">
+						#{ realizedProductReturn.serialNumber.originalCustomer.displayName }&#160; 
+						<aploscc:quickView text="(#{ realizedProductReturn.serialNumber.originalCustomer.id })" bean="#{ realizedProductReturn.serialNumber.originalCustomer }" />
+					</td>
+				</tr>
+			</table>
+			
+			<aplos:panel rendered="#{ realizedProductReturn.customerACompanyContact }" >
+				<table>
+					<tr>
+						<td class="aplos-label editLabelColumn">Original company name</td>
+						<td class="aplos-field">
+							#{ realizedProductReturn.serialNumber.originalCustomer.company.companyName }&#160;  
+							<aploscc:quickView text="(#{ realizedProductReturn.serialNumber.originalCustomer.company.id })" bean="#{ realizedProductReturn.serialNumber.originalCustomer.company }" />
+						</td>
+					</tr>
+				</table>
+			</aplos:panel>
+		</aplos:panel>
+		
+		<aplos:panel autoUpdate="true">
+			<aplos:panel rendered="#{ realizedProductReturn.serialNumber.currentCustomer != null }">
+				<table>
+					<tr>
+						<td class="aplos-label editLabelColumn">Current customer name</td>
+						<td class="aplos-field">
+							#{ realizedProductReturn.serialNumber.currentCustomer.displayName }&#160;  
+							<aploscc:quickView text="(#{ realizedProductReturn.serialNumber.currentCustomer.id })" bean="#{ realizedProductReturn.serialNumber.currentCustomer }" />
+						</td>
+					</tr>
+				</table>
+				<aplos:panel rendered="#{ realizedProductReturn.endCustomerACompanyContact }">
+					<table>
+						<tr>
+							<td class="aplos-label editLabelColumn">Current customer's company name</td>
+							<td class="aplos-field">
+								#{ realizedProductReturn.serialNumber.currentCustomer.company.companyName }&#160;  
+								<aploscc:quickView text="(#{ realizedProductReturn.serialNumber.currentCustomer.company.id })" bean="#{ realizedProductReturn.serialNumber.currentCustomer.company }" />
+							</td>
+						</tr>
+					</table>
+				</aplos:panel>
+			</aplos:panel>
+		</aplos:panel>
+		<table>
+			<tr>
+				<td class="aplos-label editLabelColumn">Returns status</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{ realizedProductReturn.realizedProductReturnStatus }">
+						<f:selectItems value="#{ realizedProductReturnEditPage.realizedProductReturnStatusSelectItems }" />
+<p:ajax process="@form" event="change" listener="#{ realizedProductReturn.saveDetails() }" />   
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<aplos:panel rendered="#{ realizedProductReturnEditPage.showCreateReturnTransactionButton }">
+						<aploscc:ajaxButton value="Create return transaction" action="#{ realizedProductReturnEditPage.createReturnTransaction }" />
+					</aplos:panel>
+					<aplos:panel rendered="#{ not realizedProductReturnEditPage.showCreateReturnTransactionButton and not realizedProductReturn.isNew and realizedProductReturn.serialNumber != null }">
+						<aploscc:ajaxButton value="View associated return transaction" action="#{ realizedProductReturnEditPage.associatedReturnTransaction.redirectToEditPage }" />
+					</aplos:panel>
+				</td>
+			</tr>
+		</table>
+		<br style="clear:both;" />
+		<div style="padding-top:10px;width:100%">
+			<div style="float:left;padding-left:40px">
+				<div style="color: #2F4F4F;font-size: 11px;font-weight: bold;">Returns notes</div>
+				<h:inputTextarea value="#{ realizedProductReturn.returnsNotes }" style="width:280px;height:100px" />
+			</div>
+			<div style="float:left;padding-left:30px;">
+				<div style="color: #2F4F4F;font-size: 11px;font-weight: bold;">Printed/Sent stages</div>
+				<p:dataTable id="aplosEmailTable" value="#{ realizedProductReturn.sortedAplosEmailList }" var="aplosEmail" styleClass="listDatatable" style="max-width:520px;">
+					<p:column style="width:130px">
+						<f:facet name="header">Sent emails</f:facet>
+						<h:commandLink action="#{ aplosEmail.redirectToEditPage }"><h:outputText value="#{aplosEmail.emailTemplate.name}" /></h:commandLink>
+					</p:column>
+					<p:column style="width:280px">
+						<f:facet name="header">Pdf filename</f:facet>
+						<ui:repeat value="#{aplosEmail.saveableAttachments}" var="saveableAttachment">
+							<aploscc:quickView text="#{saveableAttachment.name}" bean="#{saveableAttachment}" action="#{ saveableAttachment.redirectToAplosUrl }" />
+							<aplos:panel display="none" rendered="#{ status.index lt aplosEmail.saveableAttachments.size() }"><br/></aplos:panel>
+						</ui:repeat>
+					</p:column>
+					<p:column style="width:80px">
+						<f:facet name="header">Emailed</f:facet>			
+						<aplos:standardDateTableCell value="#{ aplosEmail.emailSentDate }" />
+					</p:column>
+				</p:dataTable>
+			</div>
+		</div>
+	</aplos:panel>
+	<br style="clear:both;" />
+	<div style="margin-bottom:15px" />
+	<hr/>
+	<div style="margin-bottom:20px" />
+	
+</ui:composition>

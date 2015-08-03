@@ -1,0 +1,78 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+
+	<div class="theme-floatcontent">
+		<div class="theme-triple-rounded-box-top">
+			<div style="float:left;margin-left:10px;">Latest News</div>
+			<div style="float:right;margin-right:10px;">
+				<ui:repeat rowKeyVar="idx" id="newsEntriesControls" value="#{ newsFeDmb.entries }" varStatus="status">
+					<a href="#" id="circle_choice#{status.index}" onclick="return show_slide(#{status.index});">&#160;</a>
+				</ui:repeat>
+			</div>
+		</div>
+		<div class="theme-triple-rounded-box-content">
+			<aplos:panel rendered="#{ newsFeDmb.entries.size() > 0 }">
+				<ui:repeat rowKeyVar="idx" id="newsEntries" value="#{ newsFeDmb.entries }" var="entry" varStatus="status">
+					<div class="hidden_article" id="slide#{status.index}">
+						<h:commandButton image="#{ entry.initialImageDetails.getFullFileUrl(false) }&amp;maxWidth=710" action="#{ newsFeDmb.redirectToNewsEntry }" />
+					</div>
+				</ui:repeat>
+			</aplos:panel>	
+		</div>
+		<div class="theme-triple-rounded-box-bottom">&#160;</div>
+	</div>
+
+			   
+				    <script type="text/javascript">
+				    current_slide = 0;
+				    function show_slide(id) {
+				    	
+						for (i = 0; i &lt; #{ newsFeDmb.entries.size() }; i++) {
+							if (i != id) {
+								obj = fetch_object("slide" + i);
+								obj.className = "hidden_article";
+								obj = fetch_object("circle_choice" + i);
+								obj.className = "hidden_circle";
+							} else {
+								obj = fetch_object("slide" + i);
+								obj.className = "visible_article";
+								obj = fetch_object("circle_choice" + i);
+								if( obj != null ) {
+									obj.className = "visible_circle";
+								}
+							}
+					    } 
+					    current_slide = id;
+				    }
+	
+				    function auto_change() {
+				    	
+				         if (current_slide + 1 &gt;= #{ newsFeDmb.entries.size() }){
+				              show_slide(0);
+				         } else {
+				              show_slide(current_slide + 1);
+				         }
+				         setTimeout("auto_change()", 15000);
+				    }
+	
+				    function fetch_object(idname) {
+			
+					   if (document.getElementById) {
+				            return document.getElementById(idname);
+					   } else if (document.all) {
+				            return document.all[idname];
+					   } else if (document.layers) {
+				            return document.layers[idname];
+				       } else {
+							return null;
+					   }
+				    }
+
+			    	auto_change();
+			    </script>
+	
+</ui:composition>

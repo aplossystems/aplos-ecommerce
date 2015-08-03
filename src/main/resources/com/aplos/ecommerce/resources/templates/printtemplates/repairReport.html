@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Repair Report</title>
+<style type="text/css">
+	.font1 {
+		font-size:12px;
+	}
+	
+	.font2 {
+		font-size:15px;
+		font-family:Verdana, Geneva, sans-serif;
+	}
+	
+	.orderItemCell {
+		border: solid black 1px;
+		padding:4px;
+	}
+	
+	.orderItem {
+		font-family: Verdana, Arial, Helvetica, sans-serif; 
+		font-size: 12px;  
+		line-height:12px; 
+		margin:0px; 
+	}
+	
+	.mainTable td {
+		border-top: solid 3px;
+	}
+	
+	.noBorder td {
+		border: none;
+	}
+	
+	.titleTd{ 
+		text-align:right;
+		padding-right:10px;
+		font-weight:bold;
+	}
+</style>
+</head>
+
+<body>
+
+	<table style="max-width:505pt;min-width:505pt;width:505pt;max-height:742pt;min-height:742pt;height:742pt;">
+		<tr valign="top">
+			<td>
+				<div style="max-width:505pt;min-width:505pt;width:505pt;min-height:531pt;max-height:531pt;height:531pt;">
+					<table style="font-family: Verdana, Geneva, sans-serif ; font-size:12px;width:100%" cellspacing="0" cellpadding="0">
+						<tr>
+							<td width="20%" height="91"><img src="{TELETEST_LOGO}" /></td>    
+							<td style="text-align:right">
+								<p style="font-size:11px"><strong>{COMPANY_NAME}</strong><br />
+									{COMPANY_ADDRESS_1}, {COMPANY_ADDRESS_2}{COMPANY_ADDRESS_3}, {COMPANY_TOWN}, {COMPANY_COUNTY}, {COMPANY_POSTCODE}, UK<br />
+									<strong>Tel:</strong> {COMPANY_PHONE} <strong> Fax:</strong> {COMPANY_FAX}<br />
+									<strong>International:</strong> +44 {COMPANY_INTERNATIONAL_PHONE}<br />
+									<strong>Email:</strong> {COMPANY_EMAIL} <strong> Web:</strong> {COMPANY_WEB}<br />
+									<strong>VAT #:</strong> {COMPANY_VATNO}
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="font-weight:bold;font-size:25px">Repair Report</td>
+						</tr>
+					</table>
+					<br />	
+					<div style="height:449pt;max-height:449pt;min-height:449pt;">
+						<table class="mainTable" style="font-family: Verdana, Geneva, sans-serif ; font-size:10px ; border: solid black 3px ; border-collapse:collapse" width="100%" border="0" cellpadding="5">
+							<tr>
+								<td style="width:50%;text-transform:capitalize;font-size:12px">
+									{RETURNS_CONTACT_FULL_NAME}<br />
+									{RETURNS_ADDRESS}<br />
+									{RETURNS_COUNTRY}<br />
+								</td>
+								<td style="width:50%">
+									<table class="noBorder" style="margin:auto">
+									<tr>
+										<td class="titleTd">Returns #</td>
+										<td><b style="font-size:17px">{RETURNS_ID}</b></td>
+									</tr>
+									<tr>
+									<td class="titleTd">Report date</td>
+										<td><b style="font-size:17px">{REPORT_DATE}</b></td>
+									</tr>
+									<tr>
+										<td class="titleTd">Returns phone</td>
+										<td>{RETURNS_PHONE}</td>
+									</tr>
+									<tr>
+										<td class="titleTd">Returns mobile</td>
+										<td>{RETURNS_MOBILE}</td>
+									</tr>
+									<tr>
+										<td class="titleTd">Returns fax</td>
+										<td>{RETURNS_FAX}</td>
+									</tr>
+									<tr>
+										<td class="titleTd">Returns Email</td>
+										<td>{RETURNS_EMAIL}</td>
+									</tr>
+									<tr>
+										<td class="titleTd"></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td class="titleTd">Contact #</td>
+										<td>{CONTACT_ID}</td>
+									</tr>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td style="width:50%">
+									<b style="font-size:15px">Returned product details</b>
+									<table class="noBorder" style="margin-left:10px">
+										<tr>
+											<td class="titleTd">Serial #</td>
+											<td>{SERIAL_NUMBER}</td>
+										</tr>
+										<tr>
+											<td class="titleTd">Part #</td>
+											<td>{PART_NUMBER}</td>
+										</tr>
+										<tr>
+											<td class="titleTd">Version</td>
+											<td>{PRODUCT_VERSION}</td>
+										</tr>
+									</table>
+								</td>
+								<td style="width:50%;padding-left:35px">
+									<b style="font-size:15px">Original order details</b>
+									<table class="noBorder" style="margin-left:30px">
+										<tr>
+											<td class="titleTd">Order #</td>
+											<td>{ORDER_ID}</td>
+										</tr>
+										<tr>
+											<td class="titleTd">Transaction #</td>
+											<td>{TRANSACTION_ID}</td>
+										</tr>
+										<tr>
+											<td class="titleTd">Invoice date</td>
+											<td>{INVOICE_DATE}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2"><b style="font-size:15px">We have repaired your product:</b></td>
+							</tr>
+							<tr>
+								<td colspan="2" style="border:none">
+									<table class="noBorder">
+										<tr>
+											<td style="vertical-align:top;width:30%;font-weight:bold; padding-top:15px; font-size:12px">
+												a) The fault.<br />
+												<br />
+												b) How we think it happened.<br />
+												<br />
+												c) What we did to repair it.<br />
+												<br />
+												d) If the fault is under guarantee.<br />
+												<br />
+												e) How much we are charging.<br />
+												<br />
+												f) Date and initials of technician.<br />
+											</td>
+											<td style="height:200pt; border:solid 1px; vertical-align:top;padding:5px">
+												{REPAIR_REPORT_DETAILS}
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2" style="font-size:14px">
+									<p style="font-weight:bold; font-size:13px">What next?</p>
+									<p>a) If there is any outstanding payment, we would be grateful if you could contact us as soon as possible to settle the account. If applicable, the transaction number is: {RETURNS_ID}</p>
+									<p>b) Otherwise we will send the repaired product back to you as soon as possible.</p>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

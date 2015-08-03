@@ -1,0 +1,58 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+		<style type="text/css">
+			.helpText {
+				color:black;
+				font-size:10px;
+				font-weight:normal;
+				text-align:left;
+			}
+		</style>
+		<script type="text/javascript">
+			$j(document).ready(function() {
+				ckEditorHelper.createLimitedToolbarCKEditors( '#{ request.contextPath }', { width : "500px", height : "245px" } );
+			}); 
+		</script>
+
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:200px">Print/Send document</td>
+				<td>
+					<h:commandLink action="#{ backingPage.redirectToReturnsAuthorisationNotePrintSend }"><img src="#{request.contextPath}/images/download32.32.png" border="0"/></h:commandLink>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">
+					Returns Authorisation Note Details
+					<div class="helpText" style="padding-top:10px; font-style:italic">All:</div>
+					<div class="helpText">
+						a) Why is customer returning it?<br />
+						b) What is wrong with it?
+						<span style="padding-top:10px; font-style:italic"><br />If faulty:<br /></span>
+						c) How was it used when fault happened?<br />
+						d) How was it powered?<br />
+						e) Has modifications or repaired been attempted?
+						<span style="padding-top:10px; font-style:italic"><br />All:<br /></span>
+						f) Date &amp; initials of Teletest staff<br />
+					</div>
+					<div class="helpText">
+						<span style="padding-top:10px; font-style:italic"><br />Example:<br /></span>
+						a) Screen doesn't work.<br />
+						b) Was working fine for several months, then stopped.<br />
+						c) Power supply included.<br />
+						d) No.<br />
+						e) No.<br />
+						f) 29/06/2009 NR
+					</div>
+				</td>
+				<td class="aplos-field">
+					<h:inputTextarea id="returnsNoteTextarea" styleClass="aplos_ckeditor" value="#{ realizedProductReturn.returnsAuthorisationNoteDetails }"/>
+					<h:inputTextarea value="#{ realizedProductReturn.determineReturnsAuthorisationNoteAppendage }" style="width:506px; height:50px" />
+				</td>
+			</tr>
+		</table>
+</ui:composition>

@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	<div class="aplos-newsletter-signup-atom">
+		<h:form>
+			<p>
+				<h:outputText value="#{ newsletterSignupFeDmb.thankYouMessage }" />
+			</p>
+			<table class="aplos-form-table-with-required">
+				<tr>
+					<td class="aplos-label">First Name</td>
+					<td class="aplos-required-asterisk">*</td>
+					<td class="aplos-field"><h:inputText
+						value="#{ newsletterSignupFeDmb.subscriberSignup.firstName }"
+						style="width:230px; height:10px;" class="input_rev"
+						required="true" requiredMessage="Your first name is required."
+						validatorMessage="Your first name is too short.">
+						<f:validateLength minimum="1" />
+					</h:inputText></td>
+				</tr>
+				<tr>
+					<td class="aplos-label">Surname</td>
+					<td class="aplos-required-asterisk">*</td>
+					<td class="aplos-field"><h:inputText
+							value="#{ newsletterSignupFeDmb.subscriberSignup.surname }"
+							style="width:230px; height:10px;" class="input_rev"
+							required="true" validatorMessage="Your surname is too short."
+							requiredMessage="Your surname is required.">
+							<f:validateLength minimum="1" />
+						</h:inputText></td>
+					<td width="134" valign="middle">&#160;</td>
+				</tr>
+				<tr>
+					<td class="aplos-label">Email Address</td>
+					<td class="aplos-required-asterisk">*</td>
+					<td class="aplos-field"><h:inputText
+							value="#{ newsletterSignupFeDmb.subscriberSignup.emailAddress }"
+							style="width:230px; height:10px;" class="input_rev"
+							required="true"
+							validatorMessage="Your email address is too short."
+							requiredMessage="Your email address is required.">
+							<f:validateLength minimum="5" />
+						</h:inputText></td>
+				</tr>
+				<tr>
+				<td class="aplos-label aplos-required-fields-note">
+				<span class="aplos-required-asterisk">*</span> required fields
+			</td><td></td>
+				
+					<td class="aplos-field">
+						<aploscc:ajaxButton value="Signup"
+							action="#{ newsletterSignupFeDmb.signupSubscriber }" />
+					</td>				
+				</tr>
+			</table>			
+		</h:form>
+	</div>
+</ui:composition>

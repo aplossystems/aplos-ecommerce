@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+xmlns:p="http://primefaces.org/ui">
+	<div id="customer-section"><aplos:panel id="shipping">
+		<h:panelGroup rendered="#{customer.duplicateAddresses.ordinal() != 0}">
+			<div class="central">
+			<table class="upper">
+				<tr>
+					<h:panelGroup rendered="#{customerShippingFeDmb.companyUser}">
+						<td style="width: 295px;">
+							<h:panelGroup id="companyaddress">
+								<aploscc:address validation="#{customerShippingFeDmb.validationRequired}" disabled="#{!customer.usingCompanyAddressForShipping}" style="float:left;" title="Company Address" bean="#{customerShippingFeDmb.companyShippingAddress}" phone="required" ecommerceFieldsRequired="true" />
+							</h:panelGroup>
+						</td>
+						<td style="width: 25px; display: block;">&#160;</td>
+					</h:panelGroup>
+					<td style="width: 295px;"><h:panelGroup id="personaladdress">
+						<aploscc:address validation="#{customerShippingFeDmb.validationRequired}" disabled="#{customerShippingFeDmb.customerUsingCompanyAddressForShipping or (customer.duplicateAddresses.ordinal() == 0)}" style="float:left;" title="My Address" bean="#{customerShippingFeDmb.shippingAddress}" phone="required" ecommerceFieldsRequired="true" />
+					</h:panelGroup></td>
+				</tr>
+			</table>
+			</div>
+			<hr />
+			<div class="central">
+			<table style="text-align: left; width: 600px;">
+				<tr>
+					<td><aplos:panel
+						rendered="#{ ecommerceUtil.isCustomerACompanyContact( customer ) }">
+						<br />
+						<h:selectOneRadio
+							value="#{customerShippingFeDmb.customerUsingCompanyAddressForShipping}"
+							id="is_company_address_used">
+							<f:selectItems
+								value="#{customerShippingFeDmb.companyAddressOptions}" />
+<p:ajax process="@form" event="change" update="companyaddress personaladdress addressSwitch" />
+						</h:selectOneRadio>
+					</aplos:panel></td>
+				</tr>
+				<tr>
+					<td><br />
+					<aploscc:ajaxButton id="saveBtn"
+						action="#{customerShippingFeDmb.saveChanges}" value="Save Changes" />
+					</td>
+				</tr>
+			</table>
+			</div>
+		</h:panelGroup>
+	</aplos:panel> <h:panelGroup id="addressSwitch">
+		<aplos:panel
+			rendered="#{ !customerShippingFeDmb.customerUsingCompanyAddressForShipping and !(customer.duplicateAddresses.ordinal() == 1) }">
+			<hr />
+			<h:selectBooleanCheckbox
+				value="#{ customerShippingFeDmb.usingBillingAddressForShipping }">
+<p:ajax process="@form" event="click" update="shipping" listener="#{ customerShippingFeDmb.usingBillingAddressForShippingChanged() }" />
+			</h:selectBooleanCheckbox>
+			use billing address
+		</aplos:panel>
+	</h:panelGroup>
+	
+		<br/><br/>
+		<div class="aplos-required-fields-note"><span class="aplos-required-asterisk">*</span> required fields</div>
+	</div>
+
+</ui:composition>

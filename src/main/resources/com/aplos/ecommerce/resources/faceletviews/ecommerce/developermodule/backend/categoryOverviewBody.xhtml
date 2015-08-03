@@ -1,0 +1,13 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	
+	Select the brand for this page to display<hr/>
+	<h:selectOneListbox size="1" converter="aplosAbstractBeanConverter" value="#{categoryOverviewModule.productBrand}">
+		<f:selectItems value="#{categoryOverviewBeDmb.brandSelectItems}" />  
+	</h:selectOneListbox>
+
+</ui:composition>

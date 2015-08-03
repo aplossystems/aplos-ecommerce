@@ -1,0 +1,339 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	<h:outputStylesheet library="jsLibraries" name="jquery-ui-1.8/themes/base/jquery.ui.base.css" target="head" />
+			<h:outputStylesheet library="jsLibraries" name="jquery-ui-1.8/themes/base/jquery.ui.theme.css" target="head" />
+	<h:outputScript library="jsLibraries" name="prettyphoto/js/jquery.prettyPhoto.js" target="head" />
+	<h:outputStylesheet library="jsLibraries" name="prettyphoto/css/prettyPhoto.css" target="head" />
+	<h:outputScript library="jsLibraries" name="cloudzoom/cloud-zoom_aplos.js" target="head" />
+	<h:outputStylesheet library="jsLibraries" name="cloudzoom/cloud-zoom.css" target="head" />
+    <script type="text/javascript">
+      $j(document).ready(function(){
+          $j("#aplos-tabs").tabs({ cookie: { expires: 2, name: 'individual-product-details' } });
+          $j('.aplos-expander').hover(function(){
+        	  var lst = $j(this).find('dl');
+        	  lst.hide();
+        	  lst.css('opacity',1);
+     		  lst.css('height','145px');
+        	  lst.fadeIn();
+          },function(){
+        	  var lst = $j(this).find('dl');
+        	  lst.animate({
+       		    opacity: 0,
+       		    height: 0
+       		  }, 350, function() {
+       		    lst.hide();
+       		    lst.css('opacity',1);
+       		    lst.css('height','145px');
+       		  });
+          });
+
+			$j("a[rel^='emailFriendPrettyPhoto']").prettyPhoto({
+				keyboard_shortcuts: false			
+			});
+
+			$j("a[rel^='sizeChartPrettyPhoto']").prettyPhoto({
+				keyboard_shortcuts: false				
+			});
+			
+			
+			
+          $j(".aplos-ecommerce-qty-grid").delegate('td','mouseover mouseleave', function(e) {
+          	if ($j(this).index() > 0) {
+                  if (e.type == 'mouseover') {
+                    $j(this).parent().addClass("aplos-hover");
+                    $j(this).parent().parent().parent().find('thead tr th:nth-child(' + ($j(this).index()+1) + ')').addClass("aplos-hover");
+                  } else {
+                    $j(this).parent().removeClass("aplos-hover");
+                    $j(this).parent().parent().parent().find('.aplos-hover').removeClass("aplos-hover");
+                  }
+          	}
+          });
+      });
+	      
+    </script>
+    
+	<div class="aplos-individual-product">
+		<aplos:panel id="imagecell">
+	    	<div class="aplos-product-images-container">
+		    	<a href="#{singleProductFeDmb.fullLargeImageUrl}" class="cloud-zoom aplos-main-product-image-container" id="zoom1" rel="adjustX: 10, zoomHeight: 415, zoomWidth: 459">
+		            <img class="aplos-main-product-image" alt="#{singleProductFeDmb.currentRealizedProduct.productInfo.product.name}" src="#{singleProductFeDmb.fullLargeImageUrl}&amp;maxWidth=308&amp;maxHeight=421" title="#{singleProductFeDmb.currentRealizedProduct.productInfo.product.name}" />
+		        	<div class="aplos-caption">
+						Rollover to zoom 
+					</div>
+		        </a>
+		        <!-- thumbs shouldnt show if the only thumb is the main image  -->
+		        <h:panelGroup rendered="#{singleProductFeDmb.currentRealizedProduct.detailImageList.size() > 1}" layout="block" class="aplos-product-thumbnails-container">
+		        	<div class="aplos-caption">
+						<img src="#{request.contextPath}/images/zoom.png" alt="View larger" />
+						View larger
+					</div>
+					<ui:repeat value="#{singleProductFeDmb.currentRealizedProduct.detailImageList}" var="imageDetails">
+						<a href="#{imageDetails.getFullFileUrl(true)}"
+	          					class='cloud-zoom-gallery aplos-product-thumbnail'
+	          					rel="useZoom: 'zoom1', smallImage: '#{imageDetails.getFullFileUrl(true)}&amp;maxWidth=308&amp;maxHeight=421' ">
+	       					<img src="#{imageDetails.getFullFileUrl(true)}&amp;maxWidth=82&amp;maxHeight=74" alt="#{singleProductFeDmb.currentRealizedProduct.productInfo.product.name}"/>
+	       				</a>
+	       			</ui:repeat>
+	          	</h:panelGroup>
+	          	<br style="clear:both" />
+	    	</div>
+		</aplos:panel>
+		<div class="aplos-product-details-container">
+			<div id="aplos-tabs" class="aplos-product-tabs-container">
+				<ul>
+					<li><a href="#aplos-tabs-product">Product</a></li>
+					<li><a href="#aplos-tabs-details">Details</a></li>
+				</ul>
+				<div id="aplos-tabs-product">
+					<h1 class="aplos-title">#{singleProductFeDmb.currentRealizedProduct.productInfo.product.name}<h:outputText value=" (#{singleProductFeDmb.currentRealizedProduct.productInfo.product.productBrand.name})" rendered="#{singleProductFeDmb.currentRealizedProduct.productInfo.product.productBrand != null}" /></h1>
+					<span class="aplos-price">
+						 <aplos:panel autoUpdate="true" rendered="#{singleProductFeDmb.currentRealizedProduct.hasCrossoutPrice}">
+				        	<span class="aplos-crossout"><h:outputText value="#{currency.prefix}#{singleProductFeDmb.currentRealizedProduct.convertedDeterminedCrossoutPriceStr}#{currency.suffix}" /></span>
+				        </aplos:panel>
+						#{currency.prefix}#{singleProductFeDmb.currentRealizedProduct.convertedDeterminedPriceStr}#{currency.suffix}
+					</span>
+					<div class="aplos-details" style="margin-top:10px">
+						<h:outputText escape="false" value="#{singleProductFeDmb.currentRealizedProduct.productInfo.longDescription}" />
+					</div><br/>
+					<div style="clear:both" />
+					<div>
+						<a href="#{request.contextPath}/email-a-friend.aplos?iframe=true" rel="emailFriendPrettyPhoto" class="aplos-command-button aplosBtnAnchor" title="#{ singleProductFeDmb.currentRealizedProduct.displayName }">
+							<span class="aplos-command-button-right">
+								<span class="aplos-command-button-left">
+									<span class="aplos-command-button-middle">
+										<span class="aplos-first-letter-uppercase">#{ contextListener.translate( 'EMAIL_SHARE_FRIENDS' ) }</span>
+									</span>
+								</span>
+							</span>
+						</a>
+					</div>
+				</div>
+				<div id="aplos-tabs-details">
+					<h1 class="aplos-title">#{singleProductFeDmb.currentRealizedProduct.productInfo.product.name}<h:outputText value=" (#{singleProductFeDmb.currentRealizedProduct.productInfo.product.productBrand.name})" rendered="#{singleProductFeDmb.currentRealizedProduct.productInfo.product.productBrand != null}" /></h1>
+					<span class="aplos-price">
+						 <aplos:panel autoUpdate="true" rendered="#{singleProductFeDmb.currentRealizedProduct.hasCrossoutPrice}">
+				        	<span class="aplos-crossout"><h:outputText value="#{currency.prefix}#{singleProductFeDmb.currentRealizedProduct.convertedDeterminedCrossoutPriceStr}#{currency.suffix}" /></span>
+				        </aplos:panel>
+						#{currency.prefix}#{singleProductFeDmb.currentRealizedProduct.convertedDeterminedPriceStr}#{currency.suffix}
+					</span>
+					<ul>
+						<ui:repeat value="#{singleProductFeDmb.currentRealizedProduct.productInfo.bulletPointList}" var="bullet">
+							<li><h:outputText value="#{bullet}" /></li>
+						</ui:repeat>
+					</ul>
+				</div>
+			</div>
+			<div style="min-height:30px;height:30px">
+				<div style="float:left">
+					<ul class="aplos-add-this" style="list-style:none">
+						<li><a class="addthis_button_delicious"></a></li>
+						<li><a class="addthis_button_reddit"></a></li>
+						<li><a class="addthis_button_stumbleupon"></a></li>
+						<li><a class="addthis_button_digg"></a></li>
+						<li><a class="addthis_button_blinklist"></a></li>
+						<li><a class="addthis_button_tweet"></a></li>	
+						<li><a id="fb_ns_fix" class="addthis_button_facebook_like"></a></li>	
+						<li><a class="addthis_button_google_plusone"></a></li>	 
+					</ul>
+					<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4eb2aa7b0515b683"></script>
+				</div>
+				<div style="float:right;">
+					<a href="#{request.contextPath}/size-chart.aplos?rpid=#{ singleProductFeDmb.currentRealizedProduct.id }&amp;iframe=true&amp;height=200" rel="sizeChartPrettyPhoto" class="aplosBtnAnchor" title=" ">
+						<span style="font-size:18px;font-weight:normal">SIZE CHART</span>
+					</a>
+				</div>
+			</div>
+			<div class="aplos-product-grid-container">
+				<h:panelGroup rendered="#{singleProductFeDmb.realizedProductList.size() &gt; 1 or singleProductFeDmb.currentRealizedProduct.productInfo.kitItem}">
+					To buy this item click boxes on the grid below and then click Add to bag<br/>
+				</h:panelGroup>
+				<aplos:panel rendered="#{!singleProductFeDmb.currentRealizedProduct.productInfo.kitItem and !singleProductFeDmb.currentRealizedProduct.giftVoucher}" autoUpdate="true">
+					<ui:repeat value="#{singleProductFeDmb.tablePages}" var="tablePage">
+						<table class="aplos-ecommerce-qty-grid">
+		                   	<thead>
+		                    	<tr>
+		                    		<th>&#160;</th>
+		                    		<ui:repeat value="#{singleProductFeDmb.paginatedSizeList}" var="size">
+		                    			<th>#{size.name}</th>
+		                    		</ui:repeat>
+		                    	</tr>
+		                    </thead>
+		                    <tbody>      
+		                    	<ui:repeat id="productGrid" value="#{singleProductFeDmb.colourList}" var="colour">
+		                    		<h:panelGroup rendered="#{singleProductFeDmb.sizesWithNoCategoriesExist}">
+			                    		<tr>
+				                    		<!--# {colour.name}</td> -->
+				                    		<td>
+				                    			<a onclick="javascript:return false;" href="#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}"
+						           					class='cloud-zoom-hover' title="#{colour.name}"
+						           					rel="useZoom: 'zoom1', smallImage: '#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}&amp;maxWidth=308&amp;maxHeight=421' ">
+						        					<img class="aplos-spacer" src="#{singleProductFeDmb.productForColour.getImageDetailsByKey('SWATCH_IMAGE').getFullFileUrl(true)}&amp;maxWidth=22&amp;maxHeight=18" alt="#{colour.name}"/>
+						        				</a>
+				                    		</td>
+				                    		<ui:repeat value="#{singleProductFeDmb.paginatedSizeList}" var="size">
+				                    			<td>
+				                    				<h:commandLink title="#{singleProductFeDmb.swatchTooltip}" styleClass="cloud-zoom-hover aplos-value #{singleProductFeDmb.gridStyleClass}" 
+				                    					rendered="#{singleProductFeDmb.gridRealizedProduct != null and singleProductFeDmb.activeCategoriesCount &lt; 1 and singleProductFeDmb.gridRealizedProduct.quantity &gt; 0}" reRender="productGrid,addToHandButtons" action="#{singleProductFeDmb.toggleInHand}">
+				                    					<img src="#{request.contextPath}/images/tick.png" alt="" href="#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}" class='cloud-zoom-hover' rel="useZoom: 'zoom1', smallImage: '#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}&amp;maxWidth=308&amp;maxHeight=421'" />
+				                    				</h:commandLink>
+				                    				<h:commandLink title="#{singleProductFeDmb.swatchTooltip}" styleClass="cloud-zoom-hover aplos-value #{singleProductFeDmb.gridStyleClass}" 
+				                    					rendered="#{singleProductFeDmb.gridRealizedProduct != null and singleProductFeDmb.activeCategoriesCount &lt; 1 and singleProductFeDmb.gridRealizedProduct.quantity == 0 and singleProductFeDmb.gridRealizedProduct.stockAvailableFromDate != null}" reRender="productGrid,addToHandButtons" action="#{singleProductFeDmb.toggleInHand}">
+				                    					<h:outputText value="#{singleProductFeDmb.gridRealizedProduct.weeksUntilStock}" />
+				                    				</h:commandLink>
+				                    				<h:panelGroup layout="block" styleClass="aplos-value aplos-out-of-stock" 
+				                    					rendered="#{singleProductFeDmb.gridRealizedProduct != null and singleProductFeDmb.activeCategoriesCount == 0 and singleProductFeDmb.gridRealizedProduct.quantity == 0 and singleProductFeDmb.gridRealizedProduct.stockAvailableFromDate == null}"><img title="#{singleProductFeDmb.swatchTooltip}" style="margin-top:1px;" src="#{request.contextPath}/images/cross.png" alt="" href="#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}" class='cloud-zoom-hover' rel="useZoom: 'zoom1', smallImage: '#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}&amp;maxWidth=308&amp;maxHeight=421'" /></h:panelGroup>
+				                    				<h:panelGroup layout="block" styleClass="aplos-spacer aplos-not-stocked" 
+				                    					rendered="#{singleProductFeDmb.gridRealizedProduct == null or singleProductFeDmb.gridRealizedProduct.quantity &lt; 0 or singleProductFeDmb.activeCategoriesCount &gt; 0}">&#160;</h:panelGroup>
+				                    			</td>
+				                    		</ui:repeat>
+				                    	</tr>    
+			                    	</h:panelGroup>   
+			                    	<h:panelGroup rendered="#{singleProductFeDmb.categoryList.size() &gt; 0}">
+			                    		<ui:repeat value="#{singleProductFeDmb.categoryList}" var="category">
+			                    			<tr>
+					                    		<!--# {category.suffix})</td> -->
+					                    		<td>
+					                    			<a onclick="javascript:return false;" style="background-image:url('#{singleProductFeDmb.productForColour.getImageDetailsByKey('SWATCH_IMAGE').getFullFileUrl(true)}&amp;maxWidth=22&amp;maxHeight=20');" href="#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}"
+							           					class='aplos-swatch cloud-zoom-hover' title="#{colour.name}, #{category.name}"
+							           					rel="useZoom: 'zoom1', smallImage: '#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}&amp;maxWidth=308&amp;maxHeight=421' ">
+							        					#{category.suffix}
+							        				</a>
+					                    		</td>
+					                    		<ui:repeat value="#{singleProductFeDmb.paginatedSizeList}" var="size">
+					                    			<td>
+					                    				<h:commandLink title="#{singleProductFeDmb.swatchTooltip}" styleClass="aplos-value #{singleProductFeDmb.gridStyleClass}" 
+					                    					rendered="#{singleProductFeDmb.gridRealizedProduct != null and singleProductFeDmb.activeCategoriesCount &gt; 0 and singleProductFeDmb.gridRealizedProduct.quantity &gt; 0}" reRender="productGrid,addToHandButtons" action="#{singleProductFeDmb.toggleInHand}">
+					                    					<img src="#{request.contextPath}/images/tick.png" alt="" href="#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}" class='cloud-zoom-hover' rel="useZoom: 'zoom1', smallImage: '#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}&amp;maxWidth=308&amp;maxHeight=421'" />
+					                    				</h:commandLink>
+					                    				<h:commandLink title="#{singleProductFeDmb.swatchTooltip}" styleClass="aplos-value #{singleProductFeDmb.gridStyleClass}" 
+					                    					rendered="#{singleProductFeDmb.gridRealizedProduct != null and singleProductFeDmb.activeCategoriesCount &gt; 0 and singleProductFeDmb.gridRealizedProduct.quantity == 0 and singleProductFeDmb.gridRealizedProduct.stockAvailableFromDate != null}" reRender="productGrid,addToHandButtons" action="#{singleProductFeDmb.toggleInHand}">
+					                    					<h:outputText value="#{singleProductFeDmb.gridRealizedProduct.weeksUntilStock}" />
+					                    				</h:commandLink>
+					                    				<h:panelGroup layout="block" styleClass="aplos-value aplos-out-of-stock" 
+					                    					rendered="#{singleProductFeDmb.gridRealizedProduct != null and singleProductFeDmb.activeCategoriesCount &gt; 0 and singleProductFeDmb.gridRealizedProduct.quantity == 0 and singleProductFeDmb.gridRealizedProduct.stockAvailableFromDate == null}"><img title="#{singleProductFeDmb.swatchTooltip}" style="margin-top:1px;" src="#{request.contextPath}/images/cross.png" alt="" href="#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}" class='cloud-zoom-hover' rel="useZoom: 'zoom1', smallImage: '#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}&amp;maxWidth=308&amp;maxHeight=421'" /></h:panelGroup>
+					                    				<h:panelGroup layout="block" styleClass="aplos-spacer aplos-not-stocked" 
+					                    					rendered="#{singleProductFeDmb.gridRealizedProduct == null or singleProductFeDmb.gridRealizedProduct.quantity &lt; 0 or singleProductFeDmb.activeCategoriesCount &lt; 1}">&#160;</h:panelGroup>
+					                    			</td>
+					                    		</ui:repeat>
+					                    	</tr>   
+			                    		</ui:repeat>
+			                    	</h:panelGroup>    
+		                    	</ui:repeat>
+		                   	</tbody>
+		                </table>
+
+			        </ui:repeat>
+	            </aplos:panel>
+	            <!-- display kit item grids instead of parent grid -->
+	            <aplos:panel id="kitItemGrids" rendered="#{singleProductFeDmb.currentRealizedProduct.productInfo.kitItem}">
+		            <ui:repeat var="kitItem" value="#{singleProductFeDmb.currentRealizedProduct.productInfo.includedProducts}">
+	               		<h4>#{kitItem.realizedProductRetriever.retrieveRealizedProduct(singleProductFeBmb.currentRealizedProduct).productInfo.product.displayName} (<h:commandLink styleClass="aplos-kit-item-link" action="#{singleProductFeDmb.goToKitItem}" value="buy individually for #{currency.prefix}#{kitItem.realizedProductRetriever.retrieveRealizedProduct(null).convertedPriceStr}#{currency.suffix}" />)</h4>
+	               		<table class="aplos-ecommerce-qty-grid">
+		                   	<thead>
+		                    	<tr>
+		                    		<th>&#160;</th>
+		                    		<ui:repeat value="#{singleProductFeDmb.kitItemSizeList}" var="size">
+		                    			<th>#{size.name}</th>
+		                    		</ui:repeat>
+		                    		<!-- If these aren't here then the kit Item sizes with no categories will not render correctly after the first item on the page is selected -->
+				                    #{ singleProductFeDmb.removeCategoryFromRequest() }
+				                    #{ singleProductFeDmb.removeSizeFromRequest() }
+		                    	</tr>
+		                    </thead>
+		                    <tbody>                 
+		                    	<ui:repeat id="kitProductGrid" value="#{singleProductFeDmb.kitItemColourList}" var="colour" >
+		                    		<h:panelGroup rendered="#{singleProductFeDmb.kitItemSizesWithNoCategoriesExist}">
+			                    		<tr>
+				                    		<td>
+				                    			<a onclick="javascript:return false;" href="#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}"
+						           					class='cloud-zoom-hover' title="#{colour.name}"
+						           					rel="useZoom: 'zoom1', smallImage: '#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}&amp;maxWidth=308&amp;maxHeight=421' ">
+						        					<img class="aplos-spacer" src="#{singleProductFeDmb.productForColour.getImageDetailsByKey('SWATCH_IMAGE').getFullFileUrl(true)}&amp;maxWidth=20&amp;maxHeight=16" alt="#{colour.name}"/>
+						        				</a>
+				                    		</td>
+				                    		<ui:repeat value="#{singleProductFeDmb.kitItemSizeList}" var="size">
+				                    			<td>
+				                    				<h:commandLink title="#{singleProductFeDmb.swatchTooltip}" styleClass="cloud-zoom-hover aplos-value #{singleProductFeDmb.gridStyleClass}" 
+				                    					rendered="#{singleProductFeDmb.gridRealizedProduct != null and singleProductFeDmb.activeCategoriesCount &lt; 1 and singleProductFeDmb.gridRealizedProduct.quantity &gt; 0}" reRender="kitItemGrids,addToHandButtons" action="#{singleProductFeDmb.toggleInHand}">
+				                    					<img src="#{request.contextPath}/images/tick.png" alt="" href="#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}" class='cloud-zoom-hover' rel="useZoom: 'zoom1', smallImage: '#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}&amp;maxWidth=308&amp;maxHeight=421'" />
+				                    				</h:commandLink>
+				                    				<h:commandLink title="#{singleProductFeDmb.swatchTooltip}" styleClass="cloud-zoom-hover aplos-value #{singleProductFeDmb.gridStyleClass}" 
+				                    					rendered="#{singleProductFeDmb.gridRealizedProduct != null and singleProductFeDmb.activeCategoriesCount &lt; 1 and singleProductFeDmb.gridRealizedProduct.quantity == 0 and singleProductFeDmb.gridRealizedProduct.stockAvailableFromDate != null}" reRender="kitItemGrids,addToHandButtons" action="#{singleProductFeDmb.toggleInHand}">
+				                    					<h:outputText value="#{singleProductFeDmb.gridRealizedProduct.weeksUntilStock}" />
+				                    				</h:commandLink>
+				                    				<h:panelGroup layout="block" styleClass="aplos-value aplos-out-of-stock" 
+				                    					rendered="#{singleProductFeDmb.gridRealizedProduct != null and singleProductFeDmb.activeCategoriesCount &lt; 1 and singleProductFeDmb.gridRealizedProduct.quantity == 0 and singleProductFeDmb.gridRealizedProduct.stockAvailableFromDate == null}"><img title="#{singleProductFeDmb.swatchTooltip}" style="margin-top:1px;" src="#{request.contextPath}/images/cross.png" alt="" href="#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}" class='cloud-zoom-hover' rel="useZoom: 'zoom1', smallImage: '#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}&amp;maxWidth=308&amp;maxHeight=421'" /></h:panelGroup>
+				                    				<h:panelGroup layout="block" styleClass="aplos-spacer aplos-not-stocked" 
+				                    					rendered="#{singleProductFeDmb.gridRealizedProduct == null or singleProductFeDmb.gridRealizedProduct.quantity &lt; 0 or singleProductFeDmb.activeCategoriesCount &gt; 0}">&#160;</h:panelGroup>
+				                    			</td>
+				                    		</ui:repeat>
+				                    	</tr>    
+			                    	</h:panelGroup>   
+			                    	<h:panelGroup rendered="#{singleProductFeDmb.kitItemCategoryList.size() &gt; 0}">
+			                    		<ui:repeat value="#{singleProductFeDmb.kitItemCategoryList}" var="category">
+			                    			<tr>
+					                    		<td>
+					                    			<a onclick="javascript:return false;" style="background-image:url('#{singleProductFeDmb.productForColour.getImageDetailsByKey('SWATCH_IMAGE').getFullFileUrl(true)}&amp;maxWidth=22&amp;maxHeight=20');" href="#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}"
+							           					class='aplos-swatch cloud-zoom-hover' title="#{colour.name}, #{category.name}"
+							           					rel="useZoom: 'zoom1', smallImage: '#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}&amp;maxWidth=308&amp;maxHeight=421' ">
+							        					#{category.suffix}
+							        				</a>
+					                    		</td>
+					                    		<ui:repeat value="#{singleProductFeDmb.kitItemSizeList}" var="size">
+					                    			<td>
+					                    				<h:commandLink title="#{singleProductFeDmb.swatchTooltip}" styleClass="cloud-zoom-hover aplos-value #{singleProductFeDmb.gridStyleClass}" 
+					                    					rendered="#{singleProductFeDmb.gridRealizedProduct != null and singleProductFeDmb.activeCategoriesCount &gt; 0 and singleProductFeDmb.gridRealizedProduct.quantity &gt; 0}" reRender="kitItemGrids,addToHandButtons" action="#{singleProductFeDmb.toggleInHand}">
+					                    					<img src="#{request.contextPath}/images/tick.png" alt="" href="#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}" class='cloud-zoom-hover' rel="useZoom: 'zoom1', smallImage: '#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}&amp;maxWidth=308&amp;maxHeight=421'" />
+					                    				</h:commandLink>
+					                    				<h:commandLink title="#{singleProductFeDmb.swatchTooltip}" styleClass="cloud-zoom-hover aplos-value #{singleProductFeDmb.gridStyleClass}" 
+					                    					rendered="#{singleProductFeDmb.gridRealizedProduct != null and singleProductFeDmb.activeCategoriesCount &gt; 0 and singleProductFeDmb.gridRealizedProduct.quantity == 0 and singleProductFeDmb.gridRealizedProduct.stockAvailableFromDate != null}" reRender="kitItemGrids,addToHandButtons" action="#{singleProductFeDmb.toggleInHand}">
+					                    					<h:outputText value="#{singleProductFeDmb.gridRealizedProduct.weeksUntilStock}" />
+					                    				</h:commandLink>
+					                    				<h:panelGroup layout="block" styleClass="aplos-value aplos-out-of-stock" 
+					                    					rendered="#{singleProductFeDmb.gridRealizedProduct != null and singleProductFeDmb.activeCategoriesCount &gt; 0 and singleProductFeDmb.gridRealizedProduct.quantity == 0 and singleProductFeDmb.gridRealizedProduct.stockAvailableFromDate == null}"><img title="#{singleProductFeDmb.swatchTooltip}" style="margin-top:1px;" src="#{request.contextPath}/images/cross.png" alt="" href="#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}" class='cloud-zoom-hover' rel="useZoom: 'zoom1', smallImage: '#{singleProductFeDmb.productForColour.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}&amp;maxWidth=308&amp;maxHeight=421'" /></h:panelGroup>
+					                    				<h:panelGroup layout="block" styleClass="aplos-spacer aplos-not-stocked" 
+					                    					rendered="#{singleProductFeDmb.gridRealizedProduct == null or singleProductFeDmb.gridRealizedProduct.quantity &lt; 0 or singleProductFeDmb.activeCategoriesCount &lt; 1}">&#160;</h:panelGroup>
+					                    			</td>
+					                    		</ui:repeat>
+					                    	</tr>
+			                    		</ui:repeat>
+			                    	</h:panelGroup>    
+		                    	</ui:repeat>
+		                   	</tbody>
+		                </table>
+	               	</ui:repeat>
+               	</aplos:panel>
+                <h:panelGroup layout="none" rendered="#{!singleProductFeDmb.currentRealizedProduct.giftVoucher}">
+					<br style="clear:both;"/>
+					<div style="float:left;left:-8px;padding-top:10px;position:relative;top:29px">
+						<a class="aplos-grid-key aplos-expander" href="javascript:void(0);">
+							<span>Key to grid</span>
+							<dl>
+								<dt class="aplos-active"><img src="#{request.contextPath}/images/tick.png" alt="" title="" /></dt><dd>Selected item</dd>
+								<dt class="aplos-in-stock"><img src="#{request.contextPath}/images/tick.png" alt="" title="" /></dt><dd>In stock</dd>
+								<dt class="aplos-low-stock"><img src="#{request.contextPath}/images/tick.png" alt="" title="" /></dt><dd>Low stock</dd>
+								<dt class="aplos-wait-period">3</dt><dd>No. of weeks wait</dd>
+								<dt class="aplos-out-of-stock"><img src="#{request.contextPath}/images/cross.png" alt="" title="" /></dt><dd>Out of stock</dd>
+								<dt class="aplos-not-stocked">&#160;</dt><dd>Not Manufactured</dd>
+							</dl>
+						</a>
+					</div>
+				</h:panelGroup>
+				<h:panelGroup id="addToHandButtons" layout="block" class="aplos-buttons">
+					<div style="float:left;padding-right:5px">
+						<aploscc:ajaxButton id="addToCartBtn" disabled="#{singleProductFeDmb.isAddToBagDisabled}" value="Add to bag" action="#{ singleProductFeDmb.addHandToCart }" />
+					</div>
+					<aploscc:ajaxButton id="goToCheckoutBtn" disabled="#{cartFeDmb.isGoToCheckoutDisabled}" value="Go to checkout" action="#{ singleProductFeDmb.goToCheckout }" />
+				</h:panelGroup><br style="clear:both;"/>
+			</div>
+		</div>
+    </div>  	
+
+</ui:composition>

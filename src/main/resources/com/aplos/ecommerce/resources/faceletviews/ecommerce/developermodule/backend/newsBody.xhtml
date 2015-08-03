@@ -1,0 +1,33 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	<table style="width:100%">
+		<tr>
+			<td>Show the recent articles list</td>
+			<td>
+				<h:selectBooleanCheckbox value="#{newsBeDmb.newsAtom.includeRecentPostsMenu}" />
+			</td>
+		</tr>
+		<tr>
+			<td>Show the recent articles title</td>
+			<td>
+				<h:selectBooleanCheckbox value="#{newsBeDmb.newsAtom.includeRecentPostsTitle}" />
+			</td>
+		</tr>
+		<tr>
+			<td>Show the archived articles controls</td>
+			<td>
+				<h:selectBooleanCheckbox value="#{newsBeDmb.newsAtom.includeArchivedPostsMenu}" />
+			</td>
+		</tr>
+		<tr>
+			<td>Show the archived articles title</td>
+			<td>
+				<h:selectBooleanCheckbox value="#{newsBeDmb.newsAtom.includeArchivedPostsTitle}" />
+			</td>
+		</tr>
+	</table>
+</ui:composition>

@@ -1,0 +1,27 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label">Currency Symbol</td>
+				<td class="aplos-field"><h:inputText value="#{currency.symbol}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Conversion rate to GBP</td>
+				<td class="aplos-field"><h:inputText value="#{currency.baseRate}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Prefix</td>
+				<td class="aplos-field"><h:inputText value="#{currency.prefix}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Suffix</td>
+				<td class="aplos-field"><h:inputText escape="true" value="#{currency.suffix}" /></td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>

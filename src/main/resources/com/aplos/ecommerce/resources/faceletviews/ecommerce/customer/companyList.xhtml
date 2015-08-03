@@ -1,0 +1,49 @@
+
+<ui:composition template="#{ themeManager.listTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="listContent">
+		<div style="position:absolute;margin-left:270px;margin-top:6px">
+			Show only:&#160;
+			<h:selectOneMenu value="#{ backingPage.dataTableState.lazyDataModel.currentlyShowingCompanyType }" converter="aplosAbstractBeanConverter">
+				<f:selectItems value="#{ companyType.selectItemBeansWithNotSelected }" />				
+				<p:ajax process="@form" event="change" update=":listForm:wrappedDataTable:mojarraBugFixPnl" />
+			</h:selectOneMenu>
+		</div>
+		<aploscc:wrappedDataTable2 id="wrappedDataTable" dataTableState="#{ backingPage.dataTableState }">
+			<p:column>
+				<f:facet name="header"></f:facet>
+				<h:commandButton action="#{ backingPage.dataTableState.lazyDataModel.goToOverview }" image="/images/application.gif"></h:commandButton>
+			</p:column>
+			<p:column sortBy="#{ bean.companyName }" filterBy="#{ bean.companyName }">
+				<f:facet name="header">Company name</f:facet>
+				#{tableBean.companyName}
+			</p:column>
+			<p:column style="text-align:center;">
+				<f:facet name="header">Orders</f:facet>
+				#{tableBean.transientOrderCount}
+			</p:column>
+			<p:column sortBy="#{ address.line1 }" filterBy="#{ address.line1 }">
+				<f:facet name="header">Address</f:facet>
+				#{tableBean.determineShippingAddress().line1}
+			</p:column>
+			<p:column sortBy="#{ address.country.name }" filterBy="#{ address.country.name }">
+				<f:facet name="header">Country</f:facet>
+				#{tableBean.determineShippingAddress().country.name}
+			</p:column>
+			<p:column sortBy="#{ address.postcode }" filterBy="#{ address.postcode }">
+				<f:facet name="header">Postcode</f:facet>
+				#{tableBean.determineShippingAddress().postcode}
+			</p:column>
+			<p:column sortBy="#{ address.phone }" filterBy="#{ address.phone }">
+				<f:facet name="header">#{ contextListener.translate( 'PHONE' ) }</f:facet>
+				#{tableBean.determineShippingAddress().phone}
+			</p:column>
+		</aploscc:wrappedDataTable2>
+	</ui:define>
+</ui:composition>

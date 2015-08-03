@@ -1,0 +1,42 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	<div id="products_container">
+      <div id="products_menu">
+        <h1>PRODUCTS</h1>
+        <!-- SIDE MENU -->
+        <div class="arrowlistmenu" style="padding-top:5px;">
+          <div class="line_products_menu"> </div>
+          <h3 class="menuheader"><img src="links/product_arrow.gif" alt="More" /> 
+          	<h:commandLink class="amenu" action="#{categoryOverviewFeDmb.viewCollection}">&#160;VIEW THE COLLECTION</h:commandLink>
+          </h3>
+          <div class="line_products_menu"> </div>
+          <p>NEED HELP? CALL 01590 610074</p>
+       		<div class="line_products_menu"> </div>
+        </div>
+        <!-- SIDE MENU END -->
+      </div>
+      <div id="products">
+        <h1>#{categoryOverviewModule.productBrand.name}</h1>
+        <div class="line_products"> </div>
+        <div id="landing_page_content">
+          <table width="596" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px; margin-bottom:10px;">
+            <tr>
+              <td>
+              	<h:commandLink class="amenu" action="#{categoryOverviewFeDmb.viewCollection}">
+              		<img src="#{categoryOverviewModule.productBrand.fullImageUrl}&amp;maxWidth=500&amp;maxHeight=300" />
+              	</h:commandLink>
+              </td>
+            </tr>
+          </table>
+          <p><h:outputText value="#{categoryOverviewModule.productBrand.description}" escape="false"/></p>
+        </div>
+        <div class="line_products"> </div>
+      </div>
+      <div class="space"> </div>
+    </div>
+	
+</ui:composition>

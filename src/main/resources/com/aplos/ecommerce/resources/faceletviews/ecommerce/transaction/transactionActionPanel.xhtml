@@ -1,0 +1,98 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<style>
+		.ccEditLabelColumn {
+		 	width: 140px;
+		}
+	</style>
+	<aplos:panel id="paymentPanel" rendered="#{ not transaction.isNew and not transaction.isCancelled }">	
+		<aplos:panel rendered="#{ transaction.isStatusNew }">
+			<table class="aplos-form-table-with-required">
+				<tr>
+					<td class="aplos-label ccEditLabelColumn">Payment method</td>
+					<td class="aplos-required-asterisk"></td>
+					<td class="aplos-field">
+						<h:selectOneMenu value="#{ transaction.paymentMethod }" converter="aplosAbstractBeanConverter">
+							<f:selectItems value="#{ backingPage.paymentMethodSelectItems }" />
+							<p:ajax process="@form" event="change" listener="#{ transaction.paymentMethodChanged() }" update="itemTable paymentPanel adminChargeText itemTableTotalPanel" />
+						</h:selectOneMenu>
+					</td>
+				</tr>
+			</table>
+		</aplos:panel>
+		<aplos:panel rendered="#{ transaction.showingCardDetails }" >
+         	<aploscc:creditCardEntry creditCardDetails="#{transaction.creditCardDetails}" 
+       								 storedCreditCardDetails="#{transaction.customer.creditCardDetails}"
+			                         usingStoredCreditCardDetails="#{transaction.usingStoredCreditCardDetails}" 
+					                 validationRequired="#{ checkoutPaymentFeDmb.paymentMethodValidationRequired }"
+					                 rememberCreditCardDetails="#{transaction.ecommerceShoppingCart.customer.rememberCreditCardDetails}"
+					                 creditCardEntryListener="#{ checkoutPaymentFeDmb.creditCardEntryListener }" />
+			<aplos:panel rendered="#{ transaction.showingCardDetails }">
+				<div style="padding:5px 0px">
+					<aploscc:ajaxButton id="paymentRequiredBtn" ajaxEnabled="true" reRender="paymentPanel,printSendPanel, editableContentPanel" value="Mark as payment required" action="#{ backingPage.markAsPaymentRequired }"  />
+					<aploscc:ajaxButton id="onlinePaymentBtn" value="Take payment online" ajaxEnabled="true" reRender="paymentPanel,printSendPanel,invoiceNumberPanel, editableContentPanel" action="#{ backingPage.takePaymentOnline }" />
+				</div>
+			</aplos:panel>
+		</aplos:panel>
+		<aplos:panel  rendered="#{ transaction.isPaymentRequired or transaction.showingCardDetails }" >
+			<table class="aplos-form-table-with-required">
+				<tr>
+					<td class="aplos-label ccEditLabelColumn">Authorisation code</td>
+					<td class="aplos-required-asterisk">*</td>
+					<td class="aplos-field"><h:inputText
+						value="#{ transaction.authorisationCode }"
+						required="#{ backingPage.authorisationCodeRequired }"
+						requiredMessage="Please enter an authorisation code." /></td>
+				</tr>
+			</table>
+		</aplos:panel>
+		<aplos:panel  rendered="#{ transaction.isPaymentRequired }" >
+			<div style="padding:5px 0px">
+				<aploscc:ajaxButton id="processPaymentBtn" value="Payment processed" ajaxEnabled="true" reRender="paymentPanel,printSendPanel,invoiceNumberPanel, editableContentPanel" action="#{ backingPage.markAsAcknowledged }" />
+				<aploscc:ajaxButton id="onlinePaymentBtn2" value="Take payment online" ajaxEnabled="true" reRender="paymentPanel,printSendPanel,invoiceNumberPanel, editableContentPanel" action="#{ backingPage.takePaymentOnline }" />
+			</div>
+		</aplos:panel>
+		
+		<aplos:panel rendered="#{ transaction.isStatusNew }" >
+			<div style="padding:5px 0px 0px">
+				<aploscc:ajaxButton id="acknowledgeBtn" value="Acknowledge" ajaxEnabled="true" reRender="paymentPanel printSendPanel invoiceNumberPanel editableContentPanel itemTable itemTableTotalPanel" action="#{ backingPage.markAsAcknowledged }" />
+				<aploscc:ajaxButton id="reevaluateVatBtn" value="Re-evaluate VAT" ajaxEnabled="true" reRender="paymentPanel printSendPanel invoiceNumberPanel editableContentPanel itemTable itemTableTotalPanel" action="#{ transaction.updateVatExemption( true ) }" />
+			</div>
+		</aplos:panel>
+		
+		<aplos:panel rendered="#{ transaction.isAcknowledged }">
+			<aploscc:ajaxButton value="Book out" action="#{ backingPage.redirectToBookOutPage }" />
+		</aplos:panel>
+		
+		<aplos:panel rendered="#{ transaction.isBookedOut }">
+			<aploscc:ajaxButton value="Mark as dispatched" action="#{ backingPage.markAsAwaitingDispatch }"/>
+		</aplos:panel>
+		
+		<aplos:panel rendered="#{ transaction.isAwaitingDispatch }">
+			Tracking number:&#160;<h:inputText value="#{ transaction.trackingNumber }" />
+			<aplos:aplosSmallBorder>
+				<h:commandLink value="Validate" action="#{ backingPage.trackingNumberEntered }" style="color:black" />
+			</aplos:aplosSmallBorder>
+		</aplos:panel>
+		
+		<aplos:panel rendered="#{ transaction.isOnLoan }">
+			<aploscc:ajaxButton value="Mark as returned" action="#{ backingPage.markAsReturned }" />
+		</aplos:panel>
+	</aplos:panel>		
+	
+	<aplos:panel autoUpdate="true">
+		<aplos:panel rendered="#{ not transaction.isNew and (transaction.isCancelled or transaction.incomplete) }">
+			<aplos:panel rendered="#{ transaction.isCancelled or transaction.incomplete }">
+				<aploscc:ajaxButton value="Mark as new" action="#{ backingPage.markAsNew }"/>
+			</aplos:panel>
+		</aplos:panel>
+	</aplos:panel>
+	
+</ui:composition>	

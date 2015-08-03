@@ -1,0 +1,211 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="editContent">
+		<style type="text/css">
+			.bigBox {
+				width:500px;
+				height:150px;
+			}
+			
+			.editLabelCell {
+				width : 140px;
+			}
+			
+			table.aplos-form-table .aplos-field {
+			 	width : 300px;
+			}
+		</style>
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label editLabelCell">Photo</td>
+				<td class="aplos-field"><img src="#{ serialNumber.realizedProduct.defaultImageDetails.getFullFileUrl(true) }&amp;maxWidth=250&amp;maxHeight=250" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Serial number</td>
+				<td class="aplos-field"><h:outputText value="#{serialNumber.id}" /></td>
+			</tr>
+		</table>
+		<aplos:panel id="partNumberPanel">
+			<aplos:panel rendered="#{ !backingPage.showingItemCodeSearch }">
+				<table class="aplos-form-table">
+					<tr>
+						<td class="aplos-label editLabelCell">Part Number</td>
+						<td class="aplos-field">
+							<aploscc:quickView text="#{serialNumber.realizedProduct.determineItemCode}" action="#{ teletestRealizedProductEditPage.redirectToPage(serialNumber.realizedProduct) }" bean="#{serialNumber.realizedProduct}" />
+							<aploscc:ajaxButton value="Update product" action="#{ backingPage.showItemSearch }" reRender="partNumberPanel" /> 
+						</td>
+					</tr>
+				</table>
+			</aplos:panel>
+			<aplos:panel rendered="#{ backingPage.showingItemCodeSearch }">
+				<table class="aplos-form-table">
+					<tr>
+						<td class="aplos-label editLabelCell">Part Number</td>
+						<td class="aplos-field">
+							<aplos:autoComplete id="productAc" value="#{backingPage.selectedRealizedProductListBean}"   
+			                    completeMethod="#{backingPage.suggestProductsByItemCode}" var="autoBean" itemValue="#{autoBean}" itemLabel="#{ backingPage.getItemCodeDisplayText( autoBean ) }" converter="autoCompleteBeanConverter">
+			                   <p:ajax process="@form" event="itemSelect" listener="#{backingPage.setRealizedProductFromItemCode}" update="productAc, partDescription, partNumberPanel, serialNumberHistoryTxt"/>  
+			                </aplos:autoComplete>
+						</td>
+					</tr>
+				</table>
+			</aplos:panel>
+		</aplos:panel>
+		<table>
+			<tr class="aplos-form-table">
+				<td class="aplos-label editLabelCell">Part description</td>
+				<td class="aplos-field"><h:outputText id="partDescription" value="#{serialNumber.realizedProduct.displayName}" /></td>
+			</tr>
+		</table>
+		<aplos:panel rendered="#{ backingPage.serialIsPartOfKit or backingPage.serialIsKit }">
+			<table class="aplos-form-table">
+				<tr>
+					<td class="aplos-label editLabelCell">Kit&#160;<h:outputText value="Contents" rendered="#{ backingPage.serialIsKit }" /></td>
+					<td class="aplos-field">
+						<h:panelGroup rendered="#{ backingPage.serialIsPartOfKit }">
+						
+							<!-- <h:commandLink value="# { backingPage.associatedKit.id }" action="# { backingPage.associatedKit.redirectToEditPage() }" class="stdLink" />-->
+							<aploscc:quickView bean="#{backingPage.associatedKit}" text="#{ backingPage.associatedKit.id }" action="#{ backingPage.associatedKit.redirectToEditPage() }" />
+						
+						</h:panelGroup>
+						<ui:repeat rendered="#{ backingPage.serialIsKit }" var="kitItem" value="#{ backingPage.kitContentsList }">
+	
+							<!-- <h:commandLink value="# { kitItem.realizedProduct.itemCode }" action="# { backingPage.redirectToProductEdit }" class="stdLink" />-->
+							<aploscc:quickView text="#{ kitItem.realizedProduct.itemCode }" bean="#{ kitItem.realizedProduct }" action="#{ backingPage.redirectToProductEdit() }" />
+							
+							<!-- <h:commandLink value="# { kitItem.id }" action="# { kitItem.redirectToEditPage() }" class="stdLink" />-->
+							&#160;(&#160;<aploscc:quickView text="#{ kitItem.id }" bean="#{ kitItem }" action="#{ kitItem.redirectToEditPage() }" />&#160;)
+							
+							<br/>
+						</ui:repeat>
+					</td>
+				</tr>
+			</table>
+		</aplos:panel>
+		<aplos:panel rendered="#{ backingPage.associatedTransaction != null }">
+			<table class="aplos-form-table">
+				<tr>
+					<td class="aplos-label editLabelCell">Transaction</td>
+					<td class="aplos-field">
+						<aploscc:quickView bean="#{ backingPage.associatedTransaction }" text="#{ backingPage.associatedTransaction.id }" action="#{  backingPage.redirectToTransactionEdit() }" />					
+					</td>
+				</tr>
+			</table>
+		</aplos:panel>
+		
+		<aplos:panel id="customerPanel">
+			<aplos:panel rendered="#{ !backingPage.showingCustomerSearch }">
+				<table class="aplos-form-table">
+					<tr>
+						<td class="aplos-label editLabelCell">Current Customer</td>
+						<td class="aplos-field">
+							<h:outputText rendered="#{ serialNumber.currentCustomer == null }" value="None" />
+							<aploscc:quickView rendered="#{ serialNumber.currentCustomer != null }" bean="#{ serialNumber.currentCustomer }" />
+							<aploscc:ajaxButton value="Update customer" action="#{ backingPage.showCustomerSearch }" reRender="customerPanel" />					
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label editLabelCell">Customer History</td>
+						<td class="aplos-field">
+							<h:outputText rendered="#{serialNumber.customerHistory == null or serialNumber.customerHistory.size() == 0}" value="None" />
+							<aplos:panel rendered="#{serialNumber.customerHistory != null and serialNumber.customerHistory.size() &gt; 0}">
+								<table>
+									<ui:repeat var="history" value="#{serialNumber.sortedCustomerHistory}">
+										<tr><td><aplos:standardDateTableCell value="#{ history.dateCreated }" /></td><td><aploscc:quickView bean="#{ history.customer }" /></td></tr>
+									</ui:repeat>
+								</table>
+							</aplos:panel>				
+						</td>
+					</tr>
+				</table>
+			</aplos:panel>
+			<aplos:panel rendered="#{ backingPage.showingCustomerSearch }">
+				<table class="aplos-form-table">
+					<tr>
+						<td class="aplos-label editLabelCell">Current Customer</td>
+						<td class="aplos-field">
+							<aplos:autoComplete id="endCustomerAc" value="#{backingPage.selectedCurrentCustomer}"   
+			                    completeMethod="#{backingPage.suggestCustomers}" var="autoBean" itemValue="#{autoBean}" itemLabel="#{ backingPage.getCustomerDisplayStr( autoBean ) }" converter="autoCompleteBeanConverter">
+			                   <p:ajax process="@form" event="itemSelect" listener="#{backingPage.setCurrentCustomer}" update="customerPanel"/>  
+			                </aplos:autoComplete>					
+						</td>
+					</tr>
+				</table>
+			</aplos:panel>
+		</aplos:panel>
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label editLabelCell">Return</td>
+				<td class="aplos-field">
+					<h:commandLink action="#{backingPage.createReturnAndRedirect(serialNumber)}" value="Create new return" rendered="#{ serialNumber.serialNumberOwner != null }" class="stdLink" />
+					<ui:repeat value="#{ backingPage.getOptimisedReturns(serialNumber) }" var="realizedProductReturn">
+						<br/>
+						<!-- <h:commandLink action="# { realizedProductReturnEditPage.redirectToPage( realizedProductReturn ) }" value="Return (# { realizedProductReturn.id })" class="stdLink" />-->
+						<aploscc:quickView  bean="#{realizedProductReturn}" text="Return (#{ realizedProductReturn.id })" action="#{ realizedProductReturnEditPage.redirectToPage( realizedProductReturn ) }" />
+					</ui:repeat>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Version</td>
+				<td class="aplos-field">
+					<h:selectOneListbox size="1" id="productVersionList" value="#{serialNumber.productVersion}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{ backingPage.productVersionSelectItemBeans }" />   
+					</h:selectOneListbox>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label"><aplos:panel rendered="#{ not (serialNumber.productVersion == null) }" value="Version details" /></td>
+				<td class="aplos-field"><h:inputTextarea rendered="#{ not (serialNumber.productVersion == null) }" value="#{serialNumber.productVersion.details}" styleClass="bigBox" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Build date</td>
+				<td class="aplos-field"><h:outputText value="#{serialNumber.buildDate}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Build notes</td>
+				<td class="aplos-field"><h:inputTextarea value="#{serialNumber.buildNotes}" styleClass="bigBox" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">OEM serial number</td>
+				<td class="aplos-field"><h:inputText value="#{serialNumber.oemSerialNumber}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Technical history</td>
+				<td class="aplos-field"><h:inputTextarea value="#{serialNumber.technicalHistory}" styleClass="bigBox" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Serial number history</td>
+				<td class="aplos-field"><h:inputTextarea id="serialNumberHistoryTxt" value="#{serialNumber.serialNumberHistory}" class="bigBox" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Add to waste</td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ serialNumber.addedToWaste }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Is reassigned?</td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{ serialNumber.reassigned }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Comments</td>
+				<td class="aplos-field"><h:inputTextarea value="#{serialNumber.comments}" class="bigBox" /></td>
+			</tr>
+		</table>
+	</ui:define>
+	<ui:define name="editButtons">
+	<aploscc:controlPanel>
+		<f:facet name="upperRightControlPanel">
+			<aploscc:smallBorder rendered="#{ serialNumber.realizedProduct != null }">
+				<h:commandLink id="printPackagingLabel" value="Print packaging label" action="#{ backingPage.printPackagingLabel }" target="_blank" style="color:black" />
+			</aploscc:smallBorder>
+			<aploscc:editButtons />
+		</f:facet>
+	</aploscc:controlPanel>
+</ui:define>
+</ui:composition>

@@ -1,0 +1,38 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	<h1>Wishlist</h1>
+    <div class="line_products"> </div>
+    <div id="payment_page_content">
+    	<span style="color:darkred;"><p:messages infoClass="message-info" errorClass="message-error" fatalClass="message-fatal" /></span>
+            <ui:repeat value="#{ customer.wishList }" var="wlItem">
+            	<table width="596" border="0" cellspacing="3" cellpadding="0" style="margin-top:10px;">
+            	  <tr>
+	                <td valign="top"><p><strong>ITEM</strong></p></td>
+	                <td valign="top"><p><strong>DESCRIPTION</strong></p></td>
+	                <td valign="top"><p><strong>COLOUR</strong></p></td>
+	                <td valign="top"><p><strong>SIZE</strong></p></td>
+	                <td valign="top"><p><strong>PRICE</strong></p></td>
+	              </tr>
+	              <tr>
+	              	<td colspan="5"><div class="line_products"> </div></td>
+	              </tr>
+	              <tr>
+	                <td rowspan="2" valign="top"><img src="#{wlItem.defaultImageDetails.getFullFileUrl(true)}&amp;maxWidth=100&amp;maxHeight=150" alt="Thumb" /></td>
+	                <td valign="top"><p style="margin-right:15px;">#{wlItem.productInfo.shortDescription}</p></td>
+	                <td valign="top"><p>#{wlItem.productColour.name}</p></td>
+	                <td valign="top"><p>#{wlItem.productSize.name}</p></td>
+	                <td valign="top"><p>#{currency.prefix}#{wlItem.convertedPriceStr}#{currency.suffix}</p></td>
+	              </tr>
+	              <tr>
+	                <td colspan="4" valign="bottom"><h:commandButton id="addToCartBtn" action="#{ customerWishlistFeDmb.addToCart }" styleClass="stdBtnCommand" reRender="cartBtn" image="/links/add_to_shopping_bag.gif"></h:commandButton></td>
+	              </tr>
+	            </table>
+            </ui:repeat>  
+            <h:outputText escape="false" rendered="#{customer.wishListEmpty}" value="&lt;em&gt;Your wishlist is empty.&lt;/em&gt;" />
+    </div>	
+</ui:composition>

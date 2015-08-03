@@ -1,0 +1,47 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	<h:panelGroup layout="block" id="cartAtom">
+		<!-- layout (above) has to be block or increasing quantities will redraw the cart.
+		this div has to be kept seperate, the way jsf works, if we don't have it it will wrap
+		 the cart image and 'items in cart' area and break the layout -->
+		<div class="aplos-checkout aplos-checkout-cart">
+	        <img class="aplos-cart-logo" src="#{request.contextPath}/images/theme/cart.png" id="theme-basket-logo" />
+	        <h4 class="aplos-cart-summary">
+	        	Items&#160;in&#160;#{ecommerceConfiguration.cartDisplayName}:&#160;<h:outputText value="#{shoppingCart.numberOfItems}" style="font-weight:normal" />
+	        	<h:panelGroup rendered="#{!commonConfiguration.moduleConfiguration.vatInclusive}">
+	        		&#160;&#160;Prices exclude VAT
+	        	</h:panelGroup>
+	        </h4>
+	        <ui:include src="/ecommerce/cartTable.xhtml" />
+	        <table style="margin-top:0" class="aplos-cart-list">
+	         	<tfoot>
+	         		<tr>
+	         			<td class="aplos-align-right">
+	         				<aploscc:ajaxButton styleClass="aplos-go-to-checkout-button" disabled="#{cartFeDmb.isGoToCheckoutDisabled}" action="#{cartFeDmb.goToCheckoutCurrentUserAware}" value="Checkout" />
+	         				<h:commandLink action="#{cartFeDmb.goToCheckoutCurrentUserAware(true)}" rendered="#{ cartFeDmb.payPalExpressAvailable }" >
+	         					<img src="http://cms.paypal.com/cms_content/GB/en_GB/images/developer/US_AU_btn.gif"/>
+	         				</h:commandLink>
+	         			</td>
+	         		</tr>
+	         	</tfoot>   	
+	        </table><br/><br/>
+		</div>
+		
+		<ui:insert name="belowCart">
+		</ui:insert>
+	</h:panelGroup>
+</ui:composition>
+
+
+
+
+
+
+
+
+

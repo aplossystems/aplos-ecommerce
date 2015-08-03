@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	<div id="customer-section aplos-customer-details">
+	<table class="aplos-form-table aplos-form-table-with-required">
+		<tr>
+			<td class="aplos-label aplos-first-letter-uppercase">#{ contextListener.translate('CUSTOMER_ID') }</td>
+			<td class="aplos-required-asterisk"></td>
+			<td class="aplos-field"><h:outputText value="#{ customer.id }" /></td>
+		</tr>
+		<tr>
+			<td class="aplos-label">First name</td>
+			<td class="aplos-required-asterisk">*</td>
+			<td class="aplos-field"><h:inputText
+				value="#{ customer.shippingAddress.contactFirstName }"
+				required="true" label="First name" /></td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Surname</td>
+			<td class="aplos-required-asterisk">*</td>
+			<td class="aplos-field"><h:inputText
+				value="#{ customer.shippingAddress.contactSurname }" required="true"
+				label="Surname" /></td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Email</td>
+			<td class="aplos-required-asterisk"></td>
+			<td class="aplos-field"><h:inputText
+				value="#{ customer.subscriber.emailAddress }" 
+				disabled="true" /></td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Room no</td>
+			<td></td>
+			<td class="aplos-field"><h:inputText value="#{ customer.roomNo }" /></td>
+		</tr>
+		<tr>
+			<td class="aplos-label">#{ contextListener.translate( 'CUSTOMER_SHIPPING_PHONE' ) }</td>
+			<td class="aplos-required-asterisk">*</td>
+			<td class="aplos-field"><h:inputText
+				value="#{ customer.shippingAddress.phone }" required="true"
+				label="Telephone 1" /></td>
+		</tr>
+		<tr>
+			<td class="aplos-label">#{ contextListener.translate( 'CUSTOMER_SHIPPING_PHONE_2' ) }</td>
+			<td></td>
+			<td class="aplos-field"><h:inputText
+				value="#{ customer.shippingAddress.phone2 }" /></td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Fax</td>
+			<td></td>
+			<td class="aplos-field"><h:inputText
+				value="#{ customer.shippingAddress.fax }" /></td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Position</td>
+			<td></td>
+			<td class="aplos-field"><h:inputText
+				value="#{ customer.position }" /></td>
+		</tr>
+	</table>
+	</div>
+</ui:composition>

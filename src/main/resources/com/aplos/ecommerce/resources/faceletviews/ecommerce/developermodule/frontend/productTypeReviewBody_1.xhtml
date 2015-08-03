@@ -1,0 +1,75 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+xmlns:p="http://primefaces.org/ui">
+	
+	<aplos:panel rendered="#{ productTypeReviewCmsAtom.sortedProductTypeReviews.size() gt 1 }" style="padding-top:2px" layout="block">
+		<ui:repeat value="#{ productTypeReviewCmsAtom.sortedProductTypeReviews }" var="productTypeReview">
+	        <h:commandLink action="#{ productTypeReviewFeDmb.productTypeSelected }" styleClass="theme-narrow-box-link">
+				<div class="theme-narrow-floatcontent">
+		          	<div class="theme-narrow-rounded-box-top">
+		            	#{productTypeReview.productType.displayName}
+		          	</div>
+		          	<div class="theme-narrow-rounded-box-content narrow-fixed-height-box-content">
+		          		<h:graphicImage url="#{productTypeReview.productType.getFullSmallPhotoUrl(false)}&amp;maxWidth=150&amp;maxHeight=160" alt="#{productTypeReview.productType.displayName}" />
+		          	</div>
+		        	<div class="theme-narrow-rounded-box-bottom">&#160;</div>
+	        	</div>
+		    </h:commandLink>
+		</ui:repeat>
+	</aplos:panel>
+	<div style="clear:both" />
+	<aplos:panel id="productTypeReviewPanel" autoUpdate="true">
+		<aplos:panel id="customerReviewList" rendered="#{ productTypeReviewFeDmb.selectedProductType != null }" >
+			<div style="float:right;padding-bottom:10px;padding-right:20px">
+				Sort By: <h:selectOneMenu value="#{ productTypeReviewFeDmb.customerReviewSortType }" converter="aplosAbstractBeanConverter">
+					<f:selectItems value="#{ customerReview.sortTypeSelectItems }" />
+<p:ajax process="@form" event="change" update="productTypeReviewPanel" />
+				</h:selectOneMenu><br />
+			</div>
+			<div style="clear:both"/>
+			<ui:repeat value="#{ productTypeReviewFeDmb.sortedCustomerReviewList }" var="customerReview">
+				<div class="theme-floatcontent">
+		          	<div class="theme-triple-rounded-box-top">
+		            	#{ customerReview.reviewTitle } 
+		          	</div>
+		          	<div class="theme-triple-rounded-box-content">
+						<table style="width:100%">
+							<tr valign="top">
+								<td style="min-width:485px;padding-right:15px">
+				          			<h:outputText value="#{ customerReview.description }" escape="false" />
+				          			<br/><br/>
+				          			<b>#{ customerReview.reviewerFullName }</b>
+				          			<br/>
+				          			#{ customerReview.reviewerPosition }
+				          			<br/>
+				          			#{ customerReview.location }
+				          			<br/>
+				          			<a href="http://#{ customerReview.websiteUrl }" target="_blank">#{ customerReview.websiteUrl }</a>
+				          			<br/><br/>
+				          			
+									<a href="#{request.contextPath}/category/#{productTypeReviewFeDmb.selectedProductType.mappingOrId}.aplos">
+										List all #{ productTypeReviewFeDmb.selectedProductType.displayName }
+									</a>
+								</td>
+								<td style="text-align:center">
+									<aplos:panel rendered="#{ customerReview.image1Details != null }">
+										<img src="#{ customerReview.getFullImage1Url( true, false ) }&amp;maxWidth=200" style="padding-bottom:10px" />
+									</aplos:panel>
+									<br/>
+									<aplos:panel rendered="#{ customerReview.image2Details != null }">
+										<img src="#{ customerReview.getFullImage2Url( true, false ) }&amp;maxWidth=200" />
+									</aplos:panel>
+								</td>
+							</tr>
+						</table>
+		          	</div>
+	        		<div class="theme-triple-rounded-box-bottom">&#160;</div>
+		        </div>
+			</ui:repeat>
+		</aplos:panel>
+	</aplos:panel>
+</ui:composition>

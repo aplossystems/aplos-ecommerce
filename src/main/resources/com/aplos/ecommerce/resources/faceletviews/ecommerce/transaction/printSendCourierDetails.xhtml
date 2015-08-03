@@ -1,0 +1,77 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	
+	<ui:define name="editContent">
+		<h:outputScript library="jsLibraries" name="ckeditor/aplosckeditor.js" target="head" />
+	
+		<script type="text/javascript">
+			
+			function createCKEditors() {
+				CKEDITOR.config.toolbar = 'MyToolbar';			 
+				CKEDITOR.config.toolbar_MyToolbar =
+			    [
+			        ['Source', '-', 'Styles', '-', 'BulletedList',],
+			        ['Bold','Italic','Underline'],
+			        ['Paste','PasteText','PasteFromWord']
+				    
+			    ];	
+				$j('.aplos_ckeditor').each(function() {
+					var editor = CKEDITOR.replace( this.id, { width:"500", height:"150", "toolbar" : CKEDITOR.config.toolbar_MyToolbar } );
+				});
+			}
+		
+			$j(document).ready(function() {
+				createCKEditors();
+			} );
+		</script>
+		<div style="float:right; text-align:center; position:relative;">
+			<aploscc:ajaxButton value="&#60; Back to summary" action="#{ backingPage.redirectToTransactionSummary }" />
+		</div>
+		<br style="clear:both" />
+		
+		<div style="float:right;text-align:right">
+			<div>
+				<span style="position:relative;bottom:10px">Send courier details email</span>
+				<h:commandLink action="#{backingPage.sendEmail}">
+					<img src="#{request.contextPath}/images/mail32.32.png" border="0"/>
+				</h:commandLink>
+			</div>
+		</div>
+		<table>
+			<tr>
+				<td class="aplos-label">Send email to:</td>
+				<td class="aplos-field">
+					<h:inputText value="#{ backingPage.toEmailAddress }" style="width:400px" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Subject:</td>
+				<td class="aplos-field">
+					<h:inputText value="#{ backingPage.courierDetailsEmailSubject }" style="width:400px" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Template text</td>
+				<td class="aplos-field">
+					<h:inputTextarea id="templateText" styleClass="aplos_ckeditor" value="#{ backingPage.courierDetailsEmailBody }" style="width:400px;height:200px" />
+				</td>
+			</tr>
+		</table>
+		
+	</ui:define>
+	
+	<ui:define name="editButtons">
+	<aploscc:controlPanel>
+		<f:facet name="upperRightControlPanel">
+
+
+		</f:facet>
+	</aploscc:controlPanel>
+</ui:define>
+	
+</ui:composition>

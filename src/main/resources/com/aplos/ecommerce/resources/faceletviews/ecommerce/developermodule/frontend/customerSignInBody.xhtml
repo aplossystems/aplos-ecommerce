@@ -1,0 +1,35 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+    xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	<div class="aplos-atom aplos-customer-sign-in-atom">
+    	<table class="aplos-form-table aplos-form-table-with-required">
+			<tr>
+				<td class="aplos-label">Email / Username</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:inputText required="true" requiredMessage="Please enter username to login" value="#{ customerSignInFeDmb.email }" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Password</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:inputSecret required="true" requiredMessage="Please enter password to login" value="#{ customerSignInFeDmb.password }" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label"></td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<aploscc:ajaxButton action="#{customerSignInFeDmb.goToOrders}" value="Sign In" />
+					<h:commandLink action="#{customerSignInFeDmb.goToForgottenPassword}" value="Forgotten Password" />
+				</td>
+			</tr>	
+		</table>
+	</div>
+</ui:composition>

@@ -1,0 +1,222 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="editContent">
+		<style>
+			.editLabelColumn {
+				width: 120px;
+			}
+		</style>
+		
+		<aplos:panel id="pageContents">
+			<h:panelGroup rendered="#{backingPage.showingTransferScreen}">
+				<h2>Transfer&#160;<h:outputText value="#{companyContact.displayName}" />&#160;to another Company</h2>
+				<span>Please select the new company&#160;<h:outputText value="#{companyContact.displayName}" />&#160;should be part of</span><br/>
+				<br/>
+					<aplos:autoComplete id="newCompanyAc" value="#{backingPage.selectedCompany}"   
+	                    completeMethod="#{backingPage.suggestNewCompanies}" var="autoBean" itemValue="#{autoBean}" itemLabel="#{ backingPage.getNewCompanyDisplayText( autoBean ) }" converter="autoCompleteBeanConverter">
+	                   <p:ajax process="@form" event="itemSelect" listener="#{backingPage.setNewCompany}" update="newCompanyAc,pageContents"/>  
+	                </aplos:autoComplete>
+				<br/>
+				<br style="clear:both" />
+				<div style="float:left">
+					<aploscc:ajaxButton action="#{ backingPage.cancelTransferContact }" value="Cancel" />
+				</div>
+			</h:panelGroup>
+			<h:panelGroup rendered="#{!backingPage.showingTransferScreen}">
+				<div style="float:left">
+					<aploscc:ajaxButton rendered="#{not companyContact.isNew}" action="#{ backingPage.transferContact }" title="Transfer this Contact to another Company" value="Transfer Contact" />
+				</div>
+				<div style="float:left">
+					<aploscc:ajaxButton rendered="#{not companyContact.isNew}" action="#{ backingPage.createNewTransaction(companyContact) }" value="Create new transaction" />
+				</div>
+				<div style="float:left">
+					<aplos:panel rendered="#{not companyContact.isNew}"> 
+						<aploscc:ajaxButton action="#{ backingPage.createReturnAndRedirect(companyContact) }" value="Create new return" />
+						<span class="aplos-description">If you have a serial number then create the return from the serial number list page.</span>
+					</aplos:panel>
+				</div>
+				<br style="clear:both" />
+				<table class="aplos-form-table-with-required edit">
+					<tr>
+						<td class="aplos-label editLabelColumn">Company</td>
+						<td></td>
+						<td class="aplos-field">
+							<aploscc:quickView bean="#{companyContact.company}" action="#{ backingPage.redirectToCompanyEdit() }" />
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label">First Name</td>
+						<td class="aplos-required-asterisk">*</td>
+						<td class="aplos-field"><h:inputText value="#{companyContact.subscriber.firstName}" required="#{ backingPage.validationRequired }" requiredMessage="Please enter a first name for the company contact"/></td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Surname</td>
+						<td></td>
+						<td class="aplos-field"><h:inputText value="#{companyContact.subscriber.surname}" /></td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Email</td>
+						<td class="aplos-required-asterisk">*</td>
+						<td class="aplos-field"><h:inputText value="#{companyContact.subscriber.emailAddress}" required="#{ backingPage.validationRequired }" requiredMessage="Please enter an email address for the company contact" /></td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Phone</td>
+						<td></td>
+						<td class="aplos-field">
+							<h:inputText value="#{companyContact.shippingAddress.phone}" />
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Phone 2</td>
+						<td></td>
+						<td class="aplos-field">
+							<h:inputText value="#{companyContact.shippingAddress.phone2}" />
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Mobile</td>
+						<td></td>
+						<td class="aplos-field">
+							<h:inputText value="#{companyContact.shippingAddress.mobile}" />
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Fax</td>
+						<td></td>
+						<td class="aplos-field">
+							<h:inputText value="#{companyContact.shippingAddress.fax}" />
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Room number</td>
+						<td></td>
+						<td class="aplos-field">
+							<h:inputText value="#{companyContact.roomNumber}" />
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Position</td>
+						<td></td>
+						<td class="aplos-field"><h:inputText value="#{companyContact.position}" /></td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Referrer</td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+							<h:selectOneListbox size="1" id="referrerDdl" value="#{companyContact.subscriber.subscriberReferrer}" converter="aplosAbstractBeanConverter">
+								<f:selectItems value="#{subscriberReferrer.selectItemBeansWithNotSelected}" />
+							</h:selectOneListbox>
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Referrer Other</td>
+						<td></td>
+						<td class="aplos-field"><h:inputText value="#{companyContact.subscriber.referrerOther}" /></td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Active Subscription</td>
+						<td></td>
+						<td class="aplos-field"><h:selectBooleanCheckbox value="#{companyContact.subscriber.subscribed}" /></td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Admin user</td>
+						<td></td>
+						<td class="aplos-field"><h:selectBooleanCheckbox value="#{companyContact.adminUser}" /></td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Mailshot type</td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+							<h:selectOneListbox size="1" id="mailshotTypeDdl" value="#{companyContact.subscriber.mailShotType}" converter="aplosAbstractBeanConverter">
+								<f:selectItems value="#{mailShotType.selectItemBeansWithNotSelected}" />
+							</h:selectOneListbox>
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Notes</td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+							<h:inputTextarea id="companyContactNotes" value="#{companyContact.customerNotes}" style="width:400px ; height:100px ;" /> <!-- ceffcf" /> -->
+						</td>
+					</tr>
+				</table>
+				<div style="clear:both"/>
+				<aplos:panel id="useShippingAddressPnl">
+					<table>
+						<tr>
+							<td class="aplos-label editLabelColumn" style="text-decoration:underline;padding-top:20px; padding-bottom:10px">Billing address</td>
+							<td>
+								<aplos:panel rendered="#{ backingPage.usingShippingAddressForBilling or (!companyContact.usingCompanyAddressForBilling and !backingPage.usingBillingAddressForShipping) }">
+									<h:selectBooleanCheckbox value="#{ backingPage.usingShippingAddressForBilling }" >
+										<p:ajax process="@form" event="click" update="billingAddressPnl useBillingAddressPnl useShippingAddressPnl" />
+									</h:selectBooleanCheckbox>
+									 use #{contextListener.translate('SHIPPING_ADDRESS')}
+								</aplos:panel>
+								<br/>
+								<aplos:panel rendered="#{ !backingPage.usingShippingAddressForBilling }">
+									<h:selectBooleanCheckbox value="#{ companyContact.usingCompanyAddressForBilling }" >
+										<p:ajax process="@form" event="click" update="billingAddressPnl useBillingAddressPnl useShippingAddressPnl" />
+									</h:selectBooleanCheckbox>
+								 	use company billing address
+								</aplos:panel>
+							</td>
+						</tr>
+					</table>
+				</aplos:panel>
+				<aplos:panel id="billingAddressPnl">
+					<aplos:panel rendered="#{ !companyContact.usingCompanyAddressForBilling and !(customer.duplicateAddresses.ordinal() == 1) }">
+						<aploscc:address bean="#{companyContact.billingAddress}" ecommerceFieldsRequired="true" />
+					</aplos:panel>
+				</aplos:panel>
+				<div style="clear:both"/>
+				<aplos:panel id="useBillingAddressPnl">
+					<table>
+						<tr>
+							<td class="aplos-label editLabelColumn" style="text-decoration:underline;padding-top:20px; padding-bottom:10px">Shipping address</td>
+							<td>
+								<aplos:panel rendered="#{ backingPage.usingBillingAddressForShipping or (!companyContact.usingCompanyAddressForShipping and !backingPage.usingShippingAddressForBilling) }">
+									<h:selectBooleanCheckbox value="#{ backingPage.usingBillingAddressForShipping }" >
+										<p:ajax process="@form" event="click" update="shippingAddress useShippingAddressPnl useBillingAddressPnl" />
+									</h:selectBooleanCheckbox>
+									 use billing address
+								</aplos:panel>
+								<br/>
+								<aplos:panel rendered="#{ !backingPage.usingBillingAddressForShipping }">
+									<h:selectBooleanCheckbox value="#{ companyContact.usingCompanyAddressForShipping }" >
+										<p:ajax process="@form" event="click" update="shippingAddress useShippingAddressPnl useBillingAddressPnl" />
+									</h:selectBooleanCheckbox>
+									 use company #{contextListener.translate('SHIPPING_ADDRESS')}
+								</aplos:panel>
+							</td>
+						</tr>
+					</table>
+				</aplos:panel>
+				<div style="clear:both"/>
+				<aplos:panel id="shippingAddress">
+					<aplos:panel rendered="#{ !companyContact.usingCompanyAddressForShipping and !(companyContact.duplicateAddresses.ordinal() == 0) }">
+						<aploscc:address bean="#{companyContact.shippingAddress}" ecommerceFieldsRequired="true" />
+					</aplos:panel>
+				</aplos:panel>
+			</h:panelGroup>
+		</aplos:panel>
+	</ui:define>
+	
+	<ui:define name="editButtons">
+	<aploscc:controlPanel id="controlPanel">
+		<f:facet name="upperRightControlPanel">
+		<aplos:panel id="pageButtons" autoUpdate="true">
+			<h:panelGroup rendered="#{!backingPage.showingTransferScreen}">
+				<aploscc:editButtons />
+			</h:panelGroup>
+		</aplos:panel>
+	</f:facet>
+	</aploscc:controlPanel>
+</ui:define>
+</ui:composition>

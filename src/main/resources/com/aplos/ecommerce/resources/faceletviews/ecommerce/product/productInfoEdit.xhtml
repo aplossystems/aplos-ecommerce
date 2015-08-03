@@ -1,0 +1,203 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="editHead">
+		<h:outputScript library="jsLibraries" name="ckeditor/aplosckeditor.js" target="head" />
+		
+		<script type="text/javascript">
+			function createCKEditors() {
+				$j('.aplos_ckeditor').each(function() {
+					var editor = CKEDITOR.replace( this.id, { width:"750", height:"150" } );
+				});
+			}
+		
+			$j(document).ready(function() {
+				createCKEditors();
+			} );
+		
+			function updateEditors() {
+				$j('.aplos_ckeditor').each(function() {
+					if (CKEDITOR.instances[this.id]) {
+						CKEDITOR.instances[this.id].updateElement();
+					}
+				});
+			}
+		
+		</script>
+	</ui:define>
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:200px">Product Name</td>
+				<td class="aplos-field"><h:inputText value="#{productInfo.product.name}" required="true" requiredMessage="Product Name needs to be set" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label" width="200px">Brand</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{productInfo.product.productBrand}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{productBrand.selectItemBeans}" />   
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Product Code</td>
+				<td class="aplos-field"><h:inputText value="#{productInfo.product.itemCode}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Primary product Type</td>
+				<td class="aplos-field" style="padding:20px 0px 0px 0px">
+					<h:selectOneListbox size="1" id="primaryProductTypeList" value="#{productInfo.product.primaryProductType}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{ productInfoEditPage.productTypeSelectItemBeans}" />   
+					</h:selectOneListbox>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Additional product types</td>
+				<td class="aplos-field" style="padding:20px 0px 0px 0px">
+				<aplos:panel id="productTypeTableWrapper">
+					<p:dataTable id="productTypeTable" value="#{ productInfo.product.productTypes }" var="tableBean" styleClass="listDatatable" style="margin-top:-12px;width:100%">
+						<p:column>
+							<f:facet name="header">Product Type</f:facet>
+							#{tableBean.displayName}
+						</p:column>
+						<p:column width="24px">
+							<h:commandButton action="#{ productInfoEditPage.removeProductTypeItem }" image="/images/action_delete.gif" reRender="productTypeTableWrapper" />
+						</p:column>
+					</p:dataTable>
+				</aplos:panel>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label"></td>
+				<td class="aplos-field">
+					<h:selectOneListbox size="1" id="productTypeList" value="#{productInfoEditPage.selectedProductType}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{ productInfoEditPage.productTypeSelectItemBeans}" />   
+					</h:selectOneListbox>
+					<aploscc:ajaxButton ajaxEnabled="true" action="#{ productInfoEditPage.addProductTypeItem }" value="Add" reRender="productTypeTable" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Additional Product Size Type</td>
+				<td class="aplos-field" style="padding:20px 0px 0px 0px">
+				<aplos:panel id="productSizeTypeTableWrapper">
+					<p:dataTable id="productSizeTypeTable" value="#{ productInfo.product.additionalProductSizeTypes }" var="tableBean" styleClass="listDatatable" style="margin-top:-12px;width:100%">
+						<p:column>
+							<f:facet name="header">Product Size Type</f:facet>
+							#{tableBean.displayName}
+						</p:column>
+						<p:column width="24px">
+							<h:commandButton action="#{ productInfoEditPage.removeProductSizeType }" image="/images/action_delete.gif" reRender="productSizeTypeTableWrapper" />
+						</p:column>
+					</p:dataTable>
+				</aplos:panel>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label"></td>
+				<td class="aplos-field">
+					<h:selectOneListbox size="1" id="productSizeTypeList" value="#{productInfoEditPage.selectedProductSizeType}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{ productInfoEditPage.productSizeTypeSelectItemBeans}" />   
+					</h:selectOneListbox>
+					<aploscc:ajaxButton ajaxEnabled="true" action="#{ productInfoEditPage.addProductSizeType }" value="Add" reRender="productSizeTypeTableWrapper" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Long Description</td>
+				<td class="aplos-field"><h:inputTextarea id="longDescription"
+						styleClass="aplos_ckeditor" 
+						value="#{productInfo.longDescription}" style=""></h:inputTextarea></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Short Description</td>
+				<td class="aplos-field"><h:inputText value="#{productInfo.shortDescription}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Product Info</td>
+				<td class="aplos-field"><h:inputTextarea id="info1"
+						styleClass="aplos_ckeditor" 
+						value="#{productInfo.info1}"></h:inputTextarea></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Default VAT type</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:selectOneMenu label="default vat type" value="#{productInfo.vatType}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{ backingPage.vatTypeSelectItems }" />				
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Search &amp; Meta Keywords</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+				<aplos:panel id="searchKeywordsTableWrapper">
+					<p:dataTable id="searchKeywordsTable" value="#{ productInfo.searchKeywordList }" var="tableBean" styleClass="listDatatable" style="width:100%">
+						<p:column>
+							<f:facet name="header">Keyword</f:facet>
+							#{tableBean}
+						</p:column>
+						<p:column width="24px">
+							<h:commandButton action="#{ backingPage.removeSearchKeyword }" image="/images/action_delete.gif" reRender="searchKeywordsTableWrapper" />
+						</p:column>
+					</p:dataTable>
+				</aplos:panel>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label"></td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:inputText value="#{ backingPage.newSearchKeyword }" />
+					<aploscc:ajaxButton ajaxEnabled="true" action="#{ backingPage.addSearchKeyword }" value="Add" reRender="searchKeywordsTableWrapper" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">What to Wear it With</td>
+				<td class="aplos-field" style="padding:20px 0px 0px 0px">
+				<aplos:panel id="optionalAccessoriesTableWrapper">
+					<p:dataTable id="optionalAccessoriesTable" value="#{ productInfo.optionalAccessoriesList }" var="tableBean" styleClass="listDatatable" style="margin-top:-12px;width:100%">
+						<p:column>
+							<f:facet name="header">Wear it with</f:facet>
+							#{tableBean.displayName}
+						</p:column>
+						<p:column width="24px">
+							<h:commandButton action="#{ productInfoEditPage.removeOptionalAccessoriesItem }" image="/images/action_delete.gif" reRender="optionAccessoriesTableWrapper" />
+						</p:column>
+					</p:dataTable>
+				</aplos:panel>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label"></td>
+				<td class="aplos-field">
+					<h:selectOneListbox size="1" value="#{productInfoEditPage.optionAccessoriesProductBrand}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{productInfoEditPage.productBrandSelectItemBeans}" /> 
+<p:ajax process="@form" event="change" listener="#{productInfoEditPage.updateOptionAccessoriesSelectItemBeans()}" update="optionAccessoriesRealizedProductList" />  
+					</h:selectOneListbox>
+					<h:selectOneListbox size="1" value="#{productInfoEditPage.optionAccessoriesProductType}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{productInfoEditPage.productTypeSelectItemBeans}" />
+<p:ajax process="@form" event="change" listener="#{productInfoEditPage.updateOptionAccessoriesSelectItemBeans()}" update="optionAccessoriesRealizedProductList" />
+					</h:selectOneListbox>
+					<h:selectOneListbox size="1" id="wearItWithRealizedProductList" value="#{productInfoEditPage.optionAccessoriesRealizedProduct}" converter="aplosAbstractBeanConverter" collectionType="java.util.ArrayList">
+						<f:selectItems value="#{productInfoEditPage.optionAccessoriesSelectItemBeans}" />   
+					</h:selectOneListbox>
+					<aploscc:ajaxButton ajaxEnabled="true" action="#{ productInfoEditPage.addOptionAccessoriesItem }" value="Add" reRender="wearItWithTable" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Mapping</td>
+				<td class="aplos-field">
+					<h:inputText id="mapping" value="#{productInfo.mapping}" />
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+	
+	<ui:define name="editButtons"><aploscc:controlPanel showSetActiveButtons="true" /></ui:define>
+</ui:composition>

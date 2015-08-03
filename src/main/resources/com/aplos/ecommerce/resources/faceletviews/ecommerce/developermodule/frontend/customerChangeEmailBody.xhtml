@@ -1,0 +1,33 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	<div id="customer-section customer-change-email">
+		<aplos:panel rendered="#{ customerChangeEmailFeDmb.emailChanged }">
+			Your email address has been changed.
+		</aplos:panel>
+		<aplos:panel rendered="#{ !customerChangeEmailFeDmb.emailChanged }">
+      		<table class="aplos-form-table aplos-form-table-with-required">
+  				<tr>
+    				<td class="aplos-label">Email address</td>
+    				<td class="aplos-required-asterisk">*</td>
+    				<td class="aplos-field">
+    					<h:inputText required="true" value="#{customerChangeEmailFeDmb.emailAddress}" 
+    						name="emailAddress" id="emailAddress"
+    						label="Email address" />
+    				</td>
+    			</tr>
+  				<tr>
+    				<td colspan="3" style="text-align:right;"> 
+    					<aploscc:ajaxButton id="saveBtn" action="#{customerChangeEmailFeDmb.saveChanges}" value="Save Changes" />
+    				</td>
+    			</tr>
+			</table>
+		</aplos:panel>
+		
+		<div class="aplos-required-fields-note"><span class="aplos-required-asterisk">*</span> required fields</div>
+    </div>
+</ui:composition>

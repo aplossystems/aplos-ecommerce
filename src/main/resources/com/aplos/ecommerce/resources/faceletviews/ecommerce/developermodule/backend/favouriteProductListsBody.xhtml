@@ -1,0 +1,67 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:outputScript library="scripts" name="favouriteCmsAtom.js" target="head" />
+	<table>
+		<tr>
+			<td class="aplos-label" style="width:140px">Item type</td>
+			<td>
+				<h:selectOneMenu converter="aplosAbstractBeanConverter" value="#{favouriteProductListsBeDmb.selectedGenerationMenuItemClass}">
+					<f:selectItems value="#{ favouriteProductListsBeDmb.generatorItemClassSelectItems }" />
+					<p:ajax event="change" update="productList" />
+				</h:selectOneMenu>
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label" style="width:140px">Favourite Categories:</td>
+			<td>
+				<h:selectOneListbox id="favouriteCategories" size="1" converter="aplosAbstractBeanConverter" valueChangeListener="#{favouriteProductListsBeDmb.positionedBeanHelper.changeCurrentPositionedBean}"
+					onchange="submit();" immediate="true" value="#{favouriteProductListsBeDmb.positionedBeanHelper.selectedPositionedBean}">
+					<f:selectItems value="#{ favouriteProductListsBeDmb.positionedBeanHelper.positionedBeanSelectItems }" />
+				</h:selectOneListbox>
+			</td>
+			<td>
+				<aploscc:ajaxButton value="Add product list box" action="#{ favouriteProductListsBeDmb.positionedBeanHelper.addNewPositionedBean }" />	
+			</td>
+			<td>
+				<aplos:panel rendered="#{ favouriteProductListsBeDmb.positionedBeanHelper.currentPositionedBean != null }">
+					<aploscc:ajaxButton value="Remove product list box" action="#{ favouriteProductListsBeDmb.positionedBeanHelper.deleteCurrentPositionedBean }" />
+				</aplos:panel>
+			</td>
+		</tr>
+	</table>
+	<hr />
+	<aplos:panel rendered="#{ favouriteProductListsBeDmb.positionedBeanHelper.currentPositionedBean != null }">
+		<table>
+			<tr>
+				<td class="aplos-label">Product List</td>
+				<td class="aplos-field">
+					<h:selectOneMenu id="productList" converter="aplosAbstractBeanConverter" 
+						value="#{favouriteProductListsBeDmb.positionedBeanHelper.currentPositionedBean.generatorMenuItem}">
+						<f:selectItems value="#{ favouriteProductListsBeDmb.generatorItemSelectItemBeans }" />
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Description</td>
+				<td class="aplos-field">
+				<h:inputTextarea id="favouriteText" styleClass="favouriteText aplos_ckeditor" value="#{favouriteProductListsBeDmb.positionedBeanHelper.currentPositionedBean.description}"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Position in Arrangement</td>
+				<td>
+					<h:selectOneMenu value="#{favouriteProductListsBeDmb.positionedBeanHelper.currentPositionedBean.positionIdx}">
+						<f:selectItems value="#{favouriteProductListsBeDmb.positionedBeanHelper.positionIdxSelectItems}" />
+					</h:selectOneMenu>
+				</td>
+			</tr>
+		</table>
+	</aplos:panel>
+</ui:composition>

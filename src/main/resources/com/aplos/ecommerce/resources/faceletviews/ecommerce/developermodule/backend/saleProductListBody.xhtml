@@ -1,0 +1,27 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+xmlns:p="http://primefaces.org/ui">
+
+	What percentage discount should be applied to items in this area?<hr/>
+	<h:inputText value="#{saleProductListModule.percentageDiscount}" required="true" 
+		requiredMessage="You must enter the discount perentage for this sale area"
+		validateMessage="Discount percentage must be between 0.1 and 99.9 (dont enter the % symbol)">
+		<f:validateDoubleRange minimum="0.1" maximum="99.9"></f:validateDoubleRange>
+	</h:inputText>
+	<br/><br/>What category should be listed in this sale area?<hr/>
+	<h:selectOneMenu value="#{saleProductListModule.productCategory}">
+		<f:selectItems value="#{saleProductListBeDmb.productListRootTypeSelectItems}" />
+<p:ajax process="@form" event="change" update="categoryIdDdl" /> 
+	</h:selectOneMenu>
+	<aplos:panel autoUpdate="true" id="categoryIdDdl">
+		<h:selectOneMenu value="#{saleProductListModule.categoryId}">
+			<f:selectItems value="#{saleProductListBeDmb.categorySelectItems}" />
+<p:ajax process="@form" event="change" update="categoryIdDdl" /> 
+		</h:selectOneMenu>
+	</aplos:panel>
+
+</ui:composition>

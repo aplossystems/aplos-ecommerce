@@ -1,0 +1,137 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+    xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	<script type="text/javascript">
+		$j(document).ready(function() {
+			$j('#aplos-sharing-tabs').tabs();
+		});
+	</script>
+	<h:outputScript library="jsLibraries" name="jquery-ui-1.8/js/jquery-ui-1.8.6.custom.min.js" target="head" />
+	<h:outputStylesheet library="jsLibraries" name="jquery-ui-1.8/themes/base/jquery.ui.base.css" target="head" />
+			<h:outputStylesheet library="jsLibraries" name="jquery-ui-1.8/themes/base/jquery.ui.theme.css" target="head" />
+	<div id="aplos-email-a-friend-atom-contents" class="aplos-email-a-friend-atom">
+		<h:form>
+			<h:panelGroup id="aplos-email-a-friend-form" styleClass="aplos-email-a-friend-atom">
+					<div id="aplos-sharing-tabs" class="aplos-sharing-tabs-container">
+						<ul>
+							<li><a class="aplos-pp-email-tab" href="#aplos-sharing-tabs-email">Email this item to a friend</a></li>
+							<li><a class="aplos-pp-share-tab" href="#aplos-sharing-tabs-addthis">Share this</a></li>
+						</ul>
+						<div id="aplos-sharing-tabs-email">
+						
+							<p:messages></p:messages>
+							<table>
+								<tr>
+									<td class="aplos-label" style="width:100px; max-width:100px; min-width:100px; vertical-align:top; text-align:left; padding-right:10px">
+										<h1 style="display:inline; font-weight:normal; font-size:12px;"><h:outputText value="#{realizedProduct.productInfo.product.name}" styleClass="aplos-title" /></h1><br /><br />
+										<h:outputText value="#{currency.prefix}#{realizedProduct.price}#{currency.suffix}" styleClass="aplos-price" /><br /><br />
+										<img style="border: 1px solid #EAEAEA; height:140px; width:100px;" class="aplos-main-product-image" alt="#{realizedProduct.productInfo.product.name}" src="#{realizedProduct.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}&amp;maxWidth=100&amp;maxHeight=140" title="#{realizedProduct.productInfo.product.name}" />
+									</td>
+									<td style="vertical-align:top;">
+										<table class="aplos-form-table aplos-form-table-with-required">
+											<tr>
+												<td class="aplos-label">Your name</td>
+												<td class="aplos-required-asterisk">*</td>
+												<td class="aplos-field">
+													<h:inputText required="#{emailAFriendFeDmb.isValidationRequired}" requiredMessage="Your name is required to email this product." value="#{ emailAFriendFeDmb.sender }" name="name">
+														
+													</h:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td class="aplos-label">Your friends email</td>
+												<td class="aplos-required-asterisk">*</td>
+												<td class="aplos-field">
+													<h:inputText required="#{emailAFriendFeDmb.isValidationRequired}" requiredMessage="Email address is required to email this product." value="#{ emailAFriendFeDmb.recipientEmail }" name="friends-email">
+														
+													</h:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td class="aplos-label">Your message</td>
+												<td class="aplos-required-asterisk"></td> 
+												<td class="aplos-field">
+													<h:inputTextarea style="width:auto" cols="30" rows="7" value="#{ emailAFriendFeDmb.message }" name="message">
+														
+													</h:inputTextarea>
+												</td>
+											</tr>
+											<tr>
+												<td class="aplos-label"></td>
+												<td class="aplos-required-asterisk"></td>
+												<td class="aplos-field">
+													<aploscc:ajaxButton id="submitEmailAFriend" ajaxOnChange="aplos-email-a-friend-form" name="submitEmailAFriend" action="#{emailAFriendFeDmb.sendFriendEmail}" value="Submit Email" />
+												</td>
+											</tr>
+										</table><br/><br/><br/><br/><br/><!-- the br's are necessary - cant set pp height for inline content -->
+									</td>
+								</tr>
+							</table>
+					
+						</div>
+						<div id="aplos-sharing-tabs-addthis">
+						
+			
+							<table>
+								<tr>
+									<td class="aplos-label" style="width:100px; max-width:100px; min-width:100px; vertical-align:top; text-align:left; padding-right:10px">
+										<h1 style="display:inline; font-weight:normal; font-size:12px;"><h:outputText value="#{realizedProduct.productInfo.product.name}" styleClass="aplos-title" /></h1><br /><br />
+										<h:outputText value="#{currency.prefix}#{realizedProduct.price}#{currency.suffix}" styleClass="aplos-price" /><br /><br />
+										<img style="border: 1px solid #EAEAEA; height:140px; width:100px;" class="aplos-main-product-image" alt="#{realizedProduct.productInfo.product.name}" src="#{realizedProduct.getImageDetailsByKey('LARGE_IMAGE').getFullFileUrl(true)}&amp;maxWidth=100&amp;maxHeight=140" title="#{realizedProduct.productInfo.product.name}" />
+									</td>
+									<td>
+										<ul style="list-style:none">
+											<!-- <li><a class="addthis_button_facebook addthis_32x32_style">Share on Facebook</a></li> -->
+											<!-- we have to replace add this' crappy fb-button because we cant tell it that we're in a popup and need to take 'parent url' -->
+											<h:panelGroup rendered="#{realizedProduct != null}" layout="none">
+												<li>
+													<a class="addthis_replacement addthis_32x32_style" name="fb_share" type="icon_link" share_url="#{realizedProduct.shareUrl}">Share&#160;on&#160;Facebook</a> 
+													<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
+												</li>
+											</h:panelGroup>
+											<!--<li><a class="addthis_button_twitter addthis_32x32_style">Tweet this product</a></li>-->
+											<li><a href="http://api.addthis.com/oexchange/0.8/forward/twitter/offer?url=#{realizedProduct.shareUrl}" class="addthis_replacement button_twitter addthis_32x32_style"><span>Tweet&#160;about&#160;this</span></a></li>
+											<!--<li><a class="addthis_button_delicious addthis_32x32_style">Share on Del.icio.us</a></li>-->
+											<li><a href="http://api.addthis.com/oexchange/0.8/forward/del.icio.us/offer?url=#{realizedProduct.shareUrl}" class="addthis_replacement button_delicious addthis_32x32_style"><span>Share&#160;on&#160;Del.icio.us</span></a></li>
+											<!--<li><a class="addthis_button_reddit addthis_32x32_style">Share on Reddit</a></li>-->
+											<li><a href="http://api.addthis.com/oexchange/0.8/forward/reddit/offer?url=#{realizedProduct.shareUrl}" class="addthis_replacement button_reddit addthis_32x32_style"><span>Share&#160;on&#160;Reddit</span></a></li>
+											<!-- <li><a class="addthis_button_stumbleupon addthis_32x32_style">Share on StumbleUpon</a></li>-->
+											<li><a href="http://api.addthis.com/oexchange/0.8/forward/stumbleupon/offer?url=#{realizedProduct.shareUrl}" class="addthis_replacement button_stumbleupon addthis_32x32_style"><span>Share&#160;on&#160;StumbleUpon</span></a></li>
+											<!-- <li><a class="addthis_button_digg addthis_32x32_style">Digg this</a></li>-->
+											<li><a href="http://api.addthis.com/oexchange/0.8/forward/digg/offer?url=#{realizedProduct.shareUrl}" class="addthis_replacement button_digg addthis_32x32_style"><span>Digg&#160;this</span></a></li>
+											<!-- <li><a class="addthis_button_blinklist addthis_32x32_style">Share on Blinklist</a></li>-->
+											<li><a href="http://api.addthis.com/oexchange/0.8/forward/blinklist/offer?url=#{realizedProduct.shareUrl}" class="addthis_replacement button_blinklist addthis_32x32_style"><span>Share&#160;on&#160;Blinklist</span></a></li>
+										</ul>
+									</td>
+								</tr>
+							</table>
+							<style type="text/css">
+								.addthis_replacement { line-height:32px; display:inline-block; margin-bottom:4px; width:32px; height:32px;  }
+								.addthis_replacement > span { padding-left:50px; line-height:32px; display:inline-block; width:100%; height:32px; overflow-hidden; }
+								.FBConnectButton_Simple { padding-left:32px!important; background:url('http://s7.addthis.com/static/r07/widget35_32x32.png') no-repeat 0 -3200px!important; }
+								.button_reddit { background:url('http://s7.addthis.com/static/r07/widget35_32x32.png') no-repeat 0 -8384px!important; } 
+								.button_digg { background:url('http://s7.addthis.com/static/r07/widget35_32x32.png') no-repeat 0 -2176px!important; } 
+								.button_blinklist { background:url('http://s7.addthis.com/static/r07/widget35_32x32.png') no-repeat 0 -992px!important; } 
+								.button_stumbleupon { background:url('http://s7.addthis.com/static/r07/widget35_32x32.png') no-repeat 0 -9440px!important; } 
+								.button_delicious { background:url('http://s7.addthis.com/static/r07/widget35_32x32.png') no-repeat 0 -2048px!important; } 
+								.button_twitter { background:url('http://s7.addthis.com/static/r07/widget35_32x32.png') no-repeat 0 -10368px!important; } 
+								.addthis_32x32_style { text-decoration:none; }
+								.addthis_32x32_style .at300bs, .addthis_32x32_style .at15t .addthis_32x32_style span { display:inline-block; vertical-align:middle; margin:0 5px 5px 0; } 
+								.ui-tabs .ui-tabs-panel { padding-top:15px; padding-bottom:0; }
+								body { background-color:#FFFFFF; overflow:hidden; }
+							</style>
+							<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4eb2aa7b0515b683"></script>
+							
+						</div>
+					</div>		
+				
+			</h:panelGroup>
+		</h:form>
+		
+	</div>
+</ui:composition>

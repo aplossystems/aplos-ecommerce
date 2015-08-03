@@ -1,0 +1,134 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="editHead">
+		<style type="text/css">
+		
+			.verticalMiddle {
+				vertical-align:middle;
+				height:30px;
+			}
+		
+		</style>
+	</ui:define>
+	
+	<ui:define name="editContent">
+		
+			<div id="listAndEditHeading" class="aplos-listAndEditHeading" style="margin: 10px 4px">Book In</div>
+			<table style="margin-top:30px">
+				<tr>
+					<td class="aplos-label">Serial number</td>
+					<td class="aplos-field">
+						<aplos:autoComplete id="serialNumberAc" value="#{backingPage.autoCompleteSerialNumber}"   
+		                    completeMethod="#{backingPage.suggestSerialNumbers}" var="autoBean" itemValue="#{autoBean}" itemLabel="#{ autoBean.getId() }" converter="autoCompleteBeanConverter">
+		                   <p:ajax event="itemSelect" listener="#{backingPage.checkSerialNumber}" update="serialNumberAc orderPanel"/>  
+		                </aplos:autoComplete>
+					</td>
+				</tr>
+			</table>
+			
+			<aplos:panel id="orderPanel">
+				<aplos:panel rendered="#{ backingPage.transaction != null }">
+					<table>
+						<tr>
+							<td class="aplos-label">Transaction #</td>
+							<td class="aplos-field">
+								<!-- <h:commandLink value="# { backingPage.transaction.id }" action="# { backingPage.redirectToTransactionSummaryPage }" styleClass="stdLink" style="font-size:12px" />-->
+								<aploscc:quickView bean="#{ backingPage.transaction }" text="#{ backingPage.transaction.id }" action="#{ backingPage.redirectToTransactionSummaryPage() }" />
+							</td>
+						</tr>
+						<tr>
+							<td class="aplos-label">Customer</td>
+							<td class="aplos-field">
+								#{ backingPage.transaction.ecommerceShoppingCart.customer.fullName }
+							</td>
+						</tr>
+				<aplos:panel rendered="#{ backingPage.customerACompanyContact }">
+						<tr>
+							<td class="aplos-label">Company</td>
+							<td class="aplos-field">
+								#{ backingPage.transaction.ecommerceShoppingCart.customer.company.companyName }
+							</td>
+						</tr>
+				</aplos:panel>
+					</table>
+				</aplos:panel>
+				<aplos:panel rendered="#{ backingPage.selectedSerialNumber == null }">
+					<p:dataTable value="#{ backingPage.transaction.ecommerceShoppingCart.items }" var="item" styleClass="listDatatable" style="margin-left: 25px;width:550px" rendered="#{ not (backingPage.transaction == null) }">
+						<p:column>
+							<f:facet name="header">Name</f:facet>
+							<ui:repeat value="#{backingPage.getSerialNumberAssignmentListBeans(item)}">
+								#{item.realizedProduct.productInfo.product.name}<br />
+							</ui:repeat>
+						</p:column>
+						<p:column>
+							<f:facet name="header">Serial number</f:facet>
+							<ui:repeat value="#{backingPage.getSerialNumberAssignmentListBeans(item)}" var="sna">
+								#{sna.id}<br />
+							</ui:repeat>
+						</p:column>
+						<p:column>
+							<f:facet name="header">Part Number</f:facet>
+							<ui:repeat value="#{backingPage.getSerialNumberAssignmentListBeans(item)}" var="sna">
+								#{item.realizedProduct.determineItemCode}<br />
+							</ui:repeat>
+						</p:column>
+						<p:column>
+							<div style="text-align:center; width:120px">
+								<ui:repeat value="#{ backingPage.getSerialNumberAssignmentListBeans(item) }" var="sna">
+									<aplos:panel rendered="#{ backingPage.isBookedOut(sna) }">
+										<aplos:panel rendered="#{ sna.bookedOut }">
+												<aploscc:ajaxButton value="Book in" action="#{ backingPage.bookInSerialNumber }" reRender="orderPanel" style="color:black" />
+										</aplos:panel>
+										<aplos:panel rendered="#{ not sna.bookedOut }">
+											<table><tr><td class="verticalMiddle" style="width:120px;font-weight:bold">In store</td></tr></table>
+										</aplos:panel>
+									</aplos:panel>
+									<aplos:panel rendered="#{ not backingPage.isBookedOut(sna) }">
+										<table><tr><td class="verticalMiddle" style="width:120px;font-weight:bold">Booked in</td></tr></table>
+									</aplos:panel>
+									<br />
+								</ui:repeat>
+							</div>
+						</p:column>
+					</p:dataTable>
+				</aplos:panel>
+				<aplos:panel rendered="#{ backingPage.selectedSerialNumber != null }">
+					<table>
+						<tr>
+							<td class="aplos-label">Name</td>
+							<td class="aplos-field">
+								#{backingPage.selectedSerialNumber.realizedProduct.productInfo.product.name }
+							</td>
+						</tr>
+						<tr>
+							<td class="aplos-label">Part #</td>
+							<td class="aplos-field">
+								#{ backingPage.selectedSerialNumber.realizedProduct.determineItemCode }
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+								<aploscc:ajaxButton value="Book in1" action="#{ backingPage.bookInSerialNumber(backingPage.selectedSerialNumber) }" />
+							</td>
+						</tr>
+					</table>
+				</aplos:panel>
+			</aplos:panel>
+	</ui:define>
+	<ui:define name="editButtons">
+		<aploscc:controlPanel>
+			<f:facet name="upperRightControlPanel">
+			<aploscc:ajaxButton action="#{backingPage.redirectToSerialNumbers}" value="Back" />
+			</f:facet>
+		</aploscc:controlPanel>
+	</ui:define>
+	
+</ui:composition> 

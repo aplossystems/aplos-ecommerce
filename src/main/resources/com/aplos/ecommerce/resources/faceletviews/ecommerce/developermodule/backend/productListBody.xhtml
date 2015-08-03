@@ -1,0 +1,18 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:p="http://primefaces.org/ui">
+	<aplos:panel autoUpdate="true" id="selectionPanel">
+		Select The category for this page to display<hr/>
+		<h:selectOneMenu value="#{productListBeDmb.productListRootClassName}">
+			<f:selectItems value="#{productListBeDmb.productListRootTypeSelectItems}" />
+			<p:ajax event="change" update="categoryIdDdl" listener="#{ productListBeDmb.productListRootClassNameUpdated }" /> 
+		</h:selectOneMenu>
+		<h:selectOneMenu id="#{'categoryIdDdl'}" value="#{productListModule.productListRoot}" converter="aplosAbstractBeanConverter">
+			<f:selectItems value="#{productListBeDmb.categorySelectItems}" />  
+		</h:selectOneMenu>
+	</aplos:panel>
+</ui:composition>

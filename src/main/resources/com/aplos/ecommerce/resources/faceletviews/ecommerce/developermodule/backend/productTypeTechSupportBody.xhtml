@@ -1,0 +1,66 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+
+	<script type="text/javascript">
+		$j(document).ready(function() {
+			ckEditorHelper.addAdditionalSave("descriptionText");
+			ckEditorHelper.createLimitedToolbarCKEditors( '#{ request.contextPath }', null, "descriptionText" );
+		}); 
+	
+	</script>
+	<hr/>
+	<table>
+		<tr>
+			<td class="aplos-label">Description</td>
+			<td class="aplos-field">
+				<h:inputTextarea id="descriptionText" style="width:100%;height:100%" styleClass="descriptionText  aplos_ckeditor" value="#{productTypeTechSupportCmsAtom.description}"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label" style="width:140px">Product type tech support:</td>
+			<td>
+				<h:selectOneListbox size="1" converter="aplosAbstractBeanConverter" valueChangeListener="#{productTypeTechSupportBeDmb.positionedBeanHelper.changeCurrentPositionedBean}"
+					onchange="submit();" immediate="true" value="#{productTypeTechSupportBeDmb.positionedBeanHelper.selectedPositionedBean}">
+					<f:selectItems value="#{ productTypeTechSupportBeDmb.positionedBeanHelper.positionedBeanSelectItems }" />
+				</h:selectOneListbox>
+				<aploscc:ajaxButton value="Add a product type" action="#{ productTypeTechSupportBeDmb.positionedBeanHelper.addNewPositionedBean }" />
+				<aplos:panel rendered="#{ productTypeTechSupportBeDmb.positionedBeanHelper.currentPositionedBean != null }">
+					<aploscc:ajaxButton value="Remove product type" action="#{ productTypeTechSupportBeDmb.positionedBeanHelper.deleteCurrentPositionedBean }" />
+				</aplos:panel>
+			</td>
+		</tr>
+	</table>
+	<hr />
+	<aplos:panel id="productTypeTechSupportPanel" rendered="#{ productTypeTechSupportBeDmb.positionedBeanHelper.currentPositionedBean != null }">
+		<table>
+			<tr>
+				<td class="aplos-label">Product Type</td>
+				<td class="aplos-field">
+					<h:selectOneMenu converter="aplosAbstractBeanConverter" 
+						value="#{productTypeTechSupportBeDmb.positionedBeanHelper.currentPositionedBean.productType}">
+						<f:selectItems value="#{ productTypeTechSupportBeDmb.productTypeSelectItemBeans }" />
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label"></td>
+				<td class="aplos-field">
+					<h:commandLink value="Edit tech support" action="#{ productTypeTechSupportBeDmb.goToProductTypeEditPage }" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Position in Arrangement</td>
+				<td>
+					<h:selectOneMenu value="#{productTypeTechSupportBeDmb.positionedBeanHelper.currentPositionedBean.positionIdx}">
+						<f:selectItems value="#{productTypeTechSupportBeDmb.positionedBeanHelper.positionIdxSelectItems}" />   
+					</h:selectOneMenu>
+				</td>
+			</tr>
+		</table>
+	</aplos:panel>
+</ui:composition>

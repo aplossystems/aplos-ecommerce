@@ -1,0 +1,74 @@
+<ui:composition template="#{ themeManager.listTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="listContent">
+		<div style="float:left">
+			<aploscc:ajaxButton value="Generate accessory serial numbers" action="#{ backingPage.redirectToGenerateNewSerialNumbers(false) }" /><br/>
+			<aploscc:ajaxButton value="Generate electronic serial numbers" action="#{ backingPage.redirectToGenerateNewSerialNumbers(true) }" />
+			<aploscc:ajaxButton value="Reprint void stickers" action="#{ backingPage.redirectToReprintVoidStickers() }" /><br/>
+			<aploscc:ajaxButton value="Print packaging labels" action="#{ backingPage.redirectToPrintPackagingLabels() }" target="_blank" />
+		</div>
+		<div style="float:right">
+		<aploscc:ajaxButton value="Assign new serial numbers" action="#{ backingPage.redirectToAssignSerialNumbers }" /><br/>
+		<aploscc:ajaxButton value="Book In" action="#{ backingPage.redirectToBookIn }"/>
+		</div>
+		<div style="clear:both" />
+		<aploscc:wrappedDataTable2 id="wrappedDataTable" dataTableState="#{ backingPage.dataTableState }">
+			<p:column>
+				<f:facet name="header"></f:facet>
+				<h:selectBooleanCheckbox value="#{tableBean.selected}" rendered="#{tableBean.realizedProduct != null}" />
+			</p:column>
+			<p:column style="width:100px;#{backingPage.dataTableState.lazyDataModel.partNumberRowStyle}" filterStyle="width:100px" sortBy="#{ tableBean.realizedProduct.itemCode }" filterBy="#{ tableBean.realizedProduct.itemCode }">
+				<f:facet name="header">Part Number</f:facet>
+				<aploscc:quickView bean="#{tableBean.realizedProduct}" text="#{tableBean.realizedProduct.determineItemCode()}" action="#{ teletestRealizedProductEditPage.redirectToPage( tableBean.realizedProduct ) }" />
+			</p:column>
+			<p:column>
+				<f:facet name="header">Build date</f:facet>
+				<aplos:standardDateTableCell value="#{ tableBean.buildDate }" />
+			</p:column>
+			<p:column>
+				<f:facet name="header">Trans Id</f:facet>
+				#{ tableBean.associatedTransaction.id }
+			</p:column>
+			<p:column>
+				<f:facet name="header">Invoice date</f:facet>
+				<aplos:standardDateTableCell value="#{ tableBean.associatedTransaction.firstInvoicedDate }" />
+			</p:column>
+			<p:column>
+				<f:facet name="header">First name</f:facet>
+				#{ tableBean.associatedTransaction.customer.subscriber.firstName }
+			</p:column>
+			<p:column>
+				<f:facet name="header">Surname</f:facet>
+				#{ tableBean.associatedTransaction.customer.subscriber.surname }
+			</p:column>
+			<p:column>
+				<f:facet name="header">Company</f:facet>
+				#{ backingPage.getCompanyName( tableBean.associatedTransaction.customer ) }
+			</p:column>
+			<p:column>
+				<f:facet name="header">Booked out</f:facet>
+				#{backingPage.isBookedOutStr(tableBean)}
+			</p:column>
+			<p:column>
+				<f:facet name="header">Elec.</f:facet>
+				#{tableBean.isVoidStickerRequiredStr()}
+			</p:column>
+			<p:column>
+				<f:facet name="header"></f:facet>
+				<h:commandLink action="#{backingPage.createReturnAndRedirect(tableBean)}" value="Create new return" rendered="#{ backingPage.isBookedOut( tableBean ) }" />		
+				<ui:repeat value="#{ tableBean.getOptimisedReturns() }" var="realizedProductReturn">
+					<br/>
+					<!-- <h:commandLink action="# { realizedProductReturnEditPage.redirectToPage( realizedProductReturn ) }" value="Return (# { realizedProductReturn.id })" />-->
+					<aploscc:quickView bean="#{realizedProductReturn}" text="Return (#{ realizedProductReturn.id })" action="#{ realizedProductReturnEditPage.redirectToPage( realizedProductReturn ) }" />
+				</ui:repeat>
+			</p:column>
+		</aploscc:wrappedDataTable2>
+	</ui:define>
+</ui:composition>

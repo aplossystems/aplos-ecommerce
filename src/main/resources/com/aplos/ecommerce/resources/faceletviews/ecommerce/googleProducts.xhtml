@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0" xmlns:h="http://java.sun.com/jsf/html">
+  <channel>
+    <title>#{ website.name } products</title>
+    <link>#{backingPage.siteLink}</link>
+    <description>#{ website.name }</description>
+    <h:outputText escape="false" value="#{backingPage.itemsXml}" />
+  </channel>
+</rss>

@@ -1,0 +1,51 @@
+<table width="670" border="0" cellspacing="10" cellpadding="0">
+	<tr>
+		<td>
+		<p
+			style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 15px; color: #666666; margin: 0px; margin-bottom: 10px;">
+		Dear {CUSTOMER_FIRSTNAME}</p>
+		<p
+			style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 15px; color: #231F20; margin: 0px; margin-bottom: 10px;">
+		Today ({DISPATCH_DATE}) at {DISPATCH_TIME} the goods you ordered with
+		reference: <br />
+		<br />
+		{ORDER_NUMBER} <br />
+		<br />
+		were packaged and ready for collection from {COMPANY_NAME}.</p>
+		<p
+			style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; line-height: 15px; color: #231F20; margin: 0px; margin-bottom: 10px;">
+		<!-- BEGIN DYNAMIC : customerCollection --> They are now ready for you
+		to collect from the address below. Our opening hours are
+		{COMPANY_OPENING_HOURS} 
+		<!-- END DYNAMIC : customerCollection --> 
+		<!-- BEGIN DYNAMIC : courierCollection -->
+		They will be collected {COLLECTION_DAY_NAME} at around
+		{COURIER_COLLECTION_TIME} for the following service and delivery
+		times: <br />
+		<br />
+		{COURIER_SERVICE_NAME} <br />
+		<br />
+		You will be able to track the progress of the delivery the morning
+		after collection using the link for {COURIER_SERVICE_NAME}'s web site:
+		<br />
+		<br />
+		{COURIER_TRACKING_URL} <br />
+		<br />
+		Please use the following tracking number: {COURIER_TRACKING_NUMBER} <br />
+		<br />
+		When you login to the Courier's web site, please use the following
+		instructions: <br />
+		<br />
+		{COURIER_TRACKING_INSTRUCTIONS} 
+		<!-- END DYNAMIC : courierCollection -->
+		<br />
+		<br />
+
+		{COMPANY_DETAILS_SALUTATION} <br />
+		{CURRENT_USER_NAME} <br />
+		{COMPANY_NAME} Sales <br />
+		<br />
+		{COMPANY_EMAIL_SIGNATURE}</p>
+		</td>
+	</tr>
+</table>

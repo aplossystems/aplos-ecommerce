@@ -1,0 +1,59 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label">Zone Name</td>
+				<td class="aplos-field">
+					<h:inputText label="name" value="#{ postalZone.name }" required="true" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Countries</td>
+				<td class="aplos-field">
+					<aplos:panel id="acPanel">
+						<aplos:autoComplete id="countryAc" value="#{backingPage.selectedCountry}"   
+		                    completeMethod="#{backingPage.suggestCountries}" var="autoBean" itemValue="#{autoBean}" itemLabel="#{ autoBean.displayName }" converter="autoCompleteBeanConverter">
+		                   <p:ajax process="@form" event="itemSelect" listener="#{backingPage.addCountry}" update="acPanel,primaryCountryPanel"/>  
+		                </aplos:autoComplete>
+		                <table>
+		                	<ui:repeat value="#{postalZone.countries}" var="country">
+		                		<tr><td><aploscc:quickView bean="#{country}" textOnly="true" /></td><td><aploscc:ajaxButton value="remove" action="#{backingPage.removeCountry}" /></td></tr>
+		                	</ui:repeat>
+		                </table>
+		            </aplos:panel>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Visible as Country</td>
+				<td class="aplos-field">
+					<h:selectBooleanCheckbox label="Visible as Country" value="#{ postalZone.visibleAsACountry }" required="true">
+						<p:ajax event="change" update="primaryCountryPanel" />
+					</h:selectBooleanCheckbox>
+				</td>
+			</tr>
+		</table>
+		<aplos:panel id="primaryCountryPanel">
+			<aplos:panel layout="none" rendered="#{ postalZone.visibleAsACountry }">
+				<table class="aplos-form-table">
+					<tr>
+						<td class="aplos-label">Primary Country</td>
+						<td class="aplos-field">
+							<h:selectOneMenu value="#{postalZone.primaryCountry}" label="Primary Country" required="true" converter="aplosAbstractBeanConverter">
+								<f:selectItems value="#{backingPage.availableCountrySelectItems}" />
+							</h:selectOneMenu>
+						</td>
+					</tr>
+				</table>			
+			</aplos:panel>
+		</aplos:panel>
+	</ui:define>
+
+</ui:composition>

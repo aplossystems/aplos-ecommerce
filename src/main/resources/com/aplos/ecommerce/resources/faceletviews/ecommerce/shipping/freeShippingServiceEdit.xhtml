@@ -1,0 +1,70 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:130px">Shipping Method Name</td>
+				<td class="aplos-field"><h:inputText value="#{ freeShippingService.name }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">For all countries?</td>
+				<td class="aplos-field">
+					<h:selectBooleanCheckbox value="#{ freeShippingService.forAllCountries }" >
+						<p:ajax event="change" update="postalZonePnl" />
+					</h:selectBooleanCheckbox>
+				</td>
+			</tr>
+		</table>
+		<h:panelGroup id="postalZonePnl"> 
+			<h:panelGroup rendered="#{ !freeShippingService.forAllCountries }">
+				<table class="aplos-form-table">
+					<tr>
+						<td class="aplos-label">Postal zone</td>
+						<td class="aplos-field">
+							<h:selectOneMenu value="#{ freeShippingService.postalZone }" converter="aplosAbstractBeanConverter">
+								<f:selectItems value="#{backingPage.postalZoneSelectItemBeans}" />
+							</h:selectOneMenu>
+						</td>
+					</tr>
+				</table>
+			</h:panelGroup>
+		</h:panelGroup>
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:130px">Delivery time</td>
+				<td class="aplos-field">
+					<h:inputText value="#{freeShippingService.deliveryTime}"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label" style="width:130px">Shipping Threshold</td>
+				<td class="aplos-field">
+					<h:inputText value="#{freeShippingService.threshold}" style="width:40px" converterMessage="Please enter a number 0 or greater" validatorMessage="Please enter a number 0 or greater">
+						<f:validateDoubleRange minimum="0"  />
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label" style="width:130px">Notice Percentage</td>
+				<td class="aplos-field">
+					<h:inputText value="#{freeShippingService.noticePercentage}" style="width:40px" converterMessage="Please enter a number 0 or greater" validatorMessage="Please enter a number 0 or greater">
+						<f:validateDoubleRange minimum="0"  />
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Show on website</td>
+				<td class="aplos-field">
+					<h:selectBooleanCheckbox value="#{freeShippingService.showingOnWebsite}" />
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>

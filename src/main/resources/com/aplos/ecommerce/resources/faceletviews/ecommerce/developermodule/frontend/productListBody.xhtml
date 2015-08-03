@@ -1,0 +1,59 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:p="http://primefaces.org/ui">
+	<div><!-- if you remove this div jsf will spazz out and rerendering wont work. so basically, dont -->
+		<aplos:panel layout="inline" id="productListRerender" styleClass="aplos-product-list-container">
+			<h:panelGroup styleClass="aplos-product-list-header"> 
+				<h1 class="categoryTitle">#{productListFeDmb.pageTitle}</h1>
+				<h:selectOneMenu style="float:right;" styleClass="categorySorting" value="#{productListFeDmb.sortOption}">
+					<f:selectItems value="#{productListFeDmb.sortingOptions}" />  
+					<p:ajax process="@form" event="change" update="productListRerender" /> 
+				</h:selectOneMenu>
+			</h:panelGroup> 
+			<ui:repeat id="productPanel" rendered="#{ !productListFeDmb.productListEmpty }" value="#{productListFeDmb.paginatedProductList}" var="realProduct">
+				<div class="aplos-list-product #{productListFeDmb.getLastInRowClass(5)}">
+					<a class="aplos-image-wrapper" href="#{request.contextPath}/#{productListFeDmb.productMapping}">
+						<img src="#{realProduct.defaultProductListImageUrl}&amp;maxWidth=143&amp;maxHeight=196" alt="" />
+					</a>
+					<div>
+						<a href="#{request.contextPath}/#{productListFeDmb.productMapping}">
+							<h3 class="aplos-list-product-name"><h:outputText value="#{realProduct.productInfo.product.name}" /></h3>
+							<h:panelGroup layout="block" rendered="#{!ecommerceConfiguration.getEcommerceSettings( true ).productListGroupByColour}" styleClass="aplos-colour">
+								#{realProduct.productColour.name}
+							</h:panelGroup>
+							<h:panelGroup layout="block" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingProductSizes}" styleClass="aplos-colour">
+								#{ productListFeDmb.productSizeRange }
+							</h:panelGroup>
+							<span class="aplos-details">
+								<span class="aplos-price">
+									<span class="aplos-crossout"><h:outputText style="margin-right:8px;" rendered="#{realProduct.hasCrossoutPrice}" value="#{currency.prefix}#{realProduct.convertedDeterminedCrossoutPriceStr}#{currency.suffix}" /></span>
+									<h:outputText value="#{currency.prefix}#{realProduct.convertedDeterminedPriceStr}#{currency.suffix}" />
+								</span>
+							</span>
+						</a>
+					</div>
+				</div>
+			</ui:repeat>
+			<aplos:panel id="noProductPanel" rendered="#{ productListFeDmb.productListEmpty }">
+				<span class="aplos-no-stock" >We currently have no stock for this category.</span>		
+			</aplos:panel>  
+			<br style="clear:both;" /> 			
+			<br/>
+		    <div id="paging" class="aplos-product-list-paging">
+				<aplos:panel autoUpdate="true">
+					<ui:repeat id="paginationControls" value="#{productListFeDmb.paginationControls}" var="control">
+						<h:commandLink reRender="productListRerender" escape="false" id="control" action="#{ productListFeDmb.switchPage }" value="#{control.displayText}" disabled="#{control.isDisabled}" styleClass="stdBtnCommand" />
+					</ui:repeat>	
+				</aplos:panel>	
+			</div>
+			<h:panelGroup styleClass="aplos-product-list-footer" rendered="#{ !productListFeDmb.productListRootDescriptionEmpty }"> 
+				<h2 class="categoryTitle">#{productListFeDmb.pageTitle}</h2>
+				<h:outputText value="#{productListFeDmb.productListAtom.productListRoot.description}" escape="false" />
+			</h:panelGroup> 
+		</aplos:panel>
+	</div>
+</ui:composition>

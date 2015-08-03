@@ -1,0 +1,246 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Invoice</title>
+<style type="text/css">
+.font1 {
+	font-size: 12px;
+}
+
+.font2 {
+	font-size: 15px;
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+.orderItemCell {
+	border: solid black 1px;
+	padding: 4px;
+}
+
+.orderItem {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	line-height: 10px;
+	margin: 0px;
+}
+
+@page {
+	margin: 10pt;
+}
+</style>
+</head>
+
+<body>
+
+	<table
+		style="max-width: 560pt; min-width: 560pt; width: 560pt; max-height: 792pt; min-height: 792pt; height: 792pt;">
+		<tr valign="top">
+			<td>
+				<div style="min-height: 630pt; max-height: 630pt; height: 630pt;">
+					<table
+						style="font-family: Verdana, Geneva, sans-serif; font-size: 12px; width: 100%"
+						cellspacing="0" cellpadding="0">
+						<tr>
+							<td width="50%" style="height:50px"><img src="{COMPANY_LOGO}" style="height:50px"/></td>
+							<td width="50%">
+								<div align="right">
+									<font size="5"><strong>{INVOICE_HEADER_CAPTIALS}</strong></font>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td width="60%" height="91">
+								<p class="font1">
+									<strong>{COMPANY_NAME}</strong><br />
+									{COMPANY_ADDRESS_1}{COMPANY_ADDRESS_2}{COMPANY_ADDRESS_3},
+									{COMPANY_TOWN}, {COMPANY_COUNTY}, {COMPANY_POSTCODE}, UK<br />
+									<strong>Tel:</strong> {COMPANY_PHONE} <strong> Fax:</strong>
+									{COMPANY_FAX}<br /> <strong>Email:</strong>
+									{COMPANY_EMAIL} <strong> Web:</strong> {COMPANY_WEB}<br />
+									<!-- BEGIN DYNAMIC : showVat --> 
+									<strong>VAT #:</strong> {COMPANY_VATNO}
+									<!-- END DYNAMIC : showVat -->
+								</p>
+							</td>
+							<td>
+								<p align="right" style="font-size: 12px">
+									<b>Invoice date:</b> {INVOICE_DATE}<br /> <b>{INVOICE_HEADER}
+										#:</b> {INVOICE_NUMBER}<br /> <b>Your ref:</b>
+									{CUSTOMER_REFERENCE}<br /> <b>Payment method:</b>{PAYMENT_METHOD}<br />
+									<!-- BEGIN DYNAMIC : companyIds -->
+									<b>Company ID:</b> {COMPANY_ID}<br /> <b>Contact ID:</b>
+									{CONTACT_ID}
+									<!-- END DYNAMIC : companyIds -->
+									<!-- BEGIN DYNAMIC : customerId -->
+									<b>Customer ID:</b> {CUSTOMER_ID}
+									<!-- END DYNAMIC : customerId -->
+								</p>
+								<div style="text-align: right">
+									<img src="{INVOICE_NUMBER_BARCODE_URL}" />
+								</div>
+							</td>
+						</tr>
+					</table>
+					<br />
+
+					<table
+						style="font-family: Verdana, Geneva, sans-serif; font-size: 12px;"
+						width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td width="55%"><b>Billing Address</b></td>
+							<td width="45%"><b>Delivery Address</b></td>
+						</tr>
+						<tr>
+							<td colspan="2">&#160;</td>
+						</tr>
+						<tr>
+							<td style="text-transform: capitalize">{BA_CUSTOMER_NAME}<br />
+								<!-- BEGIN DYNAMIC : customerCompany1 --> 
+								{CUSTOMER_COMPANY}<br />
+								<!-- END DYNAMIC : customerCompany1 --> 
+								{BA_ADDRESS}<br />
+								{BA_COUNTRY}<br /> {BA_ADDRESS_BARCODE_TAG}
+							</td>
+							<td style="text-transform: capitalize">{DA_CUSTOMER_NAME}<br />
+								<!-- BEGIN DYNAMIC : customerCompany2 --> 
+								{CUSTOMER_COMPANY}<br />
+								<!-- END DYNAMIC : customerCompany2 --> 
+								{DA_ADDRESS}<br />
+								{DA_COUNTRY}<br /> {DA_ADDRESS_BARCODE_TAG}
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+						</tr>
+					</table>
+					<table style="width: 100%">
+						<tr>
+							<td
+								style="font-family: Verdana, Geneva, sans-serif; font-size: 11px; text-align: right">Invoice
+								Currency : {INVOICE_CURRENCY}</td>
+						</tr>
+					</table>
+					<table
+						style="height: 300pt; max-height: 300pt; min-height: 300pt; font-family: Verdana, Geneva, sans-serif; font-size: 10px; border: solid black 1px; border-collapse: collapse"
+						width="100%" border="0">
+						<tr style="height: 25px; max-height: 25px">
+							<!-- BEGIN DYNAMIC : customerReferenceHead -->
+							<td width="8%"
+								style="border: solid black 1px; text-align: center"><strong>Your
+									Ref.</strong></td>
+							<!-- END DYNAMIC : customerReferenceHead -->
+							<!-- BEGIN DYNAMIC : itemCodeHead -->
+							<td width="8%"
+								style="border: solid black 1px; text-align: center"><strong>Code</strong></td>
+							<!-- END DYNAMIC : itemCodeHead -->
+							<td width="8%"
+								style="border: solid black 1px; text-align: center"><strong>Qty</strong></td>
+							<td style="border: solid black 1px;min-width:50%"><strong>Name</strong></td>
+							<td width="8%" style="border: solid black 1px; text-align: right"><strong>Each</strong></td>
+							<td width="8%" style="border: solid black 1px; text-align: right"><strong>Discount</strong></td>
+							<td width="10%"
+								style="border: solid black 1px; text-align: right"><strong>Total</strong></td>
+						</tr>
+						<!-- BEGIN DYNAMIC : productList -->
+						<tr valign="top">
+							<!-- BEGIN DYNAMIC : customerReferenceRow -->
+							<td class="orderItemCell" style="text-align: center">
+								<p class="orderItem">{CUSTOMER_REFERENCE_REPEATED}</p>
+							</td>
+							<!-- END DYNAMIC : customerReferenceRow -->
+							<!-- BEGIN DYNAMIC : itemCodeRow -->
+							<td class="orderItemCell" style="text-align: center">
+								<p class="orderItem">{PRODUCT_CODE_REPEATED}</p>
+							</td>
+							<!-- END DYNAMIC : itemCodeRow -->
+							<td class="orderItemCell" style="text-align: center">
+								<p class="orderItem">{PRODUCT_QUANTITY_REPEATED}</p>
+							</td>
+							<td class="orderItemCell">
+								<p class="orderItem">{PRODUCT_NAME_REPEATED}</p>
+							</td>
+							<td class="orderItemCell" style="text-align: right">
+								<p class="orderItem">{PRODUCT_PRICE_REPEATED}</p>
+							</td>
+							<td class="orderItemCell" style="text-align: right">
+								<p class="orderItem">{PRODUCT_DISCOUNT_REPEATED}</p>
+							</td>
+							<td class="orderItemCell" style="text-align: right">
+								<p class="orderItem">{PRODUCT_TOTAL_REPEATED}</p>
+							</td>
+						</tr>
+						<!-- END DYNAMIC : productList -->
+					</table>
+					<table cellpadding="5" border="0" cellspacing="0"
+						style=" height: 50px; text-align: left; font-size: 13px;">
+						<!-- BEGIN DYNAMIC : deliveryRequiredBy -->
+						<tr valign="top">
+							<td style="text-align: right; min-width: 70pt; width : 70pt">Delivery required by:</td>
+							<td style="text-align: left;border:black solid 1px;width:100%">{DELIVERY_REQUIRED_BY}</td>
+						</tr>
+						<!-- END DYNAMIC : deliveryRequiredBy -->
+						<tr>
+							<td></td>
+						</tr>
+						<tr valign="top">
+							<td style="text-align: right; min-width: 70pt; width : 70pt">
+								{SPECIAL_DELIVERY_INSTRUCTIONS_LABEL}</td>
+							<td style="text-align: left;border:black solid 1px;width:100%">
+								{SPECIAL_DELIVERY_INSTRUCTIONS}</td>
+						</tr>
+					</table>
+				</div>
+				<table width="100%" cellspacing="0" cellpadding="0" border="0">
+					<tr valign="top">
+						<td
+							style="min-width: 170pt; max-width: 270pt; width: 270pt; font-family: Verdana, Geneva, sans-serif; font-size: 18px;">
+
+						</td>
+						<td align="right" height="50px"
+							style="font-family: Verdana, Geneva, sans-serif; font-size: 13px; text-align: right">
+							<table cellpadding="10" cellspacing="0"
+								style="width: 200pt; height: 50px; min-height: 50px; max-height: 50px; text-align: right; float: right">
+								<tr valign="top">
+									<td style="text-align: right; width: 30pt">Items total</td>
+									<td style="text-align: right; width: 30pt">
+										{CURRENCY_PREFIX}{ITEMS_TOTAL}{CURRENCY_SUFFIX}</td>
+								</tr>
+								<tr valign="top">
+									<td style="text-align: right">Delivery charge</td>
+									<td style="text-align: right">
+										{CURRENCY_PREFIX}{DELIVERY_CHARGE}{CURRENCY_SUFFIX}</td>
+								</tr>
+								<tr valign="top">
+									<td style="text-align: right">VAT</td>
+									<td style="text-align: right">
+										{CURRENCY_PREFIX}{VAT_CHARGE}{CURRENCY_SUFFIX}</td>
+								</tr>
+								<tr valign="top">
+									<td style="text-align: right"><b>Invoice total</b></td>
+									<td style="text-align: right"><b>{CURRENCY_PREFIX}{INVOICE_GROSS_TOTAL}{CURRENCY_SUFFIX}</b>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<!-- BEGIN DYNAMIC : bankTransferPayment -->
+				<table cellpadding="0" cellspacing="0"
+					style="font-size: 9px; padding-top: 5px">
+					<tr>
+						<td><b>Bank Name:</b> {SITE_BANK_NAME}&#160;&#160; <b>Account
+								#:</b> {SITE_ACCOUNT_NUMBER}&#160;&#160; <b>Branch #:</b>
+							{SITE_SORT_CODE}&#160;&#160;</td>
+					</tr>
+				</table>
+				<!-- END DYNAMIC : bankTransferPayment -->
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

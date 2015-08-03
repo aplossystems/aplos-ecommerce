@@ -1,0 +1,208 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+		
+	<ui:define name="heading">Assign new serial numbers</ui:define>
+	
+	<ui:define name="editContent">
+		<aplos:panel layout="block" rendered="#{ backingPage.serialNumberListBeans.size() == 0 }">
+			<table class="aplos-form-table">
+				<tr>
+					<td class="aplos-label">Part Number</td>
+					<td class="aplos-field">
+						<aplos:autoComplete id="productCodeAc" value="#{backingPage.selectedRealizedProductListBean}"   
+		                    completeMethod="#{backingPage.suggestProductsByCode}" var="autoBean" itemValue="#{autoBean}" itemLabel="#{ backingPage.getItemCodeDisplayText( autoBean ) }" converter="autoCompleteBeanConverter">
+		                   <p:ajax event="itemSelect" listener="#{backingPage.setProductByItemCode}" update="productNameAc productCodeAc productPhoto productVersionList"/>  
+		                </aplos:autoComplete>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align:center">OR</td>
+				</tr>
+				<tr>
+					<td class="aplos-label">Product name</td>
+					<td class="aplos-field">
+						<aplos:autoComplete id="productNameAc" value="#{backingPage.selectedRealizedProductListBean}"   
+		                    completeMethod="#{backingPage.suggestProductsByName}" var="autoBean" itemValue="#{autoBean}" itemLabel="#{ backingPage.getProductNameDisplayText( autoBean ) }" converter="autoCompleteBeanConverter">
+		                   <p:ajax event="itemSelect" listener="#{backingPage.setProductByName}" update="productNameAc productCodeAc productPhoto productVersionList"/>  
+		                </aplos:autoComplete>
+					</td>
+				</tr>
+				<tr>
+					<td class="aplos-label">Quantity</td>
+					<td class="aplos-field">
+						<h:inputText value="#{ backingPage.quantity }" required="#{ backingPage.isValidationRequired }" label="Quantity" >
+							<f:validateLongRange minimum="1" maximum="1000000" />
+						</h:inputText>
+					</td>
+				</tr>
+				<tr>
+					<td class="aplos-label">Version</td>
+					<td class="aplos-field">
+						<h:selectOneListbox size="1" id="productVersionList" value="#{backingPage.selectedProductVersion}" converter="aplosAbstractBeanConverter">
+							<f:selectItems value="#{ backingPage.productVersionSelectItemBeans }" />   
+						</h:selectOneListbox>
+					</td>
+				</tr>
+				<tr>
+					<td class="aplos-label">Photo1</td>
+					<td class="aplos-field">
+						<h:graphicImage id="productPhoto" url="#{ backingPage.realizedProduct.defaultImageDetails.getFullFileUrl(false) }" />
+					</td>
+				</tr>
+			</table>
+		</aplos:panel>
+		<br />
+		
+		<aplos:panel autoUpdate="true">
+			<aplos:panel layout="block" rendered="#{ backingPage.serialNumberListBeans.size() > 0 }">
+				<div style="float:left">
+					<table>
+						<tr>
+							<td class="aplos-label">Product name</td>
+							<td class="aplos-field">
+								<h:outputText value="#{ backingPage.realizedProduct.productInfo.product.name }" />
+							</td>
+						</tr>
+						<tr>
+							<td class="aplos-label">Part Number</td>
+							<td class="aplos-field">
+								<h:outputText value="#{ backingPage.realizedProduct.itemCode }" />
+							</td>
+						</tr>
+						<tr>
+							<td class="aplos-label">Photo</td>
+							<td class="aplos-field"><img src="#{ backingPage.realizedProduct.defaultImageDetails.getFullFileUrl(true) }" /></td>
+						</tr>
+					</table>	
+				</div> 
+				
+				<aplos:panel rendered="#{ backingPage.readyForPrinting }">
+					<div style="float:left; margin-left:30px">
+						Assigned serial numbers:<br />
+						<aplos:panel id="listTableWrapper">
+						<p:dataTable id="listTable" value="#{ backingPage.serialNumberListBeans }" var="serialNumber" styleClass="listDatatable"> <p:column>
+							<f:facet name="header">
+								<h:selectBooleanCheckbox value="#{backingPage.allSerialNumbersSelected}" >
+									<p:ajax event="change" listener="#{backingPage.updateSelectedSerialNumbers()}" update="listTableWrapper"/>
+								</h:selectBooleanCheckbox>
+							</f:facet>
+							<h:selectBooleanCheckbox value="#{serialNumber.selected}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">Serial Number</f:facet>
+								#{serialNumber.id}
+							</p:column>
+						</p:dataTable>
+						</aplos:panel>
+					</div>
+				</aplos:panel>
+			</aplos:panel>
+			<div style="clear:both" />
+			<aplos:panel layout="block" rendered="#{ backingPage.serialNumberListBeans.size() > 0 and !backingPage.readyForPrinting }">
+				<div>
+					<table class="aplos-form-table">
+						<tr>
+							<td class="aplos-label">Included products</td>
+							<td>
+							<aplos:panel id="itemTableWrapper">
+								<p:dataTable id="itemTable" value="#{ backingPage.realizedProduct.productInfo.includedProducts }" var="includedProduct" styleClass="listDatatable"> <p:column>
+										<f:facet name="header">Product name</f:facet>
+										<div style="width:200px">#{includedProduct.displayName}</div>
+									</p:column>
+									<p:column>
+										<f:facet name="header">Product part #</f:facet>
+										<div style="width:100px">#{includedProduct.realizedProductRetriever.retrieveRealizedProduct(backingPage.realizedProduct).determineItemCode()}</div>
+									</p:column>
+									<p:column>
+										<f:facet name="header">Expected Quantity</f:facet>
+										<div style="width:80px">#{backingPage.getExpectedQuantity( includedProduct ) }</div>
+									</p:column>
+									<p:column>
+										<f:facet name="header">Scanned Quantity</f:facet>
+										<div style="width:80px;font-weight:bold;color:#{ backingPage.getScannedQuantityColour( includedProduct ) }">#{backingPage.getNumberOfScanned( includedProduct )}</div>
+									</p:column>
+									<p:column>
+										<f:facet name="header"></f:facet>
+										<aploscc:ajaxButton id="cartItembookOutAndAssignBtn" ajaxButtons="true" action="#{ backingPage.addNonSerialisedProduct }" value="book out" rendered="#{ backingPage.getNonSerialBookOutAvailable( includedProduct ) }" reRender="cartItembookOutAndAssignBtn,itemTableWrapper,bookOutAndAssignBtn" />
+									</p:column>
+									<p:column>
+										<f:facet name="header"></f:facet>
+										<aploscc:ajaxButton id="cartItemBookAllOutBtn" ajaxButtons="true" action="#{ backingPage.addAllNonSerialisedProduct }" value="book all out" rendered="#{ backingPage.getNonSerialBookOutAvailable( includedProduct ) }" reRender="cartItembookOutAndAssignBtn,itemTableWrapper,bookOutAndAssignBtn" />
+									</p:column>
+								</p:dataTable>
+							</aplos:panel>
+							</td>
+						</tr>
+					</table>
+					<table class="aplos-form-table">
+						<tr>
+							<td class="aplos-label">Product Groups</td>
+							<td>
+								<p:dataTable id="productGroupTable" value="#{ backingPage.realizedProduct.productInfo.includedProductGroups }" var="includedProductGroup" styleClass="listDatatable"> 
+									<p:column>
+										<f:facet name="header">Product name</f:facet>
+										<div style="width:300px">
+											<ui:repeat value="#{ includedProductGroup.productGroup.productRetrieverList }" var="productRetriever">
+												#{productRetriever.retrieveRealizedProduct(backingPage.realizedProduct).determineItemCode()} #{productRetriever.retrieveRealizedProduct(backingPage.realizedProduct).displayName}	
+												<aplos:panel rendered="#{ !productRetriever.equals( includedProductGroup.productGroup.productRetrieverList.get( includedProductGroup.productGroup.productRetrieverList.size() - 1 ) ) }">
+													<br/> <span style="color:red;font-weight:bold">OR</span> <br/>
+												</aplos:panel>
+											</ui:repeat>
+										</div>
+									</p:column>
+									<p:column>
+										<f:facet name="header">Expected Quantity</f:facet>
+										<div style="width:80px">#{backingPage.getExpectedQuantity( includedProductGroup ) }</div>
+									</p:column>
+									<p:column>
+										<f:facet name="header">Scanned Quantity</f:facet>
+										<div style="width:80px;font-weight:bold;color:#{ backingPage.getScannedQuantityColour( includedProductGroup ) }">#{backingPage.getNumberOfScanned( includedProductGroup )}</div>
+									</p:column>
+									<p:column>
+										<f:facet name="header"></f:facet>
+										<aploscc:ajaxButton id="cartItembookOutAndAssignBtn" ajaxButtons="true" action="#{ backingPage.addNonSerialisedProductGroup }" value="book out" rendered="#{ backingPage.getNonSerialBookOutAvailable( includedProductGroup ) }" reRender="cartItembookOutAndAssignBtn,itemTable,bookOutAndAssignBtn" />
+									</p:column>
+									<p:column>
+										<f:facet name="header"></f:facet>
+										<aploscc:ajaxButton id="cartItemBookAllOutBtn" ajaxButtons="true" action="#{ backingPage.addAllNonSerialisedProductGroup }" value="book all out" rendered="#{ backingPage.getNonSerialBookOutAvailable( includedProductGroup ) }" reRender="cartItembookOutAndAssignBtn,itemTable,bookOutAndAssignBtn" />
+									</p:column>
+								</p:dataTable>
+							</td>
+						</tr>
+					</table>
+					<table class="aplos-form-table">
+						<tr>
+							<td class="aplos-label"></td>
+							<td>
+								<h:inputText id="serialNumberInputField" value="#{ backingPage.scannedSerialNumber }" style="margin-top:30px; width:200px" />
+								<aploscc:ajaxButton ajaxEnabled="true" value="book out item" action="#{ backingPage.serialNumberScanned() }" reRender="bookOutAndAssignBtn,serialNumberInputField" />
+							</td>
+						</tr>
+					</table>
+				</div>
+			</aplos:panel>
+		</aplos:panel>
+	</ui:define>
+	
+	
+<ui:define name="editButtons">
+	<aploscc:controlPanel>
+		<f:facet name="upperRightControlPanel">
+		<aplos:panel autoUpdate="true">
+			<aploscc:ajaxButton value="Print packaging labels" action="#{ backingPage.redirectToPrintPackagingLabels() }" target="_blank" rendered="#{ backingPage.serialNumberListBeans.size() > 0 and backingPage.readyForPrinting }" />
+			<h:commandButton id="bookOutAndAssignBtn" value="Book out and assign" action="#{ backingPage.bookOutAndAssign }" disabled="#{ backingPage.bookOutAndAssignBtnDisabled }" rendered="#{ backingPage.bookOutAndAssignBtnRendered and !backingPage.readyForPrinting }" />
+			<aploscc:ajaxButton id="assignBtn" value="Assign" action="#{ backingPage.assignSerialNumbers }" reRender="okBtn,assignBtn,cancelBtn" rendered="#{ backingPage.serialNumberListBeans.size() == 0 }" />
+			<aploscc:ajaxButton id="cancelBtn" value="Cancel" action="#{ backingPage.cancelBtnAction }" rendered="#{ !backingPage.readyForPrinting }" />
+			
+			<aploscc:ajaxButton id="okBtn" value="Ok" action="#{ backingPage.okBtnAction }" rendered="#{ backingPage.readyForPrinting }" />
+		</aplos:panel>
+	</f:facet>
+	</aploscc:controlPanel>
+</ui:define>
+</ui:composition>

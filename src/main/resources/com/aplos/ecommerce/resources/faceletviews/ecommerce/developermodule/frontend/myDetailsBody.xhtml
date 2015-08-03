@@ -1,0 +1,60 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	<div id="customer-section">
+		<h1>My Details</h1>
+		<div class="central">
+      		<table style="text-align:left">
+      			<h:panelGroup rendered="#{myDetailsFeDmb.myDetailsAtom.includeFullName}">
+      				<tr>
+	    				<td>First Name<h:outputText styleClass="redder" value=" *" /></td>
+	    				<td>
+	    					<h:inputText required="true" value="#{myDetailsFeDmb.userToDetail.subscriber.firstName}" name="firstName" id="firstName" requiredMessage="First Name is required, Please fully complete this field." validatorMessage="First Name is required, Please fully complete this field." />
+	    				</td>
+	    			</tr>
+	    			<tr>
+	    				<td>Surname<h:outputText styleClass="redder" value=" *" /></td>
+	    				<td>
+	    					<h:inputText required="true" value="#{myDetailsFeDmb.userToDetail.subscriber.surname}" name="surname" id="surname" requiredMessage="Surname is required, Please fully complete this field." validatorMessage="Surname is required, Please fully complete this field." />
+	    				</td>
+	    			</tr>
+      			</h:panelGroup>
+      			<h:panelGroup rendered="#{myDetailsFeDmb.myDetailsAtom.includeEmail}">
+      				<tr>
+	    				<td>Email<h:outputText styleClass="redder" value=" *" /></td>
+	    				<td>
+	    					<h:inputText required="true" value="#{myDetailsFeDmb.userToDetail.subscriber.email}" name="email" id="email" requiredMessage="Email is required, Please fully complete this field." validatorMessage="Email is required, Please fully complete this field." />
+	    				</td>
+	    			</tr>
+	    		</h:panelGroup>
+  				<h:panelGroup rendered="#{myDetailsFeDmb.myDetailsAtom.includeFullName and myDetailsFeDmb.companyRelevant}">
+      				<tr>
+	    				<td>Company Name<h:outputText styleClass="redder" value=" *" /></td>
+	    				<td>
+	    					<h:inputText required="true" value="#{myDetailsFeDmb.userToDetail.company.companyName}" name="companyName" id="companyName" requiredMessage="Company Name is required, Please fully complete this field." validatorMessage="Company Name is required, Please fully complete this field." />
+	    				</td>
+	    			</tr>
+	    		</h:panelGroup>
+	    		<h:panelGroup rendered="#{myDetailsFeDmb.myDetailsAtom.includeVatNumber and myDetailsFeDmb.companyRelevant}">
+      				<tr>
+	    				<td>VAT Number</td>
+	    				<td>
+	    					<h:inputText required="true" value="#{myDetailsFeDmb.userToDetail.company.vatNumber}" name="vatNumber" id="vatNumber" /> 
+	    				</td>
+	    			</tr>
+	    		</h:panelGroup>
+  				<tr>
+    				<td colspan="2" style="text-align:right;"> 
+    					<aploscc:ajaxButton id="saveBtn" action="#{myDetailsFeDmb.saveChanges}" value="Save Changes" />
+    				</td>
+    			</tr>
+			</table>
+		</div>
+		
+		<div class="aplos-required-fields-note"><span class="aplos-required-asterisk">*</span> required fields</div>
+    </div>
+</ui:composition>

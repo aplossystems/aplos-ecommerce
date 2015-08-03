@@ -1,0 +1,218 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:p="http://primefaces.org/ui">
+	<div id="customer-section" class="aplos-customer-section">
+		<div class="central">
+		   <ui:insert name="AboveForm" />
+           <aplos:panel autoUpdate="true" id="single_order" styleClass="aplos-customer-single-order">
+		    	<h:panelGroup rendered="#{customerOrdersFeDmb.singleOrderLoaded}">
+		    		<h4><h:outputText value="Order #{customerOrdersFeDmb.singleOrderIdStr} from #{customerOrdersFeDmb.singleOrder.dateCreatedStdStr}" /></h4>
+			    	<table id="single_order_addresses" class="single_order_addresses aplos-customer-addresses">
+			        	<tr>
+			            	<td>
+			            		<span class="tableheading">#{ contextListener.translate( 'SHIPPING_ADDRESS' ) }</span>
+			            		<br/>
+			            		#{customerOrdersFeDmb.singleOrderShippingAddress.contactFullName}<br/>
+			            		<h:outputText value="#{customerOrdersFeDmb.singleOrderShippingAddress.toHtmlFull('',false)}" escape="false"/><br/>
+			            		#{customerOrdersFeDmb.singleOrderShippingAddress.country}<br/>
+			            		#{customerOrdersFeDmb.singleOrderShippingAddress.phone}<br/>
+			            	</td>
+			            	<td rowspan="10" style="width:40px;">&#160;</td>
+			            	<td>
+			            		<span class="tableheading">#{ contextListener.translate( 'BILLING_ADDRESS' ) }</span>
+			            		<br/>
+			            		#{customerOrdersFeDmb.singleOrderBillingAddress.contactFullName}<br/>
+			            		<h:outputText value="#{customerOrdersFeDmb.singleOrderBillingAddress.toHtmlFull('',false)}" escape="false"/><br/>
+			            		#{customerOrdersFeDmb.singleOrderBillingAddress.country}<br/>
+			            		#{customerOrdersFeDmb.singleOrderBillingAddress.phone}<br/>
+			            	</td>
+			            </tr>
+			        </table>
+			        <hr style="clear:both;" />
+		            <table id="single_order_contents" class="single_order_contents">
+		            <!-- START TABLEBODY.XHTML CLONE -->
+				       	<thead>
+				        	<tr>
+				        		<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingItemCodes}">
+				        			<th><!-- Code --></th>
+				        		</aplos:panel>
+				        		<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).cartShowingImages}">
+				        			<th><!-- Image --></th>
+				        		</aplos:panel>
+				        		<th>Quantity</th>
+				        		<th>Product</th>
+				        		<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingProductSizes}">
+				        			<th>Size</th>
+				        		</aplos:panel>
+				        		<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingProductColours}">
+				        			<th>Colour</th>
+				        		</aplos:panel>
+				        		<th class="aplos-align-right">Each (#{customerOrdersFeDmb.singleOrder.currency.prefixOrSuffix})</th>
+				        		<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).cartShowingDiscountColumn and customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.isPromotionApplied}">
+				        			<th class="aplos-align-right">Discount (#{customerOrdersFeDmb.singleOrder.currency.prefixOrSuffix})</th>
+				        		</aplos:panel>
+				        		<th class="aplos-align-right">Total (#{customerOrdersFeDmb.singleOrder.currency.prefixOrSuffix})</th>
+				        	</tr>
+				       	</thead>
+				       	<tbody> <!--  and (customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.giftVouchersUsed == null or customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.giftVouchersUsed.size() &lt; 1) -->
+					       	<aplos:panel rendered="#{customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.basketEmpty}" layout="none">
+								<tr><td colspan="10" class="aplos-empty">The basket is currently empty</td></tr>
+							</aplos:panel>
+				        	<ui:repeat rendered="#{!customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.basketEmpty}" value="#{ customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.items }" var="cartItem">
+				        		<tr>
+				        			<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingItemCodes}">
+				        				<td><h:outputText value="#{cartItem.realizedProduct.itemCode}" /></td>
+				        			</aplos:panel>
+				        			<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).cartShowingImages}">
+				        				<td><img src="#{cartItem.realizedProduct.defaultImageDetails.getFullFileUrl(true)}&amp;maxWidth=48&amp;maxHeight=64" alt="Ordered Product Image" /></td>
+				        			</aplos:panel>
+				        			<td style="padding-left:15px;"><h:outputText style="font-size:80%;color:dimgray" value="x " /><h:outputText value="#{cartItem.quantity}" /></td>
+				        			<td class="aplos-name">
+				        				<h:outputText rendered="#{!ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed}" escape="false" value="#{cartItem.getProductNameText( false )}" />
+				        				<h:outputText rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed}" value="#{cartItem.itemName}" />
+				        			</td>
+				        			<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingProductSizes}">
+				        				<td>
+				        					<h:outputText rendered="#{!ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed}" escape="false" value="#{cartItem.productSizeText}" />
+				        					<h:outputText rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed}" value="#{cartItem.realizedProduct.productSize.name}" />
+				        				</td>
+									</aplos:panel>
+				        			<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingProductColours}">
+				        				<td>
+				        					<h:outputText rendered="#{!ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed}" escape="false" value="#{cartItem.productColourText}" />
+				        					<h:outputText rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed}" value="#{cartItem.realizedProduct.productColour.name}" />
+				        				</td>
+				        			</aplos:panel>
+				        			<td class="aplos-numeric"><h:outputText value="#{customerOrdersFeDmb.singleOrder.currency.prefix}#{cartItem.singleItemBasePriceString}#{customerOrdersFeDmb.singleOrder.currency.suffix}" /></td>
+				        			<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).cartShowingDiscountColumn and customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.isPromotionApplied}">
+				        				<td class="aplos-numeric"><h:outputText value="#{customerOrdersFeDmb.singleOrder.currency.prefix}#{cartItem.singleItemDiscountAmountString}#{customerOrdersFeDmb.singleOrder.currency.suffix}" /></td>
+				        			</aplos:panel>
+				        			<td class="aplos-numeric"><h:outputText value="#{customerOrdersFeDmb.singleOrder.currency.prefix}#{cartItem.cachedLinePriceString}#{customerOrdersFeDmb.singleOrder.currency.suffix}" /></td>
+				        		</tr>
+				        	</ui:repeat>
+				        	<aplos:panel layout="none" rendered="#{customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.isPromotionApplied or (customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.giftVouchersUsed != null and customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.giftVouchersUsed.size() &gt; 0)}">
+					        	<tr><td colspan="10" class="aplos-voucher-divider">&#160;<!-- space --></td></tr>
+					        	<aplos:panel layout="none" rendered="#{customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.giftVouchersUsed != null and customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.giftVouchersUsed.size() &gt; 0}">
+						        	<ui:repeat value="#{ customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.giftVouchersUsed }" var="giftVoucher">
+						        		<tr>
+						        			<td colspan="#{cartFeDmb.footerColSpan}">
+						        				<h:outputText value="#{giftVoucher.cartItemName}" />
+						        			</td>
+						        			<td class="aplos-numeric"></td>
+						        			<td class="aplos-numeric"><h:outputText value="#{customerOrdersFeDmb.singleOrder.currency.prefix}#{giftVoucher.cartPriceString}#{customerOrdersFeDmb.singleOrder.currency.suffix}" /></td>
+						        		</tr>
+						        	</ui:repeat>
+						        </aplos:panel>
+						        <aplos:panel layout="none" rendered="#{customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.isPromotionApplied}">
+						        	<tr>
+					        			<td colspan="#{cartFeDmb.footerColSpan}">
+					        				<h:outputText value="#{customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.promotion.name} (#{customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.promotion.code})" />
+					        			</td>
+					        			<td class="aplos-numeric"></td>
+					          			<td class="aplos-numeric">
+					          				<h:outputText rendered="#{customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.promotion.freePostage and customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.promotion.percentage == null}" value="Free Postage" />
+					        				<h:outputText rendered="#{!customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.promotion.freePostage and customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.promotion.percentage != null}" value="-#{customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.promotionPercentage}%" />
+					        				<h:outputText rendered="#{customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.promotion.freePostage and customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.promotion.percentage != null}" value="-#{customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.promotionPercentage}% and Free Postage" />
+					        			</td>
+					        		</tr>
+					        	</aplos:panel>
+						    </aplos:panel>
+						    <tr><td colspan="10">&#160;<!-- quick dirty hack because we want a space --></td></tr>
+				        </tbody>
+				        <tfoot>
+				       		<tr>
+				       			<td class="aplos-align-top" rowspan="6" colspan="#{cartFeDmb.footerColSpan}">	</td>
+					       		<td class="aplos-label aplos-title aplos-footer-label">Items Total</td>
+					       		<td class="aplos-numeric aplos-footer-field">
+						       		<aplos:panel id="aplos-checkout-items-total">
+							       		<h:outputText value="#{customerOrdersFeDmb.singleOrder.currency.prefix}#{customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.cachedTotalAmountString}#{customerOrdersFeDmb.singleOrder.currency.suffix}" />
+							       	</aplos:panel>
+						       	</td>
+				       		</tr>   
+				       		<tr>
+					       		<td class="aplos-label aplos-title">Shipping</td>
+					       		<td class="aplos-numeric">
+					       			<h:outputText value="#{customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.shippingCostOrTbaString}" />
+					       		</td>
+				       		</tr>
+				      		<aplos:panel layout="none" rendered="#{ customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.adminCharge != null and customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.adminCharge &gt; 0}">
+								<tr>
+						       		<td class="aplos-label aplos-title">Admin charge</td>
+						       		<td class="aplos-numeric"><h:outputText value="#{customerOrdersFeDmb.singleOrder.currency.prefix}#{customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.adminChargeString}#{customerOrdersFeDmb.singleOrder.currency.suffix}" /></td>
+					       		</tr>
+							</aplos:panel>
+				       		<aplos:panel layout="none" rendered="#{ ecommerceConfiguration.getEcommerceSettings( true ).showingVat }">
+								<tr>
+						       		<td class="aplos-label aplos-title">VAT</td>
+						       		<td class="aplos-numeric">
+						       			<aplos:panel id="aplos-checkout-vat">
+						       				<h:outputText value="#{customerOrdersFeDmb.singleOrder.currency.prefix}#{customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.getGrandTotalVatAmountString(true)}#{customerOrdersFeDmb.singleOrder.currency.suffix}" />
+						       			</aplos:panel>
+						       		</td>
+					       		</tr>
+							</aplos:panel>
+				       		<tr>
+					       		<td class="aplos-label aplos-title">Total Balance<aplos:panel layout="none" rendered="#{!(paymentSuccessFeDmb.isViewingPaymentSuccessPage and (customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.customer.storeCreditAmount &gt; 0 or customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.determineStoreCredit() &gt; 0)) and !cartFeDmb.creditExceedsOrderTotal}"><br/><br/></aplos:panel>
+					       		</td>
+					       		<td class="aplos-title aplos-numeric">
+					       			<aplos:panel id="aplos-checkout-total-balance">
+					       				<h:outputText value="#{customerOrdersFeDmb.singleOrder.currency.prefix}#{customerOrdersFeDmb.singleOrder.ecommerceShoppingCart.getGrandTotalString( true )}#{customerOrdersFeDmb.singleOrder.currency.suffix}" />
+									</aplos:panel>
+								</td>
+				       		</tr>
+				       	</tfoot>
+				       	<!-- END TABLEBODY.XHTML CLONE -->
+				    </table>
+			        <div style="clear:both" />
+		    		<hr/>
+		    	</h:panelGroup>
+		    </aplos:panel> 
+		    
+		   	<ui:insert name="customerOrdersTable" >
+			    <aplos:panel id="customerPreviousOrdersWrapper">
+			    
+			   		<aploscc:wrappedDataTable2 showNewBtn="false" showDeleteColumn="false" showToggleDeleted="false" showSearch="false" id="customerPreviousOrders" styleClass="previousOrdersTable" dataTableState="#{ customerOrdersFeDmb.customerOrderTblCom.dataTableState }">
+						<p:column>
+							<f:facet name="header">Order Date</f:facet>
+							<h:commandLink rendered="#{!customerOrdersFeDmb.singleOrderLoaded or tableBean.id != customerOrdersFeDmb.singleOrder.id}" action="#{customerOrdersFeDmb.viewOrder}" title="click to view order" reRender="single_order,customerPreviousOrdersWrapper" value="#{tableBean.dateCreatedStdStr}" />
+							<h:outputText rendered="#{!(!customerOrdersFeDmb.singleOrderLoaded or tableBean.id != customerOrdersFeDmb.singleOrder.id)}" value="#{tableBean.dateCreatedStdStr}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">Total</f:facet>
+						    #{tableBean.currency.prefix}<h:outputText value="#{tableBean.ecommerceShoppingCart.cachedGrossTotalAmountString}" />#{tableBean.currency.suffix}
+						</p:column>
+						<p:column>
+							<f:facet name="header">Status</f:facet>
+							<aplos:panel rendered="#{customerOrdersFeDmb.orderIncomplete}">
+								<span class="highlightedStatus">
+									<h:outputText rendered="#{!customerOrdersFeDmb.theActiveOrder}" value="#{ customerOrdersFeDmb.incompleteText }" />
+								</span>
+							</aplos:panel>
+							<aplos:panel rendered="#{!customerOrdersFeDmb.orderIncomplete}">
+								<h:outputText rendered="#{customerOrdersFeDmb.theActiveOrder}" value="Currently Shopping" />
+								<h:outputText rendered="#{!customerOrdersFeDmb.theActiveOrder}" value="#{customerOrdersFeDmb.statusLabel}" escape="false"/>
+							</aplos:panel>
+						</p:column>
+						<p:column>
+							<h:panelGroup layout="none">
+								<h:commandLink rendered="#{!customerOrdersFeDmb.singleOrderLoaded or tableBean.id != customerOrdersFeDmb.singleOrder.id}" action="#{customerOrdersFeDmb.viewOrder}" title="click to view order" reRender="single_order,customerPreviousOrdersWrapper" value="View" />
+								<h:outputText rendered="#{!(!customerOrdersFeDmb.singleOrderLoaded or tableBean.id != customerOrdersFeDmb.singleOrder.id)}" value="View" />
+							</h:panelGroup>
+							<aplos:panel rendered="#{customerOrdersFeDmb.orderIncomplete}">
+								<h:outputText value="&#160;/&#160;" />
+								<h:commandLink value="Continue Shopping" action="#{customerOrdersFeDmb.loadOrder}" /> 
+								<h:outputText value="&#160;/&#160;" />
+								<h:commandLink value="Delete" reRender="ordersTable" action="#{customerOrdersFeDmb.deleteOrder}" />
+							</aplos:panel>
+						</p:column>
+					</aploscc:wrappedDataTable2>
+				</aplos:panel>
+			</ui:insert>
+    	</div>
+    </div>
+</ui:composition>

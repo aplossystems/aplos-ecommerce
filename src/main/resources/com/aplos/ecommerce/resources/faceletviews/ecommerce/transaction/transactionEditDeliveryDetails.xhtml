@@ -1,0 +1,71 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div style="float:right; text-align:center; margin-top:100px;">
+		<aploscc:ajaxButton value="Clear delivery details" action="#{ transactionEditDeliveryDetailsPage.clearDeliveryDetails }" /><br /> 
+		<aploscc:ajaxButton value="Use default" action="#{ transactionEditDeliveryDetailsPage.useDefaultDeliveryDetails }" /><br />
+		<aploscc:ajaxButton value="Use alternative" action="#{ transactionEditDeliveryDetailsPage.useAlternativeDeliveryDetails }" />
+	</div>
+	<table id="deliveryAddressTable" style="float:left">
+		<tr>
+			<td class="aplos-label formSubHeading"><div style="width:95px">Delivery address</div></td>
+			<td />
+			<td />
+			<td class="aplos-label" style="text-align:left;width:200px">Default</td>
+		</tr>	
+		<tr>
+			<td colspan="3" rowspan="11">
+				<aploscc:address bean="#{transaction.shippingAddress}" companyName="true" contactName="true" state="true" phone="true" validation="#{transactionEditDeliveryDetailsPage.validationRequired}" ecommerceFieldsRequired="true" />	
+			</td>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditDeliveryDetailsPage.addParenthesesIfNecessary( transaction.customer.subscriber.firstName ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditDeliveryDetailsPage.addParenthesesIfNecessary( transaction.customer.subscriber.surname ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditDeliveryDetailsPage.addParenthesesIfNecessary( transactionEditBillingDetailsPage.customerCompanyName ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditDeliveryDetailsPage.addParenthesesIfNecessary( transaction.customer.determineShippingAddress.country ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditDeliveryDetailsPage.addParenthesesIfNecessary( transaction.customer.determineShippingAddress.line1 ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditDeliveryDetailsPage.addParenthesesIfNecessary( transaction.customer.determineShippingAddress.line2 ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditDeliveryDetailsPage.addParenthesesIfNecessary( transaction.customer.determineShippingAddress.line3 ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditDeliveryDetailsPage.addParenthesesIfNecessary( transaction.customer.determineShippingAddress.city ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditDeliveryDetailsPage.addParenthesesIfNecessary( transaction.customer.determineShippingAddress.state ) }</td>
+		</tr>
+		<tr>
+		
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditDeliveryDetailsPage.addParenthesesIfNecessary( transaction.customer.determineShippingAddress.postcode ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditDeliveryDetailsPage.addParenthesesIfNecessary( transaction.customer.determineShippingAddress.phone) }</td>
+		</tr>
+	</table>
+	
+</ui:composition>	

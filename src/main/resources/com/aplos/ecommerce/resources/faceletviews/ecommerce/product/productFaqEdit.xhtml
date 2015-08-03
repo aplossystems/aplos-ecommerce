@@ -1,0 +1,63 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+
+	<ui:define name="editHead">
+		<h:outputScript library="jsLibraries" name="ckeditor/aplosckeditor.js" target="head" />
+		<h:outputScript library="scripts" name="ckEditorHelper.js" target="head" />
+		
+		<script type="text/javascript">
+			$j(document).ready(function() {
+				ckEditorHelper.createLimitedToolbarCKEditors( '#{ request.contextPath }' );
+			}); 
+		</script>
+		
+	</ui:define>
+	
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:140px">Title</td>
+				<td class="aplos-field"><h:inputText value="#{productFaq.title}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label" style="width:140px">Category</td>
+				<td class="aplos-field">
+					<h:selectOneListbox size="1" id="categoryList" value="#{productFaq.category}" >
+						<f:selectItems value="#{ productFaqEditPage.faqCategorySelectItems}" />   
+					</h:selectOneListbox>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Description</td>
+				<td class="aplos-field"><h:inputTextarea id="faqDescription"
+						styleClass="aplos_ckeditor" 
+						value="#{productFaq.description}" style="width:400px;height:400px"></h:inputTextarea></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Image</td>
+				<td>
+					<aploscc:imageUploader2 owner="#{productFaq}" key="IMAGE" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Image Caption</td>
+				<td>
+					<h:inputText value="#{productFaq.imageCaption}" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Layout</td>
+				<td>
+					<h:selectOneRadio value="#{productFaq.contentBoxLayout}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{ backingPage.contentBoxLayoutSelectItems }" />
+					</h:selectOneRadio>
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>

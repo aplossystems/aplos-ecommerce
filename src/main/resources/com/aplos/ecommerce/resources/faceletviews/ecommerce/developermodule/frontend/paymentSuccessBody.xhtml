@@ -1,0 +1,32 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	<div class="aplos-checkout aplos-payment-success">
+       	<p><h:outputText value="#{ contextListener.translate( '_DM_PAYMENT_SUCCESS_THANK_YOU_MESSAGE' ) }" escape="false" /></p>
+       	<table class="aplos-form-table-with-required">
+       		<tr>
+       			<td class="aplos-label">Order</td>
+       			<td class="aplos-required-asterisk"></td>
+       			<td class="aplos-field"> 
+					<aplos:panel rendered="#{ postPaymentOrder.customerReference != null and postPaymentOrder.customerReference != '' }">
+						#{postPaymentOrder.customerReference}
+					</aplos:panel>
+					<aplos:panel rendered="#{ postPaymentOrder.customerReference == null or postPaymentOrder.customerReference == '' }">
+						#{postPaymentOrder.id }
+					</aplos:panel>
+				</td>
+       		</tr>
+       	</table>
+        <ui:include src="/ecommerce/cartTable.xhtml" >
+        	<ui:param name="transaction" value="#{ postPaymentOrder }" />
+        </ui:include>
+	</div>
+	<script type="text/javascript"> 
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<h:outputText value="#{paymentSuccessFeDmb.googleEcommerceScript}" escape="false" rendered="#{ paymentSuccessFeDmb.renderingGoogleScript }"/>
+</ui:composition>

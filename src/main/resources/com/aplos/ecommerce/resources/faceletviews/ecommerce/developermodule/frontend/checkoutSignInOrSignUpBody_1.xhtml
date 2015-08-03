@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+
+	<div class="aplos-checkout aplos-checkout-sign-in-or-sign-up">
+		<aplos:panel rendered="#{ emailVerificationRequired != null }">
+			<h3>You account is not yet verified.</h3>
+			<h3>Click the link below to resend the verification email.</h3>			
+			<h3>Then click on the link in the email to verify your account.</h3>
+			<div> 
+				<aploscc:ajaxButton  value="Resend verification email"
+					action="#{ ecommerceUtil.sendCustomerEmailConfirmationEmail( customer, true ) }" style="float:left" />
+			</div>
+			<div style="clear:both" />
+			<hr style="margin-bottom:15px"/>
+		</aplos:panel>
+		<table class="aplos-form-table">
+			<tr>
+				<td class="#{checkoutSignInOrSignUpFeDmb.signInClass}">
+					<h3 class="aplos-checkout-title">Already registered? Sign in below</h3>
+					Already have an account?<br/>
+					<table class="aplos-form-table">
+						<tr>
+							<td class="aplos-label">Email Address</td>
+							<td class="aplos-field">  
+								<h:inputText rendered="#{!checkoutSignInOrSignUpFeDmb.userPreSupplied}" value="#{checkoutSignInOrSignUpFeDmb.emailAddress}"/>
+								<h:outputText rendered="#{checkoutSignInOrSignUpFeDmb.userPreSupplied}" value="#{checkoutSignInOrSignUpFeDmb.emailAddress}"/>
+							</td>
+						</tr>
+						<tr>
+							<td class="aplos-label">Password</td>
+							<td class="aplos-field"> 
+								<h:inputSecret class="aplos-password" value="#{checkoutSignInOrSignUpFeDmb.password}" onkeyup="fireOnEnterPressedByClass(event, 'aplosSignInBtn' )"/>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" class="aplos-sign-in-buttons">
+								<h:commandLink styleClass="aplos-forgotten-password-link" value="Forgotten Password?" action="#{checkoutSignInOrSignUpFeDmb.goToForgottenPassword}"  />
+								<aploscc:ajaxButton styleClass="aplos-sign-in-btn" action="#{ checkoutSignInOrSignUpFeDmb.signin }" value="Sign In" />
+							</td>
+						</tr>
+					</table>
+					<aplos:panel rendered="#{checkoutSignInOrSignUpFeDmb.showingWeAcceptPanel}">
+						<br/>
+						<h3 class="aplos-checkout-title">We accept</h3>
+						<img src="#{request.contextPath}/images/creditcards1.jpg" />
+					</aplos:panel>
+				</td>
+				<h:panelGroup layout="none" rendered="#{!checkoutSignInOrSignUpFeDmb.userPreSupplied}">
+					<td class="aplos-signin-signup-right-half">
+						<h3 class="aplos-checkout-title">New web customer</h3>
+						Don't have an account yet?<br/>
+						Click below to create one.<br/><br/>
+						<aploscc:ajaxButton action="#{ checkoutSignInOrSignUpFeDmb.goToNewCustomerSignUp }" value="#{contextListener.translate('REGISTER')}" />
+					</td>
+				</h:panelGroup>
+			</tr>
+		</table>
+	</div>
+</ui:composition>

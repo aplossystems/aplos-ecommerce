@@ -1,0 +1,343 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Invoice</title>
+<style type="text/css">
+.font1 {
+	font-size: 12px;
+}
+
+.font2 {
+	font-size: 15px;
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+.orderItemCell {
+	border: solid black 1px;
+	padding: 4px;
+}
+
+.orderItem {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	line-height: 10px;
+	margin: 0px;
+}
+
+@page {
+	margin: 10pt;
+}
+</style>
+</head>
+
+<body style="padding:0px;margin:0px">
+
+<table style="max-width: 570pt; min-width: 570pt; width: 570pt; max-height: 700pt; min-height: 700pt; height: 700pt;" cellpadding="0" cellspacing="0">
+	<tr valign="top">
+		<td>
+			<div style="max-width: 570pt; min-width: 570pt; width: 570pt; min-height: 560pt; max-height: 560pt; height: 560pt;">
+			
+			<table style="width:100%" cellpadding="0" cellspacing="0">
+				<tr style="height:70pt;min-height:70pt">
+					<td ></td>
+					<td style="text-align:right;font-size:9pt;">
+						<strong>{COMPANY_NAME}</strong><br />
+					{COMPANY_ADDRESS_1}{COMPANY_ADDRESS_2}{COMPANY_ADDRESS_3},
+					{COMPANY_TOWN}, {COMPANY_COUNTY}, {COMPANY_POSTCODE}, UK<br />
+					<strong>Tel:</strong> {COMPANY_PHONE} <strong> Fax:</strong>
+					{COMPANY_FAX}<br />
+					<strong>Email:</strong> {COMPANY_EMAIL} <strong> Web:</strong>
+					{COMPANY_WEB}<br />
+					<strong>VAT #:</strong> {COMPANY_VATNO}
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align:center;font-weight:bold;"><span>{INVOICE_HEADER} #: {INVOICE_NUMBER}</span> &#160; <img src="{INVOICE_NUMBER_BARCODE_URL}" /></td>
+				</tr>
+			</table>
+			<div style="border: 1px solid black;padding:5px">
+				<table style="font-family: Verdana, Geneva, sans-serif; font-size: 12px; width: 100%;padding-left:25pt" cellspacing="0" cellpadding="0">
+					<tr>
+						<td width="55%" style="font-weight:bold">
+							Your accounts details
+						</td>
+						<td>
+							<b>Invoice date:</b> {INVOICE_DATE}<br />
+							<b>Your ref:</b> {CUSTOMER_REFERENCE}<br />
+							<b>Our ref:</b> {TRANSACTION_NUMBER}<br />
+						</td>
+					</tr>
+					<tr valign="top">
+						<td style="text-transform: capitalize">
+							{BA_CUSTOMER_NAME}<br />
+							{BA_ADDRESS}<br />
+							{BA_COUNTRY}<br />
+							{BA_ADDRESS_BARCODE_TAG}
+						</td>
+						<td style="text-align:left">
+							<b>Payment method:</b>{PAYMENT_METHOD}<br />
+							<b>Your VAT #:</b> {CUSTOMER_VAT_NUMBER}<br />
+							<b>{SITE_COMPANY_NAME} VAT #:</b> {SITE_VAT_NUMBER}<br/>
+							<!-- BEGIN DYNAMIC : companyIds -->
+							<b>Company ID:</b> {COMPANY_ID}<br /> 
+							<b>Contact ID:</b> {CONTACT_ID}
+							<!-- END DYNAMIC : companyIds --> 
+							<!-- BEGIN DYNAMIC : customerId -->
+							<b>Customer ID:</b> {CUSTOMER_ID} 
+							<!-- END DYNAMIC : customerId -->
+						</td>
+					</tr>
+				</table>
+			</div>
+			<table style="width: 100%" cellpadding="0" cellspacing="0">
+				<tr>
+					<td style="font-family: Verdana, Geneva, sans-serif; font-size: 11px; text-align: right">Invoice
+					Currency : {INVOICE_CURRENCY}</td>
+				</tr>
+			</table>
+			<table
+				style="height: 160pt; max-height: 160pt; min-height: 160pt; font-family: Verdana, Geneva, sans-serif; font-size: 10px; border: solid black 1px; border-collapse: collapse"
+				width="100%" border="0">
+				<tr style="height: 25px; max-height: 25px">
+					<!-- BEGIN DYNAMIC : customerReferenceHead -->
+					<td width="8%" style="border: solid black 1px; text-align: center"><strong>Your
+					Ref.</strong></td>
+					<!-- END DYNAMIC : customerReferenceHead -->
+					<!-- BEGIN DYNAMIC : itemCodeHead -->
+					<td width="8%" style="border: solid black 1px; text-align: center"><strong>Code</strong></td>
+					<!-- END DYNAMIC : itemCodeHead -->
+					<!-- BEGIN DYNAMIC : commodityCodeHead -->
+					<td width="8%" style="border: solid black 1px; text-align: right"><strong>Commodity Code</strong></td>
+					<!-- END DYNAMIC : commodityCodeHead -->
+					<td width="8%" style="border: solid black 1px; text-align: center"><strong>Qty</strong></td>
+					<td style="border: solid black 1px;min-width:50%"><strong>Name</strong></td>
+					<td width="8%" style="border: solid black 1px; text-align: right"><strong>Each</strong></td>
+					<td width="8%" style="border: solid black 1px; text-align: right"><strong>Discount</strong></td>
+					<td width="10%" style="border: solid black 1px; text-align: right"><strong>Total</strong></td>
+				</tr>
+				<!-- BEGIN DYNAMIC : productList -->
+				<tr valign="top">
+					<!-- BEGIN DYNAMIC : customerReferenceRow -->
+					<td class="orderItemCell" style="text-align: center">
+					<p class="orderItem">{CUSTOMER_REFERENCE_REPEATED}</p>
+					</td>
+					<!-- END DYNAMIC : customerReferenceRow -->
+					<!-- BEGIN DYNAMIC : itemCodeRow -->
+					<td class="orderItemCell" style="text-align: center">
+					<p class="orderItem">{PRODUCT_CODE_REPEATED}</p>
+					</td>
+					<!-- END DYNAMIC : itemCodeRow -->
+					<!-- BEGIN DYNAMIC : commodityCodeRow -->
+					<td class="orderItemCell" style="text-align: center">
+					<p class="orderItem">{PRODUCT_COMMODITY_CODE_REPEATED}</p>
+					</td>
+					<!-- END DYNAMIC : commodityCodeRow -->
+					<td class="orderItemCell" style="text-align: center">
+					<p class="orderItem">{PRODUCT_QUANTITY_REPEATED}</p>
+					</td>
+					<td class="orderItemCell">
+					<p class="orderItem">{PRODUCT_NAME_REPEATED}</p>
+					</td>
+					<td class="orderItemCell" style="text-align: right">
+					<p class="orderItem">{PRODUCT_PRICE_REPEATED}</p>
+					</td>
+					<td class="orderItemCell" style="text-align: right">
+					<p class="orderItem">{PRODUCT_DISCOUNT_REPEATED}</p>
+					</td>
+					<td class="orderItemCell" style="text-align: right">
+					<p class="orderItem">{PRODUCT_TOTAL_REPEATED}</p>
+					</td>
+				</tr>
+				<!-- END DYNAMIC : productList -->
+			</table>
+			<table width="100%" cellspacing="0" cellpadding="0" border="0">
+				<tr valign="top">
+					<td style="min-width: 170pt; max-width: 270pt; width: 270pt; font-family: Verdana, Geneva, sans-serif; font-size: 18px;">
+					<table cellpadding="2" border="0" cellspacing="0"
+						style="width: 241pt; height: 50px; text-align: left; font-size: 13px;">
+						<!-- BEGIN DYNAMIC : deliveryRequiredBy -->
+						<tr valign="top">
+							<td style="text-align: right; width: 70pt">Delivery required
+							by:</td>
+							<td style="text-align: left;">{DELIVERY_REQUIRED_BY}</td>
+						</tr>
+						<!-- END DYNAMIC : deliveryRequiredBy -->
+						<tr>
+							<td></td>
+						</tr>
+						<tr valign="top">
+							<td style="text-align: right;">
+							{SPECIAL_DELIVERY_INSTRUCTIONS_LABEL}</td>
+							<td style="text-align: left;">
+							{SPECIAL_DELIVERY_INSTRUCTIONS}</td>
+						</tr>
+					</table>
+					</td>
+					<td align="right"
+						style="font-family: Verdana, Geneva, sans-serif; font-size: 13px; text-align: right">
+					<table cellpadding="1" cellspacing="0" style="width: 200pt; text-align: right; float: right">
+						<tr valign="top">
+							<td style="text-align: right; width: 30pt">Items total</td>
+							<td style="text-align: right; width: 30pt"> {CURRENCY_PREFIX}{ITEMS_TOTAL}{CURRENCY_SUFFIX}</td>
+						</tr>
+						<tr valign="top">
+							<td style="text-align: right">Delivery charge</td>
+							<td style="text-align: right"> {CURRENCY_PREFIX}{DELIVERY_CHARGE}{CURRENCY_SUFFIX}</td>
+						</tr>
+						<tr valign="top">
+							<td style="text-align: right">Admin charge</td>
+							<td style="text-align: right"> {CURRENCY_PREFIX}{ADMIN_CHARGE}{CURRENCY_SUFFIX}</td>
+						</tr>
+						<tr valign="top">
+							<td style="text-align: right">VAT</td>
+							<td style="text-align: right">
+							{CURRENCY_PREFIX}{VAT_CHARGE}{CURRENCY_SUFFIX}</td>
+						</tr>
+						<tr valign="top">
+							<td style="text-align: right"><b>Invoice total</b></td>
+							<td style="text-align: right"><b>{CURRENCY_PREFIX}{INVOICE_GROSS_TOTAL}{CURRENCY_SUFFIX}</b>
+							</td>
+						</tr>
+					</table>
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" style="font-size:9px;padding-top:5px">
+				<tr>
+					<td>
+						<b>Bank Name:</b> {SITE_BANK_NAME}&#160;&#160;
+						<b>Account Name:</b> {SITE_ACCOUNT_NAME}&#160;&#160;
+						<b>IBAN:</b> {SITE_IBAN_NUMBER}&#160;&#160;
+						<b>Account #:</b> {SITE_ACCOUNT_NUMBER}&#160;&#160;
+						<b>Branch #:</b> {SITE_SORT_CODE}&#160;&#160;
+						<b>Swiftcode:</b> {SITE_SWIFTCODE}&#160;&#160;
+					</td>
+				</tr>
+			</table>
+			</div>
+			<table style="padding-top:30pt">
+				<tr>
+					<td>
+						<table style="font-size:8pt;width:130pt;min-width:130pt;padding-top:10pt">
+							<tr>
+								<td style="overflow:hidden;max-height:10pt"><b>Courier</b> {COURIER_SERVICE_NAME}</td>
+							</tr>
+							<tr>
+								<td><b>Dispatched date</b> {DISPATCHED_DATE}</td>
+							</tr>
+							<tr style="font-size:10pt">
+								<td>
+									{DA_CUSTOMER_NAME}<br />
+									{DA_ADDRESS}<br />
+									{DA_COUNTRY}<br />
+									{DA_PHONE}<br />
+									{DA_ADDRESS_BARCODE_TAG}
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td>
+						<table style="font-size: 10px;">
+							<tr>
+								<td colspan="2" style="text-align:center;font-weight:bold"><span style="font-size:14px">Delivery note</span> &#160; <img src="{INVOICE_NUMBER_BARCODE_URL}" /></td>
+							</tr>
+							<tr>
+								<td><b>Invoice #: </b>{INVOICE_NUMBER}</td>
+							</tr>
+							<tr>
+								<td><b>Your ref: </b>{CUSTOMER_REFERENCE}</td>
+							</tr>
+							<tr>
+								<td><b>Your VAT #: </b>{CUSTOMER_VAT}</td>
+							</tr>
+							<tr>
+								<td>
+									<table
+										style="height: 125pt; max-height: 125pt; min-height: 125pt; font-family: Verdana, Geneva, sans-serif; font-size: 10px; border: solid black 1px; border-collapse: collapse"
+										width="300pt" border="0">
+										<tr style="height: 25px; max-height: 25px">
+											<!-- BEGIN DYNAMIC : customerReferenceHead2 -->
+											<td width="16%" style="border: solid black 1px; text-align: center"><strong>Your Ref.</strong></td>
+											<!-- END DYNAMIC : customerReferenceHead2 -->
+											<!-- BEGIN DYNAMIC : itemCodeHead2 -->
+											<td width="12%" style="border: solid black 1px; text-align: center"><strong>Code</strong></td>
+											<!-- END DYNAMIC : itemCodeHead2 -->
+											<!-- BEGIN DYNAMIC : commodityCodeHead2 -->
+											<td width="12%" style="border: solid black 1px; text-align: right"><strong>Commodity Code</strong></td>
+											<!-- END DYNAMIC : commodityCodeHead2 -->
+											<td width="10%" style="border: solid black 1px; text-align: center"><strong>Qty</strong></td>
+											<td style="border: solid black 1px;min-width:50%"><strong>Name</strong></td>
+										</tr>
+										<!-- BEGIN DYNAMIC : productList2 -->
+										<tr valign="top">
+											<!-- BEGIN DYNAMIC : customerReferenceRow2 -->
+											<td class="orderItemCell" style="text-align: center">
+											<p class="orderItem">{CUSTOMER_REFERENCE_REPEATED}</p>
+											</td>
+											<!-- END DYNAMIC : customerReferenceRow2 -->
+											<!-- BEGIN DYNAMIC : itemCodeRow2 -->
+											<td class="orderItemCell" style="text-align: center">
+											<p class="orderItem">{PRODUCT_CODE_REPEATED}</p>
+											</td>
+											<!-- END DYNAMIC : itemCodeRow2 -->
+											<!-- BEGIN DYNAMIC : commodityCodeRow2 -->
+											<td class="orderItemCell" style="text-align: center">
+											<p class="orderItem">{PRODUCT_COMMODITY_CODE_REPEATED}</p>
+											</td>
+											<!-- END DYNAMIC : commodityCodeRow2 -->
+											<td class="orderItemCell" style="text-align: center">
+											<p class="orderItem">{PRODUCT_QUANTITY_REPEATED}</p>
+											</td>
+											<td class="orderItemCell">
+											<p class="orderItem">{PRODUCT_NAME_REPEATED}</p>
+											</td>
+										</tr>
+										<!-- END DYNAMIC : productList2 -->
+									</table>
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td>
+						<table>
+							<tr>
+								<td style="font-size:8pt">
+									<!-- BEGIN DYNAMIC : companyIds2 --> 
+									<b>Company ID:</b> {COMPANY_ID}<br />
+									<b>Contact ID:</b> {CONTACT_ID} 
+									<!-- END DYNAMIC : companyIds2 --> 
+									<!-- BEGIN DYNAMIC : customerId2 -->
+									<b>Customer ID:</b> {CUSTOMER_ID} 
+									<!-- END DYNAMIC : customerId2 -->
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3">
+						<table style="font-size:7pt;width:100%;border:1px solid black">
+							<tr>
+								<td>Return details : </td>
+								<td><strong>{COMPANY_NAME}</strong> {COMPANY_ADDRESS_1}{COMPANY_ADDRESS_2}{COMPANY_ADDRESS_3},
+								{COMPANY_TOWN}, {COMPANY_COUNTY}, {COMPANY_POSTCODE}, UK</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td><strong>Tel:</strong> {COMPANY_PHONE} <strong> Fax:</strong>
+									{COMPANY_FAX}
+									<strong>International:</strong> +44 {COMPANY_INTERNATIONAL_PHONE}
+									<strong>Email:</strong> {COMPANY_EMAIL} <strong> Web:</strong>
+									{COMPANY_WEB}
+									<strong>VAT #:</strong> {COMPANY_VATNO}</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

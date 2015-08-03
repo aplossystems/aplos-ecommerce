@@ -1,0 +1,56 @@
+<ui:composition template="#{ themeManager.listTemplatePath }"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:define name="heading">
+		Product sales figures
+	</ui:define>
+
+	<ui:define name="listContent">
+		<div>
+			<table>
+				<tr>
+					<td>From &#160; <aploscc:dateTime id="startDateInput"
+							showCheckbox="#{false}" startYearDiff="#{-25}" endYearDiff="#{0}"
+							value="#{backingPage.dataTableState.lazyDataModel.startDate}"
+							ajaxOnchange=":listForm:wrappedDataTable:mojarraBugFixPnl">
+						</aploscc:dateTime>
+					</td>
+					<td>to &#160; <aploscc:dateTime id="endDateInput"
+							showCheckbox="#{false}" startYearDiff="#{-25}" endYearDiff="#{0}"
+							value="#{backingPage.dataTableState.lazyDataModel.endDate}"
+							ajaxOnchange=":listForm:wrappedDataTable:mojarraBugFixPnl">
+						</aploscc:dateTime>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<aploscc:wrappedDataTable2 id="wrappedDataTable" dataTableState="#{ backingPage.dataTableState }">
+			<p:column>
+				<f:facet name="header">Name</f:facet>
+				#{tableBean.itemName}
+				<f:facet name="footer" styleClass="aplos-total">
+				</f:facet>
+			</p:column>
+			<p:column>
+				<f:facet name="header">Quantity</f:facet>
+				#{tableBean.salesQuantity}
+				<f:facet name="footer" styleClass="aplos-total">
+					#{ backingPage.dataTableState.lazyDataModel.salesQuantityTotal }
+				</f:facet>
+			</p:column>
+			<p:column styleClass="numericText">
+				<f:facet name="header">Value</f:facet>
+				&#163;#{tableBean.salesAmountStr}
+				<f:facet name="footer" styleClass="aplos-total numericText">
+					&#163;#{ backingPage.dataTableState.lazyDataModel.salesAmountTotalStr }
+				</f:facet>
+			</p:column>
+		</aploscc:wrappedDataTable2>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,26 @@
+
+<ui:composition template="#{ themeManager.listTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="listContent">
+		<aploscc:wrappedDataTable2 dataTableState="#{ backingPage.dataTableState }">
+			<p:column sortBy="#{ tableBean.product.name }" filterBy="#{ tableBean.product.name }">
+				<f:facet name="header">Product Name</f:facet>
+				#{tableBean.product.name}
+			</p:column>
+			<p:column sortBy="#{ tableBean.product.productBrand.name }" filterBy="#{ tableBean.product.productBrand.name }">
+				<f:facet name="header">Brand</f:facet>
+				#{tableBean.product.productBrand.name}
+			</p:column>
+			<p:column>
+				<f:facet name="header">Edit Stock</f:facet>
+				<h:commandButton action="#{ backingPage.dataTableState.lazyDataModel.openStockPage }" label="Edit Colours and Stock" image="/images/folder_open.gif"></h:commandButton>
+			</p:column>
+		</aploscc:wrappedDataTable2>
+	</ui:define>
+</ui:composition>

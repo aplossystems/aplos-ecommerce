@@ -1,0 +1,22 @@
+<ui:composition template="#{ themeManager.listTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="listContent">
+		<table>
+			<tr>
+				<td style="vertical-align:top">File upload</td>
+				<td style="vertical-align:top">
+					<p:fileUpload mode="simple" value="#{ backingPage.uploadedFile }"> </p:fileUpload>
+				</td>
+			</tr>
+		</table>
+		<aploscc:ajaxButton value="Read file" action="#{ backingPage.readFile }" />
+		<aploscc:ajaxButton value="Export CSV" action="#{ backingPage.exportCSV }" />
+	</ui:define>
+</ui:composition>

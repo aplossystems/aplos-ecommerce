@@ -1,0 +1,67 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div style="float:right; text-align:center; padding-top:100px">   
+		<aploscc:ajaxButton value="Use default" action="#{ transactionEditBillingDetailsPage.useDefaultBillingDetails }" /><br />
+		<aploscc:ajaxButton value="Clear billing details" action="#{ transactionEditBillingDetailsPage.clearBillingDetails }" /> 
+	</div>
+	<table id="billingAddressTable" style="float:left">
+		<tr>
+			<td class="aplos-label formSubHeading"><div style="width:95px">Billing address</div></td>
+			<td />
+			<td />
+			<td class="aplos-label" style="text-align:left;width:200px">Default</td>
+		</tr>					
+		<tr>
+			<td colspan="3" rowspan="11">
+				<aploscc:address bean="#{transaction.billingAddress}" companyName="true" contactName="true" state="true" phone="true" validation="#{transactionEditBillingDetailsPage.validationRequired}" ecommerceFieldsRequired="true" />	
+			</td>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditBillingDetailsPage.addParenthesesIfNecessary( transaction.customer.determineBillingAddress.contactFirstName ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditBillingDetailsPage.addParenthesesIfNecessary( transaction.customer.determineBillingAddress.contactSurname ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditDeliveryDetailsPage.addParenthesesIfNecessary( transactionEditBillingDetailsPage.customerCompanyName ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditBillingDetailsPage.addParenthesesIfNecessary( transaction.customer.determineBillingAddress.country ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditBillingDetailsPage.addParenthesesIfNecessary( transaction.customer.determineBillingAddress.line1 ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditBillingDetailsPage.addParenthesesIfNecessary( transaction.customer.determineBillingAddress.line2 ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditBillingDetailsPage.addParenthesesIfNecessary( transaction.customer.determineBillingAddress.line3 ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditBillingDetailsPage.addParenthesesIfNecessary( transaction.customer.determineBillingAddress.city ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditBillingDetailsPage.addParenthesesIfNecessary( transaction.customer.determineBillingAddress.state ) }</td>
+		</tr>
+		<tr>
+
+			<td class="aplos-field defaultDetailsColumn">#{ transactionEditBillingDetailsPage.addParenthesesIfNecessary( transaction.customer.determineBillingAddress.postcode ) }</td>
+		</tr>
+
+	</table>
+	
+</ui:composition>	

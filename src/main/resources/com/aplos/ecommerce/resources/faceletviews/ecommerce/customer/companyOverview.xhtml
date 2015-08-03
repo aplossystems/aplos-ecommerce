@@ -1,0 +1,190 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="editContent">
+	
+		<style>
+			.company-details-table {
+				width: 100%;
+				padding-bottom:25px
+			}
+			.company-details-table th {
+				font-weight : bold;
+				font-size:11px; 
+			}
+			
+			.company-details-table {
+			
+			}
+			
+			.company-details-table td, .company-details-table th {
+				border : 1px solid black;
+				margin : 0px;
+			}
+		</style>
+	
+		<table class="company-details-table" cellspacing="0">
+			<tr>
+				<th>Company</th>
+				<th></th>
+				<th style="width:60px">Credit allowed</th>
+				<th style="width:60px">Reseller discount</th>
+				<th style="width:60px">Extra discount</th>
+				<th>Type</th>
+				<th>Country</th>
+				<th>Switchboard tel.</th>
+				<th>Postcode</th>
+				<th>Created</th>
+			</tr>
+			<tr>
+				<td>#{ company.id }</td>
+				<td>#{ company.companyName }</td>
+				<td>#{ company.creditAllowed }</td>
+				<td>#{ company.determineDiscountPercentage() }</td>
+				<td>#{ company.discountPercentage }</td>
+				<td>#{ company.companyType.name }</td>
+				<td>#{ company.determineShippingAddress().country.name }</td>
+				<td>#{ company.determineShippingAddress().phone }</td>
+				<td>#{ company.determineShippingAddress().postcode }</td>
+				<td>#{ company.dateCreatedStdStr }</td>
+			</tr>
+		</table>	
+	
+		<span class="aplos-label formSubHeading">Contacts</span>
+		<aploscc:wrappedDataTable2 dataTableState="#{ backingPage.companyContactLdm.dataTableState }">
+			<p:column sortBy="#{tableBean.subscriber.firstName}" filterBy="#{tableBean.subscriber.firstName}">
+				<f:facet name="header">First name</f:facet>
+				#{tableBean.subscriber.firstName}
+			</p:column>
+			<p:column sortBy="#{tableBean.subscriber.surname}" filterBy="#{tableBean.subscriber.surname}">
+				<f:facet name="header">Surname</f:facet>
+				#{tableBean.subscriber.surname}
+			</p:column>
+			<p:column sortBy="#{tableBean.position}" filterBy="#{tableBean.position}">
+				<f:facet name="header">Position</f:facet>
+				#{tableBean.position}
+			</p:column>
+			<p:column style="width:85px">
+				<f:facet name="header">Phone</f:facet>
+				<h:outputText value="#{backingPage.allPhoneNumbers(tableBean)}" escape="false" />
+			</p:column>
+			<p:column sortBy="#{tableBean.subscriber.emailAddress}" filterBy="#{tableBean.subscriber.emailAddress}">
+				<f:facet name="header">Email</f:facet>
+				#{tableBean.subscriber.emailAddress}
+			</p:column>
+			<p:column sortBy="#{tableBean.firstLineOfNotes}" filterBy="#{tableBean.firstLineOfNotes}">
+				<f:facet name="header">Notes</f:facet>
+				#{tableBean.firstLineOfNotes}
+			</p:column>
+		</aploscc:wrappedDataTable2>
+		
+		<table style="width:100%;padding-bottom:25px">
+			<tr>
+				<td>
+					Notes
+				</td>
+			</tr>
+			<tr>
+				<td style="width:100%;">
+					<h:inputTextarea value="#{ company.notes }" style="background-color:white;width:100%;height:100px"/>
+				</td>
+			</tr>
+		</table>
+		
+		<span class="aplos-label formSubHeading">Transactions</span>
+		<aploscc:wrappedDataTable2 dataTableState="#{ backingPage.companyTransactionLdm.dataTableState }">
+			<p:column sortBy="#{tableBean.customer.subscriber.firstName}" filterBy="#{tableBean.customer.subscriber.firstName}">
+				<f:facet name="header">First name</f:facet>
+				#{tableBean.customer.subscriber.firstName}
+			</p:column>
+			<p:column sortBy="#{tableBean.customer.subscriber.surname}" filterBy="#{tableBean.customer.subscriber.surname}">
+				<f:facet name="header">Surname</f:facet>
+				#{tableBean.customer.subscriber.surname}
+			</p:column>
+			<p:column sortBy="#{tableBean.customerReference}" filterBy="#{tableBean.customerReference}">
+				<f:facet name="header">Order #</f:facet>
+				#{tableBean.customerReference}
+			</p:column>
+			<p:column>
+				<f:facet name="header">Status</f:facet>
+				#{tableBean.transactionStatus.label}
+			</p:column>
+			<p:column sortBy="#{tableBean.invoiceNumber}" filterBy="#{tableBean.invoiceNumber}">
+				<f:facet name="header">Inv. #</f:facet>
+				#{tableBean.invoiceNumber}
+			</p:column>
+			<p:column sortBy="#{tableBean.dateCreated}" filterBy="#{tableBean.dateCreated}" style="min-width:65px">
+				<f:facet name="header">Processed</f:facet>
+				<aplos:standardDateTableCell value="#{tableBean.dateCreated}" />
+			</p:column>
+			<p:column sortBy="#{tableBean.firstProductQty}" filterBy="#{tableBean.firstProductQty}">
+				<f:facet name="header">Qty # 1</f:facet>
+				#{tableBean.firstProductQty}
+			</p:column>
+			<p:column sortBy="#{tableBean.firstProductItemCode}" filterBy="#{tableBean.firstProductItemCode}">
+				<f:facet name="header">Part # 1</f:facet>
+				#{tableBean.firstProductItemCode}
+			</p:column>
+			<p:column sortBy="#{ tableBean.ecommerceShoppingCart.deliveryCost }" filterBy="#{ tableBean.ecommerceShoppingCart.deliveryCost }">
+				<f:facet name="header">P &amp; P</f:facet>
+				#{tableBean.ecommerceShoppingCart.deliveryCostString}
+			</p:column>
+			<p:column sortBy="#{ tableBean.ecommerceShoppingCart.cachedNetTotalAmount }" filterBy="#{ tableBean.ecommerceShoppingCart.cachedNetTotalAmount }">
+				<f:facet name="header">Total</f:facet>
+				#{ tableBean.ecommerceShoppingCart.cachedNetTotalAmountString }
+			</p:column>
+			<p:column sortBy="#{ tableBean.ecommerceShoppingCart.cachedWeight }" filterBy="#{ tableBean.ecommerceShoppingCart.cachedWeight }">
+				<f:facet name="header">Weight</f:facet>
+				#{ tableBean.ecommerceShoppingCart.cachedWeight }
+			</p:column>
+			<p:column sortBy="#{tableBean.trackingNumber}" filterBy="#{tableBean.trackingNumber}">
+				<f:facet name="header">Courier ref.</f:facet>
+				#{tableBean.trackingNumber}
+			</p:column>
+			<p:column sortBy="#{tableBean.firstLineOfNotes}" filterBy="#{tableBean.firstLineOfNotes}">
+				<f:facet name="header">Notes</f:facet>
+				#{tableBean.firstLineOfNotes}
+			</p:column>
+		</aploscc:wrappedDataTable2>
+		<br/><br/>
+		<span class="aplos-label formSubHeading">Returns</span>
+		<aploscc:wrappedDataTable2 dataTableState="#{ backingPage.companyReturnLdm.dataTableState }">
+			<p:column sortBy="#{tableBean.serialNumber.currentCustomer.subscriber.firstName}" filterBy="#{tableBean.serialNumber.currentCustomer.subscriber.firstName}">
+				<f:facet name="header">First name</f:facet>
+				#{tableBean.serialNumber.currentCustomer.subscriber.firstName}
+			</p:column>
+			<p:column sortBy="#{tableBean.serialNumber.currentCustomer.subscriber.surname}" filterBy="#{tableBean.serialNumber.currentCustomer.subscriber.surname}">
+				<f:facet name="header">Surname</f:facet>
+				#{tableBean.serialNumber.currentCustomer.subscriber.surname}
+			</p:column>
+			<p:column sortBy="#{tableBean.serialNumber.id}" filterBy="#{tableBean.serialNumber.id}">
+				<f:facet name="header">Serial #</f:facet>
+				#{tableBean.serialNumber.id}
+			</p:column>
+			<p:column>
+				<f:facet name="header">Part #</f:facet>
+				#{tableBean.determineReturnProduct().determineItemCode}
+			</p:column>
+			<p:column sortBy="#{tableBean.dateCreated}" filterBy="#{tableBean.dateCreated}">
+				<f:facet name="header">Date</f:facet>
+				<aplos:standardDateTableCell value="#{tableBean.dateCreated}" />
+			</p:column>
+			<p:column sortBy="#{tableBean.realizedProductReturnStatus.colorName}" filterBy="#{tableBean.realizedProductReturnStatus.colorName}">
+				<f:facet name="header">Status</f:facet>
+				<div style="position:relative;color:#{ tableBean.realizedProductReturnStatus.colorName }">
+					<div style="position:absolute;left:10px;top:-6px;width:15px;height:15px;-moz-border-radius:10px;webkit-border-radius:10px; background-color:#{ tableBean.realizedProductReturnStatus.colorName }" title="#{tableBean.realizedProductReturnStatus.name}"/>
+				</div>
+			</p:column>
+			<p:column sortBy="#{tableBean.firstLineOfNotes}" filterBy="#{tableBean.firstLineOfNotes}">
+				<f:facet name="header">Notes</f:facet>
+				#{tableBean.firstLineOfNotes}
+			</p:column>
+		</aploscc:wrappedDataTable2>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Condition Received Report</title>
+<style type="text/css">
+	.mainTable td {
+		border-top: solid 3px;
+	}
+	
+	.noBorder td {
+		border: none;
+	}
+	
+	.titleTd{ 
+		text-align:right;
+		padding-right:10px;
+		font-weight:bold;
+	}
+</style>
+</head>
+
+<body style="padding:0px;margin:0px">
+	<table style="max-width:505pt;min-width:505pt;width:505pt;max-height:742pt;min-height:742pt;height:742pt;" border="0">
+		<tr valign="top">
+			<td>
+				<div style="max-width:505pt;min-width:505pt;width:505pt;min-height:531pt;max-height:531pt;height:531pt;">
+					<table style="font-family: Verdana, Geneva, sans-serif ; font-size:12px;width:100%" cellspacing="0" cellpadding="0">
+						<tr>
+							<td width="20%" height="91"><img src="{TELETEST_LOGO}" /></td>    
+							<td style="text-align:right">
+								<p style="font-size:11px"><strong>{COMPANY_NAME}</strong><br />
+									{COMPANY_ADDRESS_1}, {COMPANY_ADDRESS_2}{COMPANY_ADDRESS_3}, {COMPANY_TOWN}, {COMPANY_COUNTY}, {COMPANY_POSTCODE}, UK<br />
+									<strong>Tel:</strong> {COMPANY_PHONE} <strong> Fax:</strong> {COMPANY_FAX}<br />
+									<strong>International:</strong> +44 {COMPANY_INTERNATIONAL_PHONE}<br />
+									<strong>Email:</strong> {COMPANY_EMAIL} <strong> Web:</strong> {COMPANY_WEB}<br />
+									<strong>VAT #:</strong> {COMPANY_VATNO}
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="font-weight:bold;font-size:25px">Returns Authorisation Note</td>
+						</tr>
+					</table>
+					<br />
+					<div style="height:449pt;max-height:449pt;min-height:449pt;">
+						<table class="mainTable" style="font-family: Verdana, Geneva, sans-serif ; font-size:10px ; border: solid black 3px ; border-collapse:collapse" width="100%" border="0" cellpadding="5">
+							<tr>
+								<td style="width:50%;text-transform:capitalize;font-size:12px">
+									{RETURNS_CONTACT_FULL_NAME}<br />
+									{RETURNS_ADDRESS}<br />
+									{RETURNS_COUNTRY}<br />
+								</td>
+								<td style="width:50%">
+									<table class="noBorder" style="margin:auto">
+									<tr>
+										<td class="titleTd">Returns #</td>
+										<td><b style="font-size:17px">{RETURNS_ID}</b></td>
+									</tr>
+									<tr>
+									<td class="titleTd">Report date</td>
+										<td><b style="font-size:17px">{REPORT_DATE}</b></td>
+									</tr>
+									<tr>
+										<td class="titleTd">Returns phone</td>
+										<td>{RETURNS_PHONE}</td>
+									</tr>
+									<tr>
+										<td class="titleTd">Returns mobile</td>
+										<td>{RETURNS_MOBILE}</td>
+									</tr>
+									<tr>
+										<td class="titleTd">Returns fax</td>
+										<td>{RETURNS_FAX}</td>
+									</tr>
+									<tr>
+										<td class="titleTd">Returns Email</td>
+										<td>{RETURNS_EMAIL}</td>
+									</tr>
+									<tr>
+										<td class="titleTd"></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td class="titleTd">Contact #</td>
+										<td>{CONTACT_ID}</td>
+									</tr>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td style="width:50%">
+									<b style="font-size:15px">Returned product details</b>
+									<table class="noBorder" style="margin-left:10px">
+										<tr>
+											<td class="titleTd">Serial #</td>
+											<td>{SERIAL_NUMBER}</td>
+										</tr>
+										<tr>
+											<td class="titleTd">Part #</td>
+											<td>{PART_NUMBER}</td>
+										</tr>
+										<tr>
+											<td class="titleTd">Version</td>
+											<td>{PRODUCT_VERSION}</td>
+										</tr>
+									</table>
+								</td>
+								<td style="width:50%;padding-left:35px">
+									<b style="font-size:15px">Original order details</b>
+									<table class="noBorder" style="margin-left:30px">
+										<tr>
+											<td class="titleTd">Order #</td>
+											<td>{ORDER_ID}</td>
+										</tr>
+										<tr>
+											<td class="titleTd">Transaction #</td>
+											<td>{TRANSACTION_ID}</td>
+										</tr>
+										<tr>
+											<td class="titleTd">Invoice date</td>
+											<td>{INVOICE_DATE}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2" style="font-size:12px;">
+									<p style="text-align:center">
+										<b style="font-size:15px">IMPORTANT</b>
+									</p>
+									<p>
+										1) If the product is being returned under the "14 day money back guarantee" the product MUST be
+										returned in its original packaging and in mint condition.
+									</p>
+									<p>
+										2) If the product is an 19" LCD monitor rack, the box must now be placed INSIDE ANOTHER BOX
+										with packaging in between to avoid any damage to the product during transit.
+										If there are any damages to an LCD monitor during transit and it is not inside two boxes YOU WILL
+										BE CHARGED FOR THOSE DAMAGES.
+									</p>
+									<p>
+										<img src="{BOX_PACKAGING_IMAGE}" style="height:120px" />
+									</p>
+									<p>
+										3) Include a copy of this form in the box or in a "Documents enclosed" envelope on the box.
+									</p>
+									<p>
+										4) Return the product WITH ITS POWER SUPPLY carriage paid &amp; insured to the address below.
+									</p>
+									<p>
+										5) If the product is found not faulty an inspection fee of &#163;30 ex VAT will be charged.
+									</p>
+								</td>
+							</tr>
+						</table>
+						<table style="font-family: Verdana, Geneva, sans-serif ; font-size:10px ; border-bottom: dashed black 3px; border-collapse:collapse" width="100%" border="0">
+							<tr>
+								<td>&#160;</td>
+							</tr>
+						</table>
+						<table style="font-family: Verdana, Geneva, sans-serif ; font-size:10px ; border-collapse:collapse;border 1px solid black;" width="100%" border="0">
+							<tr valign="middle">
+								<td style="font-weight:bold;font-size:18px;width:35%">
+									Returns #: {RETURNS_ID}<br />
+									RETURNS ADDRESS<br /><br />
+									{SITE_COMPANY_NAME}<br />
+									{SITE_COMPANY_ADDRESS}<br />
+									{SITE_COMPANY_COUNTRY}<br />
+								</td>
+								<td style="width:65px">
+									<table>
+										<tr>
+											<td>
+												Print out two copies of this form: one for your records and the other to fold up and put
+												into a Documents Enclosed envelope for sticking on the Returns package.
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<table style="border: solid 2px black">
+													<tr style="vertical-align:top">
+														<td style="max-width:200px;width:200px">
+															<p style="font-weight:bold">Returns
+															description
+															</p>
+															<b>All:</b><br/>
+															a) Why is customer
+															returning it?<br/>
+															b) What is wrong with
+															it?<br/>
+															<b>If faulty:</b><br/>
+															c) How was it used
+															when fault happened?<br/>
+															d) How was it powered?<br/>
+															e) Has modifications or
+															repair been attempted?<br/>
+															<b>All:</b><br/>
+															f) Date &amp; initials of
+															Teletest staff
+															<b>Other comments:</b>
+														</td>
+														<td>
+															<table style="max-width:260px;width:260px">
+																<tr>
+																	<td style="font-weight:bold">
+																		Part #: {PART_NUMBER} Serial #: {SERIAL_NUMBER}
+																	</td>
+																</tr>
+																<tr>
+																	<td>
+																		<table  style="border: solid 1px black" >
+																			<tr>
+																				<td style="height:180px;min-width:200px;width:200px">
+																					{RETURNS_AUTHORISATION_NOTE_DETAILS}
+																				</td>
+																			</tr>
+																		</table>
+																	</td>
+																</tr>
+															</table>
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							
+						</table>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

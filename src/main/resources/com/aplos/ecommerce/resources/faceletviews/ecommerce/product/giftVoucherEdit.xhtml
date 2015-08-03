@@ -1,0 +1,385 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="editHead">
+		<h:outputScript library="jsLibraries" name="jquery-ui-1.8/js/jquery-ui-1.8.6.custom.min.js" target="head" />
+		<h:outputStylesheet library="jsLibraries" name="jquery-ui-1.8/themes/base/jquery.ui.base.css" target="head" />
+			<h:outputStylesheet library="jsLibraries" name="jquery-ui-1.8/themes/base/jquery.ui.theme.css" target="head" />
+		<h:outputScript library="jsLibraries" name="ckeditor/aplosckeditor.js" target="head" />
+		<h:outputScript library="scripts" name="ckEditorHelper.js" target="head" />
+		<script type="text/javascript">
+			$j(document).ready(function() {
+				ckEditorHelper.createLimitedToolbarCKEditors( '#{ request.contextPath }', { width : "640px" }, 'aplos_ckeditor' );
+				$j("#tabs").tabs({ cookie: { expires: 2, name: 'productstack-main' } });
+				$j("#images").tabs({ cookie: { expires: 2, name: 'productstack-images' } });
+			}); 
+		</script>
+	</ui:define>
+	<ui:define name="editContent">
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-details">Voucher</a></li>
+				<li><a href="#tabs-lists">Lists</a></li>
+				<li><a href="#tabs-colours">Designs &amp; Stock</a></li>
+			</ul>
+			<div id="tabs-details">
+				<table class="aplos-form-table-with-required aplos-form-table">
+					<tr>
+						<td class="aplos-label">Price</td>
+						<td class="aplos-required-asterisk">*</td>
+						<td class="aplos-field">
+							<h:inputText required="true" requiredMessage="Please enter a price" value="#{backingPage.price}" />
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-description" colspan="3">(Prices should be entered in GBP (£) without the symbol)</td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Name</td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+							<h:inputText value="#{productInfo.product.name}" />
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-description" colspan="3">(Leave 'Name' empty to automatically assign name by price)</td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Description</td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+							<h:inputTextarea class="aplos_ckeditor" id="descriptionLong" value="#{productInfo.longDescription}" />
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-description" colspan="3">(Product Tab)</td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Search &amp; Meta Keywords</td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+						<aplos:panel id="searchKeywordsTableWrapper">
+							<p:dataTable id="searchKeywordsTable" value="#{ productInfo.searchKeywordList }" var="tableBean" styleClass="listDatatable" style="width:100%">
+								<p:column>
+									<f:facet name="header">Keyword</f:facet>
+									#{tableBean}
+								</p:column>
+								<p:column width="24px">
+									<h:commandButton action="#{ backingPage.removeSearchKeyword }" image="/images/action_delete.gif" reRender="searchKeywordsTableWrapper" />
+								</p:column>
+							</p:dataTable>
+						</aplos:panel>
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label"></td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+							<h:inputText value="#{ backingPage.newSearchKeyword }" />
+							<aploscc:ajaxButton ajaxEnabled="true" action="#{ backingPage.addSearchKeyword }" value="Add" reRender="searchKeywordsTableWrapper" />
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-description" colspan="3">(Not displayed, used for search and SEO)</td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Free Postage</td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+							<h:selectBooleanCheckbox value="#{productInfo.isFreePostage}" />
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Notes</td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+							<h:inputTextarea id="userNotes" class="aplos_ckeditor" value="#{productInfo.product.notes}" />
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-description" colspan="3">(not shown on front-end)</td>
+					</tr>
+				</table>
+			</div>
+			<div id="tabs-lists">
+				<table class="aplos-form-table-with-required aplos-form-table">
+					<tr>
+						<td class="aplos-label">Bullet Points</td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+						<aplos:panel id="bulletPointTableWrapper">
+							<p:dataTable id="bulletPointTable" value="#{ productInfo.bulletPointList }" var="tableBean" styleClass="listDatatable" style="width:100%">
+								<p:column style="width:80px">
+									<f:facet name="header">Name</f:facet>
+									#{tableBean}
+								</p:column>
+								<p:column width="24px">
+									<h:commandButton action="#{ backingPage.removeBulletPoint }" image="/images/action_delete.gif" reRender="bulletPointTableWrapper" />
+								</p:column>
+							</p:dataTable>
+						</aplos:panel>
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-description" colspan="3">(Details Tab)</td>
+					</tr>
+					<tr>
+						<td class="aplos-label"></td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+							<h:inputText value="#{ backingPage.newBulletPoint }" />
+							<aploscc:ajaxButton ajaxEnabled="true" action="#{ backingPage.addBulletPoint }" value="Add" reRender="bulletPointTable" />
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Products included</td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+						<aplos:panel id="includedProductsTableWrapper">
+							<p:dataTable id="includedProductsTable" value="#{ productInfo.includedProducts }" var="tableBean" styleClass="listDatatable" style="width:100%">
+								<p:column>
+									<f:facet name="header">Name</f:facet>
+									<!-- <h:commandLink value="# {tableBean.displayName}" action="# { backingPage.redirectToPage( tableBean ) }" styleClass="stdLink" />-->
+									<aploscc:quickView bean="#{tableBean}" action="#{ backingPage.redirectToPage( tableBean ) }" />
+								</p:column>
+								<p:column sortBy="#{ tableBean.product.productBrand.name }" filterBy="#{ tableBean.product.productBrand.name }" style="width:80px">
+									<f:facet name="header">Brand</f:facet>
+									#{tableBean.product.productBrand.name}
+								</p:column>
+								<p:column width="24px">
+									<h:commandButton action="#{ backingPage.removeSelectedIncludedProduct }" image="/images/action_delete.gif" reRender="includedProductsTableWrapper" />
+								</p:column>
+							</p:dataTable>
+						</aplos:panel>
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label"></td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+							<h:selectOneListbox size="1" value="#{backingPage.includedProductBrand}" converter="aplosAbstractBeanConverter">
+								<f:selectItems value="#{productBrand.selectItemBeansWithNotSelected}" /> 
+<p:ajax process="@form" event="change" listener="#{backingPage.updateIncludedProductsSelectItemBeans()}" update="includedProductsList" />  
+							</h:selectOneListbox>
+							<h:selectOneListbox size="1" id="includedProductsList" value="#{backingPage.selectedIncludedProduct}" converter="aplosAbstractBeanConverter" collectionType="java.util.ArrayList">
+								<f:selectItems value="#{backingPage.includedProductSelectItemBeans}" />   
+							</h:selectOneListbox>
+							<aploscc:ajaxButton ajaxEnabled="true" action="#{ backingPage.addSelectedIncludedProduct }" value="Add" reRender="includedProductsTable" />
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div id="tabs-colours">
+				<h:panelGroup rendered="#{backingPage.colourList == null or backingPage.colourList.size() &lt; 1}" layout="block">
+					No colours have been added.
+				</h:panelGroup>
+				<h:panelGroup rendered="#{backingPage.colourList != null and backingPage.colourList.size() &gt; 0}" layout="block">
+					<h4>Stock</h4>
+                    <script type="text/javascript">
+                    	$j(document).ready(function() {
+		                    $j(".aplos-ecommerce-qty-grid").delegate('td','mouseover mouseleave', function(e) {
+		                    	if ($j(this).index() > 0) {
+			                        if (e.type == 'mouseover') {
+			                          $j(this).parent().addClass("aplos-hover");
+			                          $j(this).parent().parent().parent().find('thead tr th:nth-child(' + ($j(this).index()+1) + ')').addClass("aplos-hover");
+			                        } else {
+			                          $j(this).parent().removeClass("aplos-hover");
+			                          $j(this).parent().parent().parent().find('.aplos-hover').removeClass("aplos-hover");
+			                        }
+		                    	}
+		                    });
+		                    //this selects the field contents as we tab through :)
+		                    $j(".aplos-ecommerce-qty-grid input").focus(
+	                    		function() { 
+	                    			$j(this).removeClass().addClass('aplos-value');
+	                    			$j(this).addClass('aplos-active');
+	                    			$j(this).select();    
+	                    		}
+		                    );
+		                    $j(".aplos-ecommerce-qty-grid input").blur(
+	                    		function() { 
+	                    			updateStyleClass(this);
+	                    		}
+		                    );
+		                    $j(".aplos-ecommerce-qty-grid input").each(function() {
+		                    	updateStyleClass($j(this));
+		                    });
+	                    });
+	                    
+	                    function isNumber(n) {
+	                    	return !isNaN(parseFloat(n)) &amp;&amp; isFinite(n);
+	                    }
+	                    
+	                    function updateStyleClass(element) {
+	                    	var val = $j(element).val();
+	                    	$j(element).removeClass().addClass('aplos-value');
+	                    	if (val == null || val == '' || !isNumber(val)) {
+	                    		$j(element).addClass('aplos-error');
+	                    	} else if (val == 0) {
+	                    		$j(element).addClass('aplos-out-of-stock');
+	                    	} else if (val &lt; 0) { 
+	                    		$j(element).addClass('aplos-wait-period');
+	                    	} else if (val &lt; 5) {
+	                    		$j(element).addClass('aplos-low-stock');
+	                    	} else {
+	                    		$j(element).addClass('aplos-in-stock');
+	                    	}
+	                    }
+                    </script>
+                    <small class="aplos-description"><em>Please enter a negative number for 'weeks to wait', for example, if the stock
+                    will be in in four weeks please enter -4<br/>The system will then display the 'countdown' on 
+                    the frontend, starting at 4. You can reset the value at any time by entering something new.</em></small><br/><br/>
+                    <table class="aplos-ecommerce-qty-grid  aplos-backend">
+                    	<thead>
+	                    	<tr>
+	                    		<th>&#160;</th>
+	                    		<ui:repeat value="#{backingPage.sizeList}" var="size">
+	                    			<th>#{size.name}</th>
+	                    		</ui:repeat>
+	                    	</tr>
+	                    </thead>
+	                    <tbody>
+	                    	<ui:repeat value="#{backingPage.colourList}" var="colour">
+	                    		<h:panelGroup rendered="#{backingPage.sizesWithNoCategoriesExist}">
+		                    		<tr>
+			                    		<td class="aplos-category">#{colour.name}</td>
+			                    		<ui:repeat value="#{backingPage.sizeList}" var="size">
+			                    			<td>
+			                    				<h:inputText styleClass="aplos-value" rendered="#{backingPage.activeCategoriesCount &lt; 1}" onchange="updateStyleClass(this)" value="#{backingPage.quantity}" />
+			                    				<!--# {backingPage.quantity * -1}</h:panelGroup>-->
+			                    				<h:panelGroup layout="block" styleClass="aplos-spacer aplos-not-stocked" rendered="#{backingPage.activeCategoriesCount &gt; 0}">&#160;</h:panelGroup>
+			                    			</td>
+			                    		</ui:repeat>
+			                    	</tr>    
+		                    	</h:panelGroup>   
+		                    	<h:panelGroup rendered="#{backingPage.categoryList.size() &gt; 0}">
+		                    		<ui:repeat value="#{backingPage.categoryList}" var="category">
+		                    			<tr>
+				                    		<td class="aplos-category">#{category.name},&#160;#{colour.name}</td>
+				                    		<ui:repeat value="#{backingPage.sizeList}" var="size">
+				                    			<td>
+				                    				<h:inputText styleClass="aplos-value" rendered="#{size.productSizeType.productSizeCategories.contains(category)}" onchange="updateStyleClass(this)" value="#{backingPage.quantity}" />
+			                    					<!--# {backingPage.quantity * -1}</h:panelGroup>-->
+			                    					<h:panelGroup layout="block" styleClass="aplos-spacer aplos-not-stocked" rendered="#{!size.productSizeType.productSizeCategories.contains(category)}">&#160;</h:panelGroup>
+				                    			</td>
+				                    		</ui:repeat>
+				                    	</tr>   
+		                    		</ui:repeat>
+		                    	</h:panelGroup>    
+	                    	</ui:repeat>
+                    	</tbody>
+                    </table>
+					<h4>Colours &amp; Images</h4>
+				
+					<div id="images">
+						<ul>
+							<ui:repeat value="#{backingPage.colourList}" var="colour">
+								<li><a href="#tabs-images-#{colour.id}">#{colour.name}</a></li>
+							</ui:repeat>
+						</ul>
+						<ui:repeat value="#{backingPage.colourList}" var="colour">
+							<div id="tabs-images-#{colour.id}">
+								<table>
+									<tr>
+										<td class="aplos-label" style="width:50px; vertical-align: middle;">
+											Swatch Image<br/>
+											<small>22px <span style="color:silver">x</span> 20px</small>
+										</td>
+										<td>
+											<aploscc:imageUploader2 key="SWATCH_IMAGE" resizeHeight="20" resizeWidth="22" owner="#{backingPage.lightboxColourMap[colour]}" />
+										</td>
+										<td class="aplos-image-description">Used as the colour swatches on the product list pages</td>
+									</tr>
+									<tr>
+										<td class="aplos-label" style="width:50px; vertical-align: middle;">
+											List Image<br/>
+											<small>143px <span style="color:silver">x</span> 196px</small>
+										</td>
+										<td>
+											<aploscc:imageUploader2 key="SMALL_IMAGE" resizeHeight="196" resizeWidth="143" owner="#{backingPage.lightboxColourMap[colour]}" />
+										</td>
+										<td class="aplos-image-description">Used on the product list pages</td>
+									</tr>
+									<tr>
+										<td class="aplos-label" style="width:50px; vertical-align: middle;">
+											Main Image<br/>
+											<small>Min 616px <span style="color:silver">x</span> 842px</small><br/>
+											<small>Max 924px <span style="color:silver">x</span> 1263px</small>
+										</td>
+										<td>
+											<aploscc:imageUploader2 key="LARGE_IMAGE" resizeHeight="1263" resizeWidth="924" owner="#{backingPage.lightboxColourMap[colour]}" />
+										</td>
+										<td class="aplos-image-description">Used as the zoom popup on individual product pages</td>
+									</tr>
+									<tr>
+										<td class="aplos-label" style="width:50px; vertical-align: middle;">
+											Additional 1<br/>
+											<small>Min 616px <span style="color:silver">x</span> 842px</small><br/>
+											<small>Max 924px <span style="color:silver">x</span> 1263px</small>
+										</td>
+										<td>
+											<aploscc:imageUploader2 key="DETAIL_IMAGE_1" resizeHeight="1263" resizeWidth="924" owner="#{backingPage.lightboxColourMap[colour]}" />
+										</td>
+										<td class="aplos-image-description">The thumbnails shown below the main image on the product page</td>
+									</tr>
+									<tr>
+										<td class="aplos-label" style="width:50px; vertical-align: middle;">
+											Additional 2<br/>
+											<small>Min 616px <span style="color:silver">x</span> 842px</small><br/>
+											<small>Max 924px <span style="color:silver">x</span> 1263px</small>
+										</td>
+										<td>
+											<aploscc:imageUploader2 key="DETAIL_IMAGE_2" resizeHeight="1263" resizeWidth="924" owner="#{backingPage.lightboxColourMap[colour]}" />
+										</td>
+										<td class="aplos-image-description"></td>
+									</tr>
+									<tr>
+										<td class="aplos-label" style="width:50px; vertical-align: middle;">
+											Additional 3<br/>
+											<small>Min 616px <span style="color:silver">x</span> 842px</small><br/>
+											<small>Max 924px <span style="color:silver">x</span> 1263px</small>
+										</td>
+										<td>
+											<aploscc:imageUploader2 key="DETAIL_IMAGE_3" resizeHeight="1263" resizeWidth="924" owner="#{backingPage.lightboxColourMap[colour]}" />
+										</td>
+										<td class="aplos-image-description"></td>
+									</tr>
+									<tr>
+										<td class="aplos-label" style="width:50px; vertical-align: middle;">
+											Additional 4<br/>
+											<small>Min 616px <span style="color:silver">x</span> 842px</small><br/>
+											<small>Max 924px <span style="color:silver">x</span> 1263px</small>
+										</td>
+										<td>
+											<aploscc:imageUploader2 key="DETAIL_IMAGE_4" resizeHeight="1263" resizeWidth="924" owner="#{backingPage.lightboxColourMap[colour]}" />
+										</td>
+										<td class="aplos-image-description"></td>
+									</tr>
+									<tr>
+										<td class="aplos-label" style="width:50px; vertical-align: middle;"></td>
+										<td colspan="2">
+											<aploscc:ajaxButton action="#{backingPage.removeColour}" value="Remove #{colour.name}" />
+										</td>
+									</tr>
+								</table>
+							</div>
+						</ui:repeat>	
+					</div>
+				</h:panelGroup><br/><hr/>
+				<h4 style="margin-bottom:3px;">Add a Design / Colour</h4>
+				<h:selectOneListbox size="1" id="addColourList" value="#{backingPage.selectedColour}" converter="aplosAbstractBeanConverter">
+					<f:selectItems value="#{productColour.selectItemBeansWithNotSelected}" />   
+				</h:selectOneListbox> 
+				<aploscc:ajaxButton action="#{ backingPage.addColour }" value="Add" />
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+

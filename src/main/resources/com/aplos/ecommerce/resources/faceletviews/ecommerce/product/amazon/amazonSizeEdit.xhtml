@@ -1,0 +1,47 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label">Size Name</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field"><h:inputText value="#{amazonSize.name}" required="#{ backingPage.validationRequired }"/></td>
+			</tr>
+		</table>
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label">Amazon product type</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:selectOneMenu  label="Amazon product size" value="#{ amazonSize.amazonProductType }">
+						<f:selectItems value="#{ backingPage.amazonProductTypeSelectItems }" />
+						<p:ajax event="change" update="postionPnl" listener="#{ backingPage.amazonProductTypeUpdated }" />   
+					</h:selectOneMenu>
+				</td>
+			</tr>
+		</table>
+		<aplos:panel id="postionPnl">
+			<aplos:panel rendered="#{ amazonSize.amazonProductType != null }">
+				<table class="aplos-form-table">
+					<tr>
+						<td class="aplos-label" style="width:140px">Position</td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+							<h:selectOneMenu value="#{backingPage.positionedBeanHelper.currentPositionedBean.positionIdx}">
+								<f:selectItems value="#{backingPage.positionedBeanHelper.positionIdxSelectItems}" />   
+							</h:selectOneMenu>
+						</td>
+					</tr>
+				</table>
+			</aplos:panel>
+		</aplos:panel>
+	</ui:define>
+	
+</ui:composition>

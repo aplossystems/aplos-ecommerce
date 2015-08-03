@@ -1,0 +1,20 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	
+	<table class="aplos-form-table">
+		<tr>
+			<td class="aplos-label">Build notes</td>
+			<td class="aplos-field"><textarea disabled="disabled" style="width:400px;height:100px">#{ realizedProductReturn.serialNumber.buildNotes }</textarea></td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Serial number <br/> technical history</td>
+			<td class="aplos-field">
+				<h:inputTextarea value="#{ realizedProductReturn.serialNumber.technicalHistory }" style="width:400px;height:100px" disabled="#{ realizedProductReturn.serialNumber == null }" />
+			</td>
+		</tr>
+	</table>
+</ui:composition>

@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	<div id="customer-section aplos-customer-details">
+	
+		<!-- This has been separated so that other forms can include this section (at least Teletest project) -->
+		<ui:include src="/ecommerce/developermodule/frontend/customerDetailsForm.xhtml" />
+		
+		<table class="aplos-form-table aplos-form-table-with-required">
+			<tr>
+				<td class="aplos-label"></td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field" style="text-align:right"><aploscc:ajaxButton value="Save Changes" action="#{ customerDetailsFeDmb.saveDetails }" /></td>
+			</tr>
+		</table>
+		
+		<div class="aplos-required-fields-note"><span class="aplos-required-asterisk">*</span> required fields</div>
+	</div>
+</ui:composition>

@@ -1,0 +1,45 @@
+
+<ui:composition template="#{ themeManager.listTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="listContent">
+		<div>
+			<table class="aplos-form-table">
+				<tr>
+					<td class="aplos-label">Import Customer</td>
+					<td class="aplos-field">
+						<aplos:autoComplete id="customerAc" value="#{backingPage.selectedCustomer}"   
+		                    completeMethod="#{backingPage.suggestCustomers}" var="autoBean" itemValue="#{autoBean}" itemLabel="#{ backingPage.getCustomerDisplayString( autoBean ) }" converter="autoCompleteBeanConverter">
+		                   <p:ajax process="@form" event="itemSelect" listener="#{backingPage.importCustomer}" update="customerAc,companyContactDataTable"/>  
+		                </aplos:autoComplete>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<aploscc:wrappedDataTable2 id="companyContactDataTable" dataTableState="#{ backingPage.dataTableState }">
+			<p:column sortBy="#{ tableBean.subscriber.firstName }" filterBy="#{ tableBean.subscriber.firstName }">
+				<f:facet name="header">First Name</f:facet>
+				#{tableBean.subscriber.firstName}
+			</p:column>
+			<p:column sortBy="#{ tableBean.subscriber.surname }" filterBy="#{ tableBean.subscriber.surname }">
+				<f:facet name="header">Surname</f:facet>
+				#{tableBean.subscriber.surname}
+			</p:column>
+			<p:column sortBy="#{ tableBean.subscriber.emailAddress }" filterBy="#{ tableBean.subscriber.emailAddress }">
+				<f:facet name="header">Email</f:facet>
+				#{tableBean.subscriber.emailAddress}
+			</p:column>
+			<p:column sortBy="#{ tableBean.shippingAddress.phone }" filterBy="#{ tableBean.shippingAddress.phone }">
+				<f:facet name="header">Phone</f:facet>
+				#{tableBean.shippingAddress.phone}
+			</p:column>
+		</aploscc:wrappedDataTable2>
+	</ui:define>
+</ui:composition>

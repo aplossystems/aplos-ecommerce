@@ -1,0 +1,26 @@
+<ui:composition template="#{ themeManager.backendTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	
+	<ui:define name="body">
+		<h:form>
+			<table class="aplos-form-table">
+				<tr>
+					<td class="aplos-label" style="width:120px">First serial number</td>
+					<td class="aplos-field"><h:inputText value="#{ backingPage.firstSerialNumber }" /></td>
+				</tr>
+			</table>
+			<div style="float:right">
+				<aplos:aplosSmallBorder>
+					<h:commandLink id="printVoid" value="Print void stickers" action="#{ backingPage.reprintVoidStickers }" target="_blank" style="color:black" />
+				</aplos:aplosSmallBorder><br />
+				<aploscc:ajaxButton value="Back" action="#{ backingPage.redirectToSerialNumberAssignmentList() }" />
+			</div>
+		</h:form>
+	</ui:define>
+	
+</ui:composition>

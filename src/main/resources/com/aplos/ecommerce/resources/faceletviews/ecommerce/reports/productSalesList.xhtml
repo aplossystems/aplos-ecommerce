@@ -1,0 +1,78 @@
+<ui:composition template="#{ themeManager.listTemplatePath }"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:define name="heading">
+		Product sales figures
+	</ui:define>
+
+	<ui:define name="listContent">
+		<div>
+			<table>
+				<tr>
+					<td>From &#160; <aploscc:dateTime id="startDateInput"
+							showCheckbox="#{false}" startYearDiff="#{-25}" endYearDiff="#{0}"
+							value="#{backingPage.dataTableState.lazyDataModel.startDate}"
+							ajaxOnchange=":listForm:wrappedDataTable:mojarraBugFixPnl">
+						</aploscc:dateTime>
+					</td>
+					<td>to &#160; <aploscc:dateTime id="endDateInput"
+							showCheckbox="#{false}" startYearDiff="#{-25}" endYearDiff="#{0}"
+							value="#{backingPage.dataTableState.lazyDataModel.endDate}"
+							ajaxOnchange=":listForm:wrappedDataTable:mojarraBugFixPnl">
+						</aploscc:dateTime>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<aploscc:wrappedDataTable2 id="wrappedDataTable" dataTableState="#{ backingPage.dataTableState }">
+			<p:column sortBy="#{ tableBean.realizedProduct.productInfo.product.name }" filterBy="#{ tableBean.realizedProduct.productInfo.product.name }">
+				<f:facet name="header">Product</f:facet>
+				#{tableBean.realizedProduct.productInfo.product.name}
+			</p:column>
+			<p:column>
+				<f:facet name="header">Type</f:facet>
+				#{tableBean.realizedProduct.productInfo.product.productTypes[0]}
+			</p:column>
+			<p:column sortBy="#{ tableBean.realizedProduct.productInfo.product.productBrand.name }" filterBy="#{ tableBean.realizedProduct.productInfo.product.productBrand.name }">
+				<f:facet name="header">Brand</f:facet>
+				#{tableBean.realizedProduct.productInfo.product.productBrand.name}
+			</p:column>
+			<p:column sortBy="#{ col_9_0_ }" filterBy="#{ col_9_0_ }" filterStyle="width:25px">
+				<f:facet name="header">Qty</f:facet>
+				#{tableBean.salesQuantity}
+				<f:facet name="footer" styleClass="aplos-total" style="text-align:left;">
+					#{ backingPage.dataTableState.lazyDataModel.salesQuantityTotal }
+				</f:facet>
+			</p:column>
+			<p:column sortBy="#{ col_10_0_ }" filterBy="#{ col_10_0_ }" filterStyle="width:35px" styleClass="numericText" style="width:50px">
+				<f:facet name="header">Sales Total</f:facet>
+				#{tableBean.salesAmountStr}
+				<f:facet name="footer" styleClass="aplos-total numericText" style="width:50px">
+					#{ backingPage.dataTableState.lazyDataModel.salesAmountTotalStr }
+				</f:facet>
+			</p:column>
+			<p:column sortBy="#{ tableBean.realizedProduct.productCost }" styleClass="numericText" style="width:50px">
+				<f:facet name="header">Cost per unit</f:facet>
+				<h:outputText value="#{ tableBean.realizedProduct.productCostStr }" escape="false" />
+			</p:column>
+			<p:column sortBy="#{ tableBean.singleItemNetPrice }" styleClass="numericText" style="width:50px">
+				<f:facet name="header">Sale Price</f:facet>
+				#{ tableBean.singleItemNetPriceStr }
+			</p:column>
+			<p:column sortBy="#{ tableBean.singleItemNetPrice - tableBean.realizedProduct.productCost }" styleClass="numericText" style="width:50px">
+				<f:facet name="header">Profit per unit</f:facet>
+				<h:outputText value="#{ tableBean.profitPerUnitStr }" escape="false" />
+			</p:column>
+			<p:column sortBy="#{ (tableBean.singleItemNetPrice - tableBean.realizedProduct.productCost) / (tableBean.singleItemNetPrice/100) }">
+				<f:facet name="header">Unit margin</f:facet>
+				<h:outputText value="#{ tableBean.unitMarginStr }" escape="false" />
+			</p:column>
+		</aploscc:wrappedDataTable2>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,158 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="editContent">
+		<style>
+			.editLabelColumn {
+				width: 130px;
+			}
+		</style>
+		
+		<h:panelGroup layout="block" rendered="#{not customer.isNew}">
+			<aploscc:ajaxButton id="newTransactionBtn" action="#{ backingPage.createNewTransaction(customer) }" value="Create new transaction" />
+		</h:panelGroup>
+		<h:panelGroup layout="block" rendered="#{not customer.isNew and ecommerceConfiguration.getEcommerceSettings( true ).usingRealizedProductReturns }" style="float:left">
+			<aploscc:ajaxButton action="#{ backingPage.createReturnAndRedirect(customer) }" value="Create new return" />
+			<span class="aplos-description">If you have a serial number then create the return using this from the serial number list page.</span>
+		</h:panelGroup>
+		<br style="clear:both;padding-top:5px" />
+		<ui:insert name="aboveMainFields" />		
+		<table class="aplos-form-table-with-required edit">
+			<tr>
+				<td class="aplos-label editLabelColumn" style="width:130px">First Name</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field"><h:inputText value="#{customer.subscriber.firstName}" required="#{ backingPage.validationRequired }" requiredMessage="Please enter a first name for the customer" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Surname</td>
+				<td></td>
+				<td class="aplos-field"><h:inputText value="#{customer.subscriber.surname}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Email</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field"><h:inputText value="#{customer.subscriber.emailAddress}" required="#{ backingPage.validationRequired }" requiredMessage="Please enter an email address for the customer" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Position</td>
+				<td></td>
+				<td class="aplos-field"><h:inputText value="#{customer.position}" /></td>
+			</tr>
+		</table>		
+		<div style="clear:both"/>
+		<aplos:panel id="useBillingAddressPnl">
+			<table>
+				<tr>
+					<td class="aplos-label formSubHeading">#{contextListener.translate('SHIPPING_ADDRESS')}</td>
+					<td></td>
+					<td class="aplos-field">
+						<aplos:panel rendered="#{ !(customer.duplicateAddresses.ordinal() == 1) }">
+							<h:selectBooleanCheckbox value="#{ backingPage.usingBillingAddressForShipping }" >
+								<p:ajax process="@form" event="click" update="shippingAddress useShippingAddressPnl" />
+							</h:selectBooleanCheckbox>
+							 use billing address
+						</aplos:panel>
+					</td>
+				</tr>
+			</table>
+		</aplos:panel>
+		<div style="clear:both"/>
+		
+		<aplos:panel id="shippingAddress">
+			<aplos:panel rendered="#{ !(customer.duplicateAddresses.ordinal() == 0) }">
+				<aploscc:address bean="#{customer.shippingAddress}" phone="true" ecommerceFieldsRequired="true" />
+			</aplos:panel>
+		</aplos:panel>
+		
+		<div style="clear:both"/>
+		<aplos:panel id="useShippingAddressPnl">
+			<table>
+				<tr>
+					<td class="aplos-label formSubHeading">Billing Address</td>
+					<td></td>
+					<td class="aplos-field">
+						<aplos:panel rendered="#{ !(customer.duplicateAddresses.ordinal() == 0) }">
+							<h:selectBooleanCheckbox value="#{ backingPage.usingShippingAddressForBilling }" >
+								<p:ajax process="@form" event="click" update="billingAddressPnl useBillingAddressPnl" />
+							</h:selectBooleanCheckbox>
+							 use #{contextListener.translate('SHIPPING_ADDRESS')}
+						</aplos:panel>
+					</td>
+				</tr>
+			</table>
+		</aplos:panel>
+		<div style="clear:both"/>
+		<aplos:panel id="billingAddressPnl">
+			<aplos:panel rendered="#{ !(customer.duplicateAddresses.ordinal() == 1) }">
+				<aploscc:address bean="#{customer.billingAddress}" phone="true" ecommerceFieldsRequired="true" />
+			</aplos:panel>
+		</aplos:panel>
+		<aplos:panel id="useAlternativeShippingAddress">
+			<table>
+				<tr>
+					<td class="aplos-label formSubHeading">Alternative #{contextListener.translate('SHIPPING_ADDRESS')}</td>
+					<td></td>
+					<td class="aplos-field">
+						<h:selectBooleanCheckbox value="#{ customer.usingAlternativeAddress }" >
+							<p:ajax process="@form" event="click" update="altShippingAddress" />
+						</h:selectBooleanCheckbox>
+					</td>
+				</tr>
+			</table>
+		</aplos:panel>
+		<aplos:panel id="altShippingAddress">
+			<aplos:panel rendered="#{ customer.usingAlternativeAddress }">
+				<aploscc:address bean="#{customer.altShippingAddress}" phone="true" ecommerceFieldsRequired="true" />
+			</aplos:panel>
+		</aplos:panel>
+		
+		<table class="aplos-form-table-with-required edit">
+			<tr>
+				<td class="aplos-label">Referrer</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:selectOneListbox size="1" id="referrerDdl" collectionType="java.util.ArrayList" value="#{customer.subscriber.subscriberReferrer}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{subscriberReferrer.selectItemBeansWithNotSelected}" />
+					</h:selectOneListbox>
+				</td>
+			</tr> 
+			<tr>
+				<td class="aplos-label">Referrer Other</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:inputText value="#{customer.subscriber.referrerOther}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Active Subscription</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{customer.subscriber.subscribed}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Mailshot type</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:selectOneListbox size="1" id="mailshotTypeDdl" collectionType="java.util.ArrayList" value="#{customer.subscriber.mailShotType}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{mailShotType.selectItemBeansWithNotSelected}" />
+					</h:selectOneListbox>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Company connection requested</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:selectBooleanCheckbox value="#{customer.companyConnectionRequested}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Notes</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:inputTextarea id="customerNotes" value="#{customer.customerNotes}" style="width:400px ; height:100px ;" /> <!-- ceffcf" /> -->
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>

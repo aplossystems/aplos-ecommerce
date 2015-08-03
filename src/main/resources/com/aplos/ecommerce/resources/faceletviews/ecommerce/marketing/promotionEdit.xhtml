@@ -1,0 +1,258 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="editContent"><div class="aplos-atom-backend">
+		<h4 class="aplos-title">Promotion Overview</h4>
+		<p style="background-color:#eaeaea; padding:10px"><h:outputText id="genDesc" value="#{backingPage.generatedDescription}" escape="false" /></p>
+		<h4 class="aplos-title">Dates Active</h4>
+		<p style="background-color:#eaeaea; padding:10px"><h:outputText id="activeDesc" value="#{backingPage.activeText}" escape="false" /></p>
+		<br/><hr/><br/>
+		<h3 class="aplos-title">Basic Details</h3>
+		<table class="aplos-form-table-with-required aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:200px;">Name of Promotion</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:inputText required="#{ backingPage.validationRequired }" requiredMessage="Promotion Name is required" value="#{promotion.name}">
+						<p:ajax process="@form" event="change" update="activeDesc genDesc" />
+					</h:inputText>
+				</td>
+				<td></td>
+			</tr>
+		</table>
+		<h:panelGroup id="codeGenPanel">
+			<h:panelGroup  rendered="#{promotion.codeRequired}">
+				<table class="aplos-form-table-with-required aplos-form-table">	
+					<tr>
+						<td class="aplos-label" style="width:200px;">Promotional code</td>
+						<td class="aplos-required-asterisk">*</td>
+						<td class="aplos-field">
+							<h:inputText disabled="#{backingPage.generateCodeAutomatically}" required="#{backingPage.isValidationRequired}" requiredMessage="Promotion Code is required" value="#{promotion.code}" /><br />
+							<h:panelGroup rendered="#{backingPage.generateCodeAutomatically}"><span style="color:darkred">Note: The promotional code will be automatically updated when you save this page.</span></h:panelGroup>
+						</td>
+						<td> 
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label" style="width:200px;"></td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+							<h:selectBooleanCheckbox value="#{backingPage.generateCodeAutomatically}">
+								<p:ajax process="@form" event="change" update="codeGenPanel activeDesc genDesc" />
+							</h:selectBooleanCheckbox>
+							Generate new code Automatically
+						</td>
+						<td> 
+							<!--# {promotion.generatePromoCode}" /> -->
+						</td>
+					</tr>
+				</table>
+			</h:panelGroup>
+		</h:panelGroup>
+		<table class="aplos-form-table-with-required aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:200px;"></td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:selectBooleanCheckbox value="#{backingPage.codeNotRequired}">
+						<p:ajax process="@form" event="change" update="codeGenPanel activeDesc genDesc" />
+					</h:selectBooleanCheckbox>
+					Code is not required
+				</td>
+				<td> 
+					<!--# {promotion.generatePromoCode}" /> -->
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label" style="width:200px;">Type of promotion</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{backingPage.promotionType}">
+						<f:selectItems value="#{backingPage.promotionTypeSelectItems }" />
+						<p:ajax process="@form" event="change" listener="#{backingPage.resetHiddenFields()}" update="percentagePanel genDesc activeDesc" />
+					</h:selectOneMenu>
+				</td>
+				<td></td>
+			</tr>
+		</table>
+		<h:panelGroup id="percentagePanel">
+			<h:panelGroup rendered="#{backingPage.isPercentageDiscountType}">
+				<table class="aplos-form-table-with-required aplos-form-table">	
+					<tr>
+						<td class="aplos-label" style="width:200px;">Percentage discount</td>
+						<td class="aplos-required-asterisk">*</td>
+						<td class="aplos-field">
+							<h:inputText required="#{ backingPage.validationRequired }" validatorMessage="Percentage discount must be between 0.25% and 99.75%" requiredMessage="Percentage Discount is required" value="#{promotion.percentage}">
+								<f:validateDoubleRange minimum="0" maximum="100" />
+								<p:ajax process="@form" event="change" update="genDesc activeDesc" />
+							</h:inputText>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</h:panelGroup>
+		</h:panelGroup>
+		<h3 class="aplos-title">Dates valid</h3>
+		<table class="aplos-form-table-with-required aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:200px;">Valid-From Date</td>
+				<td class="aplos-required-asterisk"></td>
+				<td>
+					<aploscc:dateTime id="startDateInput" showCheckbox="#{true}"
+						startYearDiff="#{0}" endYearDiff="#{3}"
+						value="#{promotion.starts}" ajaxOnchange="activeDesc">
+					</aploscc:dateTime>
+				</td>
+				<td class="aplos-description">
+					(Leave blank (unchecked) to have the voucher active immediately)
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label" style="width:200px;">Expiry Date</td>
+				<td class="aplos-required-asterisk"></td>
+				<td>
+					<aploscc:dateTime id="endDateInput" showCheckbox="#{true}"
+						startYearDiff="#{0}" endYearDiff="#{3}"
+						value="#{promotion.expires}" ajaxOnchange="activeDesc">
+					</aploscc:dateTime>
+				</td>
+				<td class="aplos-description">
+					(Leave blank (unchecked) to have no expiry date)
+				</td>
+			</tr>
+		</table>
+		<h3 class="aplos-title">Promotion product constraints</h3>
+		<span class="aplos-description">The customers basket must meet all constraints in the list, not just any single constraint.</span>
+		<br/><br/>
+		<table class="aplos-form-table-with-required aplos-form-table">
+			<thead>
+				<tr>
+					<td>Brand</td>
+					<td>Product type</td>
+					<td>Product Range</td>
+					<td>Discount</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+				<ui:repeat var="constraint" value="#{promotion.constraints}">
+					<tr>
+						<td>#{constraint.productBrand.displayName}</td>
+						<td>#{constraint.productType.displayName}</td>
+						<td>#{constraint.productInfo.displayName}</td>
+						<td>#{constraint.discountPercentageString}</td>
+						<td><aploscc:ajaxButton value="Remove" action="#{ backingPage.removeConstraint }" /></td>
+					</tr>
+				</ui:repeat>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td>
+						<h:selectOneMenu disabled="#{backingPage.newPromotionConstraint.productInfo != null}" id="productBrandMenu" value="#{backingPage.newPromotionConstraint.productBrand}" converter="aplosAbstractBeanConverter">
+							<f:selectItems value="#{productBrand.selectItemBeansWithNotSelected }" />
+							<p:ajax process="@form" event="change" update="genDesc activeDesc productTypeMenu productRangeMenu" /> 
+						</h:selectOneMenu>
+					</td>
+					<td>
+						<h:selectOneMenu disabled="#{backingPage.newPromotionConstraint.productInfo != null}" id="productTypeMenu" value="#{backingPage.newPromotionConstraint.productType}" converter="aplosAbstractBeanConverter">
+							<f:selectItems value="#{backingPage.productTypeSelectItemBeansWithNotSelected}" /> 
+							<p:ajax process="@form" event="change" update="genDesc activeDesc productRangeMenu productBrandMenu" />  
+						</h:selectOneMenu>
+					</td>
+					<td>
+						<aplos:panel disabled="#{backingPage.newPromotionConstraint.productType != null or backingPage.newPromotionConstraint.productBrand != null}" id="productRangeMenu">
+							<aplos:autoComplete id="rangeAc"
+								value="#{backingPage.acProductInfoRange}"   
+			                    completeMethod="#{backingPage.suggestProductInfoRanges}" 
+			                    var="autoBean" 
+			                    itemValue="#{autoBean}" 
+						        itemLabel="#{autoBean.displayName}" 
+			                    converter="autoCompleteBeanConverter">
+			                    <p:ajax process="@form" event="itemSelect" listener="#{backingPage.selectProductInfoRange}" update="selectedRangeName genDesc activeDesc productBrandMenu productTypeMenu" />  
+			                </aplos:autoComplete><br/>
+							<h:outputText value="#{backingPage.newPromotionConstraint.productInfo.displayName}" id="selectedRangeName" />
+							<h:commandLink rendered="#{backingPage.newPromotionConstraint.productInfo != null}" value="Remove" action="#{backingPage.removeProductInfoRange}" />
+						</aplos:panel>
+					</td>
+					<td>
+						<h:inputText value="#{ backingPage.newPromotionConstraint.discountPercentage }" >
+							<f:validateLongRange minimum="0" maximum="100" />
+						</h:inputText>
+					</td>
+					<td>
+						<aploscc:ajaxButton value="Add" action="#{ backingPage.addConstraint }" />
+					</td>
+				</tr>
+			</tfoot>
+		</table>	
+		<h3 class="aplos-title">Usage</h3>
+		<table class="aplos-form-table-with-required aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:200px;">Limit to Particular Customer</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+
+					<aplos:autoComplete id="customerAc"
+						value="#{backingPage.acCustomer}"   
+	                    completeMethod="#{backingPage.suggestCustomers}" 
+	                    var="autoBean" 
+	                    itemValue="#{autoBean}" 
+				        itemLabel="#{autoBean.displayName}" 
+	                    converter="autoCompleteBeanConverter">
+	                    <p:ajax process="@form" event="itemSelect" listener="#{backingPage.selectCustomer}" update="selectedCustomersName genDesc activeDesc oneUsePanel maxUseLabel" />  
+	                </aplos:autoComplete>
+				
+					<h:outputText value="#{promotion.customer.displayName}" id="selectedCustomersName" />
+					<h:commandLink rendered="#{promotion.customer != null}" value="Remove" action="#{backingPage.removeCustomer}" />
+					
+				</td>
+				<td></td>
+			</tr>
+		</table>
+		<h:panelGroup id="oneUsePanel">
+			<h:panelGroup rendered="#{promotion.customer == null}">
+				<table class="aplos-form-table-with-required aplos-form-table">
+					<tr>
+						<td class="aplos-label" style="width:200px;">One use per customer</td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+							<h:selectBooleanCheckbox value="#{promotion.oneUsePerCustomer}">
+								<p:ajax process="@form" event="change" update="maxUseLabel genDesc activeDesc" />
+							</h:selectBooleanCheckbox>
+						</td>
+						<td class="aplos-description">
+		
+						</td>
+					</tr>
+				</table>
+			</h:panelGroup>
+		</h:panelGroup>
+		<table class="aplos-form-table-with-required aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:200px;"><h:outputText id="maxUseLabel" value="#{backingPage.maxUseLabel}" /></td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:inputText required="#{backingPage.isValidationRequired}" requiredMessage="Max. number of uses is required" value="#{promotion.maxUseCount}">
+						<p:ajax process="@form" event="change" update="genDesc activeDesc" /> 
+					</h:inputText>
+				</td>
+				<td class="aplos-description">
+					(Leave at -1 to allow unlimited uses)
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-description" style="width:200px;">Tip</td>
+				<td class="aplos-description">:</td>
+				<td class="aplos-description" style="text-align:left" colspan="2">
+					Ticking one-use-per-customer and setting a maximum-number-of-uses of 50 would make a promotion that is good for the first 50 customers.
+				</td>
+			</tr>
+		</table>
+	</div>
+	</ui:define>
+</ui:composition>

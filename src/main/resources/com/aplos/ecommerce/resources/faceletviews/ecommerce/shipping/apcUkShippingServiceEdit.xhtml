@@ -1,0 +1,125 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:130px">Shipping Method Name</td>
+				<td class="aplos-field"><h:inputText value="#{ apcUkShippingService.name }" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label" style="width:150px">Country</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{apcUkShippingService.country}" converter="aplosAbstractBeanConverter">
+						<f:selectItems value="#{aplosModuleFilterer.countrySelectItems}" />
+					</h:selectOneMenu>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label" style="width:130px">Weight band</td>
+				<td class="aplos-field">
+					<h:inputText value="#{apcUkShippingService.weightBand}" style="width:40px" converterMessage="Please enter a number 0 or greater" validatorMessage="Please enter a number 0 or greater">
+						<f:validateLongRange minimum="0"  />
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label" style="width:130px">Tariff</td>
+				<td class="aplos-field">
+					<h:inputText value="#{apcUkShippingService.tariff}" style="width:40px" converterMessage="Please enter a number 0 or greater" validatorMessage="Please enter a number 0 or greater">
+						<f:validateLongRange minimum="0"  />
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label" style="width:130px">Extra Kg Cost</td>
+				<td class="aplos-field">
+					<h:inputText value="#{apcUkShippingService.extraKgCost}" style="width:40px" converterMessage="Please enter a number 0 or greater" validatorMessage="Please enter a number 0 or greater">
+						<f:validateLongRange minimum="0"  />
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Shipping cost steps:</td>
+				<td class="aplos-field" style="padding:20px 0px 0px 0px" >
+					<aplos:panel id="shippingStepsSection">
+						<aplos:panel rendered="#{ apcUkShippingService.shippingSteps.size() gt 0 }">
+							<p:dataTable id="shippingStepsTable" value="#{ apcUkShippingService.weightSortedShippingSteps }" var="tableBean" styleClass="listDatatable" style="margin-top:-12px;width:100%">
+								<p:column>
+									<f:facet name="header">Maximum weight (g)</f:facet>
+									<h:inputText value="#{tableBean.maxWeight}" required="true" />
+								</p:column>
+								<p:column>
+									<f:facet name="header">Cost (&#163;) (per kg)</f:facet>
+									<h:inputText value="#{tableBean.cost}" required="true" /> 
+								</p:column>
+							</p:dataTable>
+						</aplos:panel>
+					</aplos:panel>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Additional Options:</td>
+				<td class="aplos-field" style="padding:20px 0px 0px 0px" >
+					<aplos:panel id="additionalOptionsSection" autoUpdate="true">
+						<aplos:panel rendered="#{ apcUkShippingService.additionalShippingOptions.size() gt 0 }">
+							<p:dataTable id="additionalOptionsTable" value="#{ apcUkShippingService.additionalShippingOptions }" var="tableBean" styleClass="listDatatable" style="margin-top:-12px;width:100%">
+								<p:column>
+									<f:facet name="header">Name</f:facet>
+									<h:inputText value="#{tableBean.name}" required="true" />
+								</p:column>
+								<p:column>
+									<f:facet name="header">Cost (&#163;)</f:facet>
+									<h:inputText value="#{tableBean.cost}" required="true" /> 
+								</p:column>
+								<p:column width="24px">
+									<h:commandButton action="#{ backingPage.removeAdditionalOption }" image="/images/action_delete.gif" reRender="additionalOptionsSection,additonalOptionAdd" />
+								</p:column>
+							</p:dataTable>
+						</aplos:panel>
+					</aplos:panel>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label"></td>
+				<td>
+					<table>
+						<tr>
+							<td>
+								<div style="width:50px"> 
+									Name
+								</div>
+							</td>
+							<td>
+								<h:inputText value="#{backingPage.optionName}" style="width:100px"/>
+							</td>
+							<td>
+								<div style="width:100px;padding-left:10px"> 
+									Surcharge (&#163;)
+								</div>
+							</td>
+							<td>
+								<h:inputText value="#{backingPage.optionCost}" style="width:100px"/>
+							</td>
+							<td>
+								<aploscc:ajaxButton id="additonalOptionAdd" ajaxEnabled="true" action="#{ backingPage.addAdditonalOption }" value="Add" reRender="additionalOptionsSection,additonalOptionAdd" />
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Show on website</td>
+				<td class="aplos-field">
+					<h:selectBooleanCheckbox value="#{apcUkShippingService.showingOnWebsite}" />
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>

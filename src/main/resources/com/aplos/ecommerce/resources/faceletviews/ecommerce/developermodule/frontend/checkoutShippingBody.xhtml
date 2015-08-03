@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+xmlns:p="http://primefaces.org/ui">
+	<div class="aplos-checkout aplos-checkout-shipping">
+		<ui:insert name="AboveForm" />
+		<div class="aplos-checkout-wizard-contents">
+			<ui:insert name="shipping-address-load-buttons">
+				<aplos:panel layout="none" rendered="#{checkoutShippingFeDmb.showingUseDefaultAddress or checkoutShippingFeDmb.usingAlternativeShippingAddress}">
+					<table class="aplos-form-table aplos-form-table-with-required">
+						<tr>
+							<td class="aplos-checkout-controls">
+								<aploscc:ajaxButton value="Reset to stored details" action="#{ checkoutShippingFeDmb.useDefaultShippingAddress }" rendered="#{checkoutShippingFeDmb.showingUseDefaultAddress}"/>&#160;&#160;
+								<aploscc:ajaxButton value="Use alternative" action="#{ checkoutShippingFeDmb.useAltShippingAddress }" rendered="#{checkoutShippingFeDmb.usingAlternativeShippingAddress}" />&#160;&#160;
+								<!--# { checkoutShippingFeDmb.clearShippingAddress }" /> -->
+							</td>
+						</tr>
+					</table>
+				</aplos:panel>
+			</ui:insert>
+			<ui:insert name="shipping-address-form">
+				<aploscc:address bean="#{transaction.shippingAddress}" companyName="#{ transaction.customerACompanyContact and ecommerceConfiguration.ecommerceSettings.businessToBusiness}" phone="required" postcode="#{checkoutShippingFeDmb.isDeliveryPostcodeRequiredString}" validation="#{ checkoutShippingFeDmb.validationRequired }" ecommerceFieldsRequired="true" />
+		
+			</ui:insert>
+			<ui:insert name="billing-address-choice" >
+				<table class="aplos-form-table aplos-form-table-with-required">
+					<tr>
+						<td></td>
+						<td colspan="2">
+							<aplos:panel rendered="#{ !checkoutShippingFeDmb.continueToPayment }">
+								<h:selectOneRadio
+								value="#{ transaction.deliveryAddressTheSame }"
+								id="is_billing_address_identical" label="" layout="pageDirection"
+								title="Is your billing address the same as the #{contextListener.translate('SHIPPING_ADDRESS')}?"
+								required="true">
+									<f:selectItems value="#{checkoutShippingFeDmb.billingAddressOptions}" />
+									<p:ajax process="@form" event="click" update="nxtPrev" />
+								</h:selectOneRadio>
+							</aplos:panel>
+						</td>
+					</tr>
+				</table>
+			</ui:insert>
+		</div>
+		<ui:insert name="navigation-buttons">
+			<h:panelGroup id="nxtPrev">
+				<table class="next-previous-buttons">
+					<tr>
+						<td>
+			              	<aploscc:ajaxButton value="#{ checkoutShippingFeDmb.previousBtnText }" action="#{checkoutShippingFeDmb.goToCart}" rendered="#{ checkoutShippingFeDmb.showingBackButton }" />
+						</td>
+						<td class="aplos-align-right">
+							<aplos:panel autoUpdate="true">
+								<aploscc:ajaxButton id="checkoutBtn" value="#{ checkoutShippingFeDmb.nextBtnText }" action="#{checkoutShippingFeDmb.goToPaymentOrBilling}" />
+							</aplos:panel>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" class="aplos-align-right" style="padding-right:5px;"><span class="aplos-required-asterisk">*</span> required fields</td>
+					</tr>
+				</table>
+			</h:panelGroup>
+		</ui:insert>
+	</div>
+</ui:composition>

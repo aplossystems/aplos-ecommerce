@@ -1,0 +1,127 @@
+<ui:composition template="#{ themeManager.listTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:define name="heading">
+		Sales Figures, Week Commencing&#160;<h:outputText value="#{backingPage.weekCommencingTxt}" escape="false" />
+	</ui:define>
+
+<ui:define name="listContent">
+	<h:panelGroup style="margin-bottom:10px; float:right;" id="printLink">
+			<h:outputLink target="_blank" value="#{backingPage.printUrl}">Open for Printing</h:outputLink>
+		</h:panelGroup> 
+		<p:dataTable id="listTable" value="#{ backingPage.dataTableState.lazyDataModel.recordArray }" rows="#{backingPage.dataTableState.lazyDataModel.rowCount}" first="#{backingPage.dataTableState.lazyDataModel.firstRowIdx }" var="tableBean" styleClass="listDatatable" style="margin-top:-12px;width:100%"> <p:column>
+				<f:facet name="header">Type</f:facet>
+				#{tableBean.name}
+				<f:facet name="footer" styleClass="aplos-total"><span>Totals</span></f:facet>
+			</p:column>
+			<p:column>
+				<f:facet name="header">
+					<h:outputText escape="false" value="#{backingPage.getDayDateText(0)}" />
+				</f:facet>
+				<h:outputText value="#{backingPage.getDayStatistics(0)}" escape="false" />
+				<f:facet name="footer" styleClass="aplos-total">
+					<h:outputText value="#{backingPage.getDayStatisticsTotal(0)}" escape="false" />
+				</f:facet>
+			</p:column>
+			<p:column>
+				<f:facet name="header">
+					<h:outputText escape="false" value="#{backingPage.getDayDateText(1)}" />
+				</f:facet>
+				<h:outputText value="#{backingPage.getDayStatistics(1)}" escape="false" />
+				<f:facet name="footer" styleClass="aplos-total">
+					<h:outputText value="#{backingPage.getDayStatisticsTotal(1)}" escape="false" />
+				</f:facet>
+			</p:column>
+			<p:column>
+				<f:facet name="header">
+					<h:outputText escape="false" value="#{backingPage.getDayDateText(2)}" />
+				</f:facet>
+				<h:outputText value="#{backingPage.getDayStatistics(2)}" escape="false" />
+				<f:facet name="footer" styleClass="aplos-total">
+					<h:outputText value="#{backingPage.getDayStatisticsTotal(2)}" escape="false" />
+				</f:facet>
+			</p:column>
+			<p:column>
+				<f:facet name="header">
+					<h:outputText escape="false" value="#{backingPage.getDayDateText(3)}" />
+				</f:facet>
+				<h:outputText value="#{backingPage.getDayStatistics(3)}" escape="false" />
+				<f:facet name="footer" styleClass="aplos-total">
+					<h:outputText value="#{backingPage.getDayStatisticsTotal(3)}" escape="false" />
+				</f:facet>
+			</p:column>
+			<p:column>
+				<f:facet name="header">
+					<h:outputText escape="false" value="#{backingPage.getDayDateText(4)}" />
+				</f:facet>
+				<h:outputText value="#{backingPage.getDayStatistics(4)}" escape="false" />
+				<f:facet name="footer" styleClass="aplos-total">
+					<h:outputText value="#{backingPage.getDayStatisticsTotal(4)}" escape="false" />
+				</f:facet>
+			</p:column>
+			<p:column>
+				<f:facet name="header">
+					<h:outputText escape="false" value="#{backingPage.getDayDateText(5)}" />
+				</f:facet>
+				<h:outputText value="#{backingPage.getDayStatistics(5)}" escape="false" />
+				<f:facet name="footer" styleClass="aplos-total">
+					<h:outputText value="#{backingPage.getDayStatisticsTotal(5)}" escape="false" />
+				</f:facet>
+			</p:column>
+			<p:column>
+				<f:facet name="header">
+					<h:outputText escape="false" value="#{backingPage.getDayDateText(6)}" />
+				</f:facet>
+				<h:outputText value="#{backingPage.getDayStatistics(6)}" escape="false" />
+				<f:facet name="footer" styleClass="aplos-total">
+					<h:outputText value="#{backingPage.getDayStatisticsTotal(6)}" escape="false" />
+				</f:facet>
+			</p:column>
+			<p:column styleClass="aplos-total">
+				<f:facet name="header">Week</f:facet>
+				<h:outputText value="#{backingPage.weeksStatistics}" escape="false" />
+				<f:facet name="footer">
+					<h:panelGroup style="width:100%; height:100%; margin:0; display:block;" styleClass="aplos-grand-total">
+						<h:outputText value="#{backingPage.weeksStatisticsTotal}" escape="false" />
+					</h:panelGroup>
+				</f:facet>
+			</p:column>
+		</p:dataTable>
+
+<div class="rich-datascr" style="width:100%;">
+	<table border="0" cellpadding="0" cellspacing="1" class="rich-dtascroller-table scrollerTable">
+		<tbody>
+			<tr class="rich-table-row">
+				<td class="rich-datascr-button">
+					<h:commandLink reRender="listTable,printLink,footerPrintLink" action="#{backingPage.previousOverviewWeek}" value="&#171;&#171; Week Previous" />
+				</td>
+				<h:panelGroup rendered="#{backingPage.hasNextWeek}">
+					<td class="rich-datascr-button rich-datascr-button">
+						<h:commandLink reRender="listTable,printLink,footerPrintLink" action="#{backingPage.followingOverviewWeek}" value="Week Following &#187;&#187;" />
+					</td>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{!backingPage.hasNextWeek}">
+					<td class="rich-datascr-button-dsbld rich-datascr-button">
+					 Week Following &#187;&#187;
+					</td>
+				</h:panelGroup>
+			</tr>
+		</tbody>
+	</table>
+</div> 
+
+<br/><br/>
+		<small style="color:silver"><em>Please note that the totals shown at the bottom may not add up to the totals in the rows above. This is normal - See below.<br/><br/>
+		A single product may have several product types. For instance a Shirt could be in the Shirt product type but also the Workwear product type and then maybe 
+		a 'special offers' product type too if you had these types. As such you will see 1 sale in each of these product types rows along with the value of the sale. However, you have only
+		sold one item, so the totals at the bottom reflect this.
+		</em></small>
+		<br/><br/>
+		<h:panelGroup style="margin-bottom:10px; float:right;" id="footerPrintLink">
+			<h:outputLink target="_blank" value="#{backingPage.printUrl}">Open for Printing</h:outputLink>
+		</h:panelGroup>
+	</ui:define></ui:composition>	

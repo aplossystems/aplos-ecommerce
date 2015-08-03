@@ -1,0 +1,138 @@
+<ui:composition template="#{ themeManager.listTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="listContent">
+	
+		<style type="text/css">
+			.dataTableHeading {
+				font-weight:bold;
+				font-family:Verdana;
+				margin-bottom:-16px;
+				position:relative;
+				top:25px;
+				float:left;
+			}
+		</style>
+	
+		<div class="dataTableHeading">Payment required and Acknowledged</div>
+		<aploscc:wrappedDataTable2 showNewBtn="false" dataTableState="#{ backingPage.paymentRequiredAndAcknowledgedLdm.dataTableState }">
+			<p:column sortBy="#{tableBean.ecommerceShoppingCart.customer.subscriber.firstName}" filterBy="#{tableBean.ecommerceShoppingCart.customer.subscriber.firstName}">
+				<f:facet name="header">#{ contextListener.translate( 'ecommerce.beans.Customer' ) } First Name</f:facet>
+				#{tableBean.ecommerceShoppingCart.customer.subscriber.firstName}
+			</p:column>
+			<p:column sortBy="#{tableBean.ecommerceShoppingCart.customer.subscriber.surname}" filterBy="#{tableBean.ecommerceShoppingCart.customer.subscriber.surname}">
+				<f:facet name="header">#{ contextListener.translate( 'ecommerce.beans.Customer' ) } Surname</f:facet>
+				#{tableBean.ecommerceShoppingCart.customer.subscriber.surname}
+			</p:column>
+			<p:column>
+				<f:facet name="header">#{ contextListener.translate( 'ecommerce.beans.Company' ) }</f:facet>
+				#{tableBean.customerCompanyName}
+			</p:column>
+			<p:column>
+				<f:facet name="header">Status</f:facet>
+				<div style="width:150px;position:relative">
+					<div style="position:absolute;left:50px;top:-6px">&#160;#{tableBean.transactionStatus.label}</div>
+				</div>
+			</p:column>
+			<p:column sortBy="#{tableBean.deliveryRequiredByDate}">
+				<f:facet name="header">Req. by</f:facet>
+				<aplos:standardDateTableCell value="#{tableBean.deliveryRequiredByDate}" /> 
+			</p:column>
+			<p:column sortBy="#{tableBean.dateCreated}">
+				<f:facet name="header">Created</f:facet>
+				<aplos:standardDateTableCell value="#{tableBean.dateCreated}" />
+			</p:column>
+			<p:column sortBy="#{tableBean.ecommerceShoppingCart.cachedNetTotalAmount}" filterBy="#{tableBean.ecommerceShoppingCart.cachedNetTotalAmount}">
+				<f:facet name="header">Total</f:facet>
+				#{ tableBean.ecommerceShoppingCart.currency.prefix }#{tableBean.ecommerceShoppingCart.cachedNetTotalAmountString}#{ tableBean.ecommerceShoppingCart.currency.suffix }
+			</p:column>
+			<p:column>
+				<f:facet name="header"></f:facet>
+				<h:commandLink action="#{tableBean.redirectToPrintingTransactionUrl}" target="_blank" ><img src="#{request.contextPath}/images/printer.png" border="0"/></h:commandLink>
+			</p:column>
+		</aploscc:wrappedDataTable2>
+		
+		<div class="dataTableHeading">Booked Out and Awaiting Dispatch</div>
+		<aploscc:wrappedDataTable2 showNewBtn="false" dataTableState="#{ backingPage.bookedOutAndAwaitingDispatchLdm.dataTableState }">
+			<p:column sortBy="#{tableBean.ecommerceShoppingCart.customer.subscriber.firstName}" filterBy="#{tableBean.ecommerceShoppingCart.customer.subscriber.firstName}">
+				<f:facet name="header">#{ contextListener.translate( 'ecommerce.beans.Customer' ) } First Name</f:facet>
+				#{tableBean.ecommerceShoppingCart.customer.subscriber.firstName}
+			</p:column>
+			<p:column sortBy="#{tableBean.ecommerceShoppingCart.customer.subscriber.surname}" filterBy="#{tableBean.ecommerceShoppingCart.customer.subscriber.surname}">
+				<f:facet name="header">#{ contextListener.translate( 'ecommerce.beans.Customer' ) } Surname</f:facet>
+				#{tableBean.ecommerceShoppingCart.customer.subscriber.surname}
+			</p:column>
+			<p:column>
+				<f:facet name="header">#{ contextListener.translate( 'ecommerce.beans.Company' ) }</f:facet>
+				#{tableBean.customerCompanyName}
+			</p:column>
+			<p:column>
+				<f:facet name="header">Status</f:facet>
+				<div style="width:150px;position:relative">
+					<div style="position:absolute;left:50px;top:-6px">&#160;#{tableBean.transactionStatus.label}</div>
+				</div>
+			</p:column>
+			<p:column sortBy="#{tableBean.deliveryRequiredByDate}">
+				<f:facet name="header">Req. by</f:facet>
+				<aplos:standardDateTableCell value="#{tableBean.deliveryRequiredByDate}" /> 
+			</p:column>
+			<p:column sortBy="#{tableBean.dateCreated}">
+				<f:facet name="header">Created</f:facet>
+				<aplos:standardDateTableCell value="#{tableBean.dateCreated}" />
+			</p:column>
+			<p:column sortBy="#{tableBean.ecommerceShoppingCart.cachedNetTotalAmount}" filterBy="#{tableBean.ecommerceShoppingCart.cachedNetTotalAmount}">
+				<f:facet name="header">Total</f:facet>
+				#{ tableBean.ecommerceShoppingCart.currency.prefix }#{tableBean.ecommerceShoppingCart.cachedNetTotalAmountString}#{ tableBean.ecommerceShoppingCart.currency.suffix }
+			</p:column>
+			<p:column>
+				<f:facet name="header"></f:facet>
+				<h:commandLink action="#{tableBean.redirectToPrintingTransactionUrl}" target="_blank" ><img src="#{request.contextPath}/images/printer.png" border="0"/></h:commandLink>
+			</p:column>
+		</aploscc:wrappedDataTable2>
+		
+		
+		<div class="dataTableHeading">On Loan</div>
+		<aploscc:wrappedDataTable2 showNewBtn="false" dataTableState="#{ backingPage.onLoanLdm.dataTableState }">
+			<p:column sortBy="#{tableBean.ecommerceShoppingCart.customer.subscriber.firstName}" filterBy="#{tableBean.ecommerceShoppingCart.customer.subscriber.firstName}">
+				<f:facet name="header">#{ contextListener.translate( 'ecommerce.beans.Customer' ) } First Name</f:facet>
+				#{tableBean.ecommerceShoppingCart.customer.subscriber.firstName}
+			</p:column>
+			<p:column sortBy="#{tableBean.ecommerceShoppingCart.customer.subscriber.surname}" filterBy="#{tableBean.ecommerceShoppingCart.customer.subscriber.surname}">
+				<f:facet name="header">#{ contextListener.translate( 'ecommerce.beans.Customer' ) } Surname</f:facet>
+				#{tableBean.ecommerceShoppingCart.customer.subscriber.surname}
+			</p:column>
+			<p:column>
+				<f:facet name="header">#{ contextListener.translate( 'ecommerce.beans.Company' ) }</f:facet>
+				#{tableBean.customerCompanyName}
+			</p:column>
+			<p:column>
+				<f:facet name="header">Status</f:facet>
+				<div style="width:150px;position:relative">
+					<div style="position:absolute;left:50px;top:-6px">&#160;#{tableBean.transactionStatus.label}</div>
+				</div>
+			</p:column>
+			<p:column sortBy="#{tableBean.deliveryRequiredByDate}">
+				<f:facet name="header">Req. by</f:facet>
+				<aplos:standardDateTableCell value="#{tableBean.deliveryRequiredByDate}" /> 
+			</p:column>
+			<p:column sortBy="#{tableBean.dateCreated}">
+				<f:facet name="header">Created</f:facet>
+				<aplos:standardDateTableCell value="#{tableBean.dateCreated}" />
+			</p:column>
+			<p:column sortBy="#{tableBean.ecommerceShoppingCart.cachedNetTotalAmount}" filterBy="#{tableBean.ecommerceShoppingCart.cachedNetTotalAmount}">
+				<f:facet name="header">Total</f:facet>
+				#{ tableBean.ecommerceShoppingCart.currency.prefix }#{tableBean.ecommerceShoppingCart.cachedNetTotalAmountString}#{ tableBean.ecommerceShoppingCart.currency.suffix }
+			</p:column>
+			<p:column>
+				<f:facet name="header"></f:facet>
+				<h:commandLink action="#{tableBean.redirectToPrintingTransactionUrl}" target="_blank" ><img src="#{request.contextPath}/images/printer.png" border="0"/></h:commandLink>
+			</p:column>
+		</aploscc:wrappedDataTable2>
+	</ui:define>
+</ui:composition>

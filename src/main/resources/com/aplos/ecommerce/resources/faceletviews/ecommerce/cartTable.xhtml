@@ -1,0 +1,270 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	<aplos:panel layout="block" rendered="#{cartFeDmb.postageNoticeRequired and (cartFeDmb.isViewingCartPage or checkoutPaymentFeDmb.isViewingPaymentPage)}" styleClass="aplos-notice">
+		<h:outputText escape="false" value="#{cartFeDmb.postageNotice}" />
+	</aplos:panel>
+    <table class="aplos-cart-list">
+        <aplos:panel rendered="#{!cartFeDmb.ecommerceShoppingCart.basketEmpty}" layout="none">
+	       	<thead>
+	        	<tr>
+	        		<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingItemCodes}">
+	        			<th><!-- Code --></th>
+	        		</aplos:panel>
+	        		<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).cartShowingImages}">
+	        			<th><!-- Image --></th>
+	        		</aplos:panel>
+	        		<th>Quantity</th>
+	        		<aplos:panel layout="none" rendered="#{cartFeDmb.isViewingCartPage}">
+	        			<th><!-- Qty Controls --></th>
+	        		</aplos:panel>
+	        		<th>Product</th>
+	        		<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingProductSizes}">
+	        			<th>Size</th>
+	        		</aplos:panel>
+	        		<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingProductColours}">
+	        			<th>Colour</th>
+	        		</aplos:panel>
+	        		<th class="aplos-align-right">Each (#{currency.prefixOrSuffix})</th>
+	        		<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).cartShowingDiscountColumn and cartFeDmb.ecommerceShoppingCart.isPromotionApplied}">
+	        			<th class="aplos-align-right">Discount (#{currency.prefixOrSuffix})</th>
+	        		</aplos:panel>
+	        		<th class="aplos-align-right">Total (#{currency.prefixOrSuffix})</th>
+	        		<aplos:panel layout="none" rendered="#{cartFeDmb.isViewingCartPage}">
+	        			<th><!-- Remove Button --></th>
+	        		</aplos:panel>
+	        		<!-- NOTE: if you change number of columns backingPage.footerColSpan needs updating -->
+	        	</tr>
+	       	</thead>
+	    </aplos:panel>
+       	<tbody> <!--  and (cartFeDmb.ecommerceShoppingCart.giftVouchersUsed == null or cartFeDmb.ecommerceShoppingCart.giftVouchersUsed.size() &lt; 1) -->
+	       	<aplos:panel rendered="#{cartFeDmb.ecommerceShoppingCart.basketEmpty}" layout="none">
+				<tr><td colspan="10" class="aplos-empty">The basket is currently empty</td></tr>
+			</aplos:panel>
+        	<ui:repeat rendered="#{!cartFeDmb.ecommerceShoppingCart.basketEmpty}" value="#{ cartFeDmb.ecommerceShoppingCart.items }" var="cartItem">
+        		<tr>
+        			<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingItemCodes}">
+        				<td><h:outputText value="#{cartItem.realizedProduct.itemCode}" /></td>
+        			</aplos:panel>
+        			<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).cartShowingImages}">
+        				<td><img src="#{cartItem.realizedProduct.defaultImageDetails.getFullFileUrl(true)}&amp;maxWidth=48&amp;maxHeight=64" alt="Ordered Product Image" /></td>
+        			</aplos:panel>
+        			<td style="padding-left:15px;"><h:outputText style="font-size:80%;color:dimgray" value="x " /><h:outputText value="#{cartItem.quantity}" /></td>
+        			<aplos:panel layout="none" rendered="#{cartFeDmb.isViewingCartPage}">
+        				<td><h:commandButton title="Remove one" reRender="cartAtom,aplos-inline-shopping-cart" id="quantityDecrementer" rendered="#{cartFeDmb.cartItemUpdatable}" action="#{ cartFeDmb.decreaseQuantity }" value="-" styleClass="stdBtnCommand input" oncomplete="addShortBtnMouseEvents()" />
+        					<h:commandButton title="Add one" rendered="#{cartFeDmb.moreStockAvailable}" reRender="cartAtom,aplos-inline-shopping-cart" id="quantityIncrementer" action="#{ cartFeDmb.increaseQuantity }" value="+" styleClass="stdBtnCommand input" oncomplete="addShortBtnMouseEvents()" /></td>
+        			</aplos:panel>
+        			<td class="aplos-name">
+        				<h:outputText rendered="#{!ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed}" escape="false" value="#{cartItem.getProductNameText( false )}" />
+        				<h:outputText rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed}" value="#{cartItem.itemName}" />
+        			</td>
+        			<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingProductSizes}">
+        				<td>
+        					<h:outputText rendered="#{!ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed}" escape="false" value="#{cartItem.productSizeText}" />
+        					<h:outputText rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed}" value="#{cartItem.realizedProduct.productSize.name}" />
+        				</td>
+					</aplos:panel>
+        			<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingProductColours}">
+        				<td>
+        					<h:outputText rendered="#{!ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed}" escape="false" value="#{cartItem.productColourText}" />
+        					<h:outputText rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed}" value="#{cartItem.realizedProduct.productColour.name}" />
+        				</td>
+        			</aplos:panel>
+        			<td class="aplos-numeric"><h:outputText value="#{currency.prefix}#{cartItem.singleItemBasePriceString}#{currency.suffix}" /></td>
+        			<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).cartShowingDiscountColumn and cartFeDmb.ecommerceShoppingCart.isPromotionApplied}">
+        				<td class="aplos-numeric"><h:outputText value="#{currency.prefix}#{cartItem.singleItemDiscountAmountString}#{currency.suffix}" /></td>
+        			</aplos:panel>
+        			<td class="aplos-numeric"><h:outputText value="#{currency.prefix}#{cartItem.cachedLinePriceString}#{currency.suffix}" /></td>
+        			<aplos:panel layout="none" rendered="#{cartFeDmb.isViewingCartPage}">
+        				<td class="aplos-align-right"><h:commandButton image="#{request.contextPath}/images/action_delete.gif" action="#{ cartFeDmb.removeCartItem }" reRender="cartAtom,aplos-inline-shopping-cart" oncomplete="addShortBtnMouseEvents()" /></td>
+        			</aplos:panel>
+        		</tr>
+        	</ui:repeat>
+        	<aplos:panel layout="none" rendered="#{(cartFeDmb.ecommerceShoppingCart.isPromotionApplied and cartFeDmb.ecommerceShoppingCart.promotionPercentage.doubleValue() > 0) or (cartFeDmb.ecommerceShoppingCart.giftVouchersUsed != null and cartFeDmb.ecommerceShoppingCart.giftVouchersUsed.size() &gt; 0)}">
+	        	<tr><td colspan="10" class="aplos-voucher-divider">&#160;</td></tr>
+	        	<aplos:panel layout="none" rendered="#{cartFeDmb.ecommerceShoppingCart.giftVouchersUsed != null and cartFeDmb.ecommerceShoppingCart.giftVouchersUsed.size() &gt; 0}">
+		        	<ui:repeat value="#{ cartFeDmb.ecommerceShoppingCart.giftVouchersUsed }" var="giftVoucher">
+		        		<tr>
+		        			<td colspan="#{cartFeDmb.footerColSpan}">
+		        				<h:outputText value="#{giftVoucher.cartItemName}" />
+		        			</td>
+		        			<td class="aplos-numeric"></td>
+		        			<td class="aplos-numeric"><h:outputText value="#{currency.prefix}#{giftVoucher.cartPriceString}#{currency.suffix}" /></td>
+		        			<aplos:panel layout="none" rendered="#{cartFeDmb.isViewingCartPage}"> 
+		        				<td class="aplos-align-right">
+		        				</td>
+		        			</aplos:panel>
+		        		</tr>
+		        	</ui:repeat>
+		        </aplos:panel>
+		        <aplos:panel layout="none" rendered="#{cartFeDmb.ecommerceShoppingCart.isPromotionApplied}">
+		        	<tr>
+	        			<td colspan="#{cartFeDmb.footerColSpan}">
+	        				<h:outputText value="#{cartFeDmb.ecommerceShoppingCart.promotion.name} (#{cartFeDmb.ecommerceShoppingCart.promotion.code})" />
+	        			</td>
+	        			<td class="aplos-numeric"></td>
+	          			<td class="aplos-numeric">
+	          				<h:outputText rendered="#{cartFeDmb.ecommerceShoppingCart.promotion.freePostage and cartFeDmb.ecommerceShoppingCart.promotion.percentage == null}" value="Free Postage" />
+	        				<h:outputText rendered="#{!cartFeDmb.ecommerceShoppingCart.promotion.freePostage and cartFeDmb.ecommerceShoppingCart.promotion.percentage != null}" value="-#{cartFeDmb.ecommerceShoppingCart.promotionPercentage}%" />
+	        				<h:outputText rendered="#{cartFeDmb.ecommerceShoppingCart.promotion.freePostage and cartFeDmb.ecommerceShoppingCart.promotion.percentage != null}" value="-#{cartFeDmb.ecommerceShoppingCart.promotionPercentage}% and Free Postage" />
+	        			</td>
+	        			<aplos:panel layout="none" rendered="#{cartFeDmb.isViewingCartPage}"> 
+	        				<td class="aplos-align-right">
+	        					<!--# { cartFeDmb.removeGiftVoucher }" reRender="cartAtom,aplos-inline-shopping-cart" oncomplete="addShortBtnMouseEvents()" /> -->
+	        				</td>
+	        			</aplos:panel>
+	        		</tr>
+	        	</aplos:panel>
+		    </aplos:panel>
+		    <tr><td colspan="10">&#160;<!-- quick dirty hack because we want a space --></td></tr>
+        </tbody>
+        
+        <tfoot>
+       		<tr>
+       			<td class="aplos-align-top" rowspan="6" colspan="#{cartFeDmb.footerColSpan}">
+       				<div class="aplos-cart-controls">
+       					<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).allowGiftVouchers and (checkoutPaymentFeDmb.isViewingPaymentPage or cartFeDmb.isViewingCartPage)}">
+       						<b>Gift Voucher Code</b>
+	       					<h:inputText styleClass="aplos-labelled-box" value="#{cartFeDmb.giftVoucherCode}" />
+	         				<aploscc:ajaxButton style="display:inline-block;margin-right:7px;" action="#{cartFeDmb.redeemGiftVoucher}" value="Redeem Gift Voucher" />
+		       				<br/>
+		       				<aplos:panel rendered="#{!checkoutPaymentFeDmb.isViewingPaymentPage}"> 
+		       					<div style="margin:3px 7px; color:#909090;">Please note that promotional codes are entered on the payment screen.</div>
+		       				</aplos:panel>
+	       				</aplos:panel>
+						<aplos:panel styleClass="aplos-section aplos-promotional-code-form" rendered="#{ checkoutPaymentFeDmb.isViewingPaymentPage and !transaction.customer.companyConnectionRequested and checkoutPaymentFeDmb.showingPromotions }">
+							<div style="padding-top:10px">
+								<b>Promotional Code</b>
+								<h:inputText styleClass="aplos-labelled-box" value="#{checkoutPaymentFeDmb.promotionalCode}" />
+		         				<aploscc:ajaxButton style="display:inline-block;" id="addBtn" ajaxOnChange="costsPanel" action="#{checkoutPaymentFeDmb.applyPromotionalCode}" value="Apply Promotion" />
+							</div>
+						</aplos:panel>
+       				</div> 
+       			</td>
+	       		<td class="aplos-label aplos-title aplos-footer-label">Items Total</td>
+	       		<td class="aplos-numeric aplos-footer-field">
+		       		<aplos:panel id="aplos-checkout-items-total">
+			       		<h:outputText value="#{currency.prefix}#{cartFeDmb.ecommerceShoppingCart.cachedTotalAmountString}#{currency.suffix}" />
+			       	</aplos:panel>
+		       	</td>
+	       		<aplos:panel layout="none" rendered="#{cartFeDmb.isViewingCartPage}">
+	       			<td></td>
+	       		</aplos:panel>
+       		</tr>   
+       		<aplos:panel layout="none" rendered="#{cartFeDmb.itemsRequirePostage}">
+	       		<tr>
+		       		<td class="aplos-label aplos-title">Shipping</td>
+		       		<td class="aplos-numeric">
+		       			<aplos:panel id="shippingPanel">
+	       					<h:outputText rendered="#{ !checkoutPaymentFeDmb.isViewingPaymentPage or transaction.customer.companyConnectionRequested}" value="#{cartFeDmb.ecommerceShoppingCart.shippingCostOrTbaString}" />
+	       					<h:selectOneListbox style="max-width:200px;" autoUpdate="true" rendered="#{ checkoutPaymentFeDmb.isViewingPaymentPage and !transaction.customer.companyConnectionRequested }"
+								size="1" id="shippingSelector"
+								value="#{checkoutPaymentFeDmb.availableShippingService}"
+								converter="aplosAbstractBeanConverter"
+								required="#{ checkoutPaymentFeDmb.validationRequired }"
+								label="shipping">
+								<f:selectItems value="#{checkoutPaymentFeDmb.shippingSelectItems}" />
+									<p:ajax process="@form" event="change" update="costsPanel aplos-checkout-total-balance aplos-checkout-store-credit aplos-checkout-items-total aplos-checkout-vat aplos-checkout-remaining-credit aplos-inline-shopping-cart"
+									listener="#{ checkoutPaymentFeDmb.shippingServiceUpdated() }" />
+							</h:selectOneListbox>	
+						</aplos:panel>
+		       		</td>
+		       		<aplos:panel layout="none" rendered="#{cartFeDmb.isViewingCartPage}">
+		       			<td></td>
+		       		</aplos:panel>
+	       		</tr>
+       		</aplos:panel>
+      		<aplos:panel layout="none" rendered="#{ cartFeDmb.ecommerceShoppingCart.adminCharge != null and cartFeDmb.ecommerceShoppingCart.adminCharge &gt; 0}">
+				<tr>
+		       		<td class="aplos-label aplos-title">Admin charge</td>
+		       		<td class="aplos-numeric"><h:outputText value="#{currency.prefix}#{cartFeDmb.ecommerceShoppingCart.adminChargeString}#{currency.suffix}" /></td>
+		       		<aplos:panel layout="none" rendered="#{cartFeDmb.isViewingCartPage}">
+		       			<td></td>
+		       		</aplos:panel>
+	       		</tr>
+			</aplos:panel>
+       		<aplos:panel layout="none" rendered="#{ ecommerceConfiguration.getEcommerceSettings( true ).showingVat }">
+				<tr>
+		       		<td class="aplos-label aplos-title">VAT</td>
+		       		<td class="aplos-numeric">
+		       			<aplos:panel id="aplos-checkout-vat">
+		       				<h:outputText value="#{currency.prefix}#{cartFeDmb.ecommerceShoppingCart.getGrandTotalVatAmountString(true)}#{currency.suffix}" />
+		       			</aplos:panel>
+		       		</td>
+		       		<aplos:panel layout="none" rendered="#{cartFeDmb.isViewingCartPage}">
+		       			<td></td>
+		       		</aplos:panel>
+	       		</tr>
+			</aplos:panel>
+       		<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingStoreCredit and cartFeDmb.ecommerceShoppingCart.determineStoreCredit() != null and cartFeDmb.ecommerceShoppingCart.determineStoreCredit() &gt; 0}">
+	   			<tr>
+	       			<!-- this is credit from gift vouchers, coupons etc -->
+	       		
+		       		<td class="aplos-label aplos-title">Minus Store Credit</td>
+		       		<td class="aplos-numeric">
+		       			<aplos:panel id="aplos-checkout-store-credit">
+		       				<h:outputText value="#{currency.prefix}#{cartFeDmb.ecommerceShoppingCart.storeCreditString}#{currency.suffix}" />
+		       			</aplos:panel>
+		       		</td>
+		       		<aplos:panel layout="none" rendered="#{cartFeDmb.isViewingCartPage}">
+		       			<td></td>
+		       		</aplos:panel>
+	       		</tr>  
+       		</aplos:panel>			
+       		<tr>
+	       		<td class="aplos-label aplos-title">Total Balance<aplos:panel layout="none" rendered="#{!(paymentSuccessFeDmb.isViewingPaymentSuccessPage and (cartFeDmb.ecommerceShoppingCart.customer.storeCreditAmount &gt; 0 or cartFeDmb.ecommerceShoppingCart.determineStoreCredit() &gt; 0)) and !cartFeDmb.creditExceedsOrderTotal}"><br/><br/></aplos:panel>
+	       		</td>
+	       		<td class="aplos-title aplos-numeric">
+	       			<aplos:panel id="aplos-checkout-total-balance">
+	       				<h:outputText value="#{currency.prefix}#{cartFeDmb.ecommerceShoppingCart.getGrandTotalString( true )}#{currency.suffix}" />
+						<aplos:panel layout="none" rendered="#{!(paymentSuccessFeDmb.isViewingPaymentSuccessPage and (cartFeDmb.ecommerceShoppingCart.customer.storeCreditAmount &gt; 0 or cartFeDmb.ecommerceShoppingCart.determineStoreCredit() &gt; 0)) and !cartFeDmb.creditExceedsOrderTotal}"><br/><br/></aplos:panel>
+					</aplos:panel>
+				</td>
+	       		<aplos:panel layout="none" rendered="#{cartFeDmb.isViewingCartPage}">
+	       			<td></td> 
+	       		</aplos:panel>
+       		</tr>
+       		<aplos:panel layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingStoreCredit and (paymentSuccessFeDmb.isViewingPaymentSuccessPage and (cartFeDmb.ecommerceShoppingCart.customer.storeCreditAmount &gt; 0 or cartFeDmb.ecommerceShoppingCart.determineStoreCredit() &gt; 0)) or cartFeDmb.creditExceedsOrderTotal}">
+	       		<tr> 
+		       		<td class="aplos-label aplos-title aplos-remaining">Remaining Store Credit<br/><br/></td>
+		       		<td class="aplos-numeric aplos-remaining">
+		       			<aplos:panel id="aplos-checkout-remaining-credit">
+		       				<h:outputText rendered="#{!paymentSuccessFeDmb.isViewingPaymentSuccessPage}" value="#{currency.prefix}#{cartFeDmb.creditRemainingAfterOrderString}#{currency.suffix}" />
+		       				<h:outputText rendered="#{paymentSuccessFeDmb.isViewingPaymentSuccessPage}" value="#{currency.prefix}#{cartFeDmb.ecommerceShoppingCart.customer.storeCreditAmountString}#{currency.suffix}" /><br/><br/>
+		       			</aplos:panel>
+		       		</td>
+		       		<aplos:panel layout="none" rendered="#{cartFeDmb.isViewingCartPage}">
+		       			<td></td>
+		       		</aplos:panel>
+	       		</tr> 
+	       	</aplos:panel>
+	       	<tr>
+	       		<td colspan="2" style="text-align:right">
+       				<aplos:panel layout="none" rendered="#{checkoutPaymentFeDmb.showingContinueShoppingBtn}">
+       					<aploscc:ajaxButton style="display:inline-block" value="#{ cartFeDmb.continueShoppingText }" action="#{checkoutPaymentFeDmb.continueShopping}" />
+       				</aplos:panel>
+	       		</td>
+	       		<aplos:panel layout="none" rendered="#{cartFeDmb.isViewingCartPage}">
+	       			<td></td>
+	       		</aplos:panel>
+	       	</tr>
+       	</tfoot>
+   </table>
+   <aplos:panel layout="block" rendered="#{cartFeDmb.currencyNoticeRequired}" styleClass="aplos-notice">
+		<h:outputText escape="false" value="#{cartFeDmb.currencyNotice}" />
+	</aplos:panel>
+</ui:composition>
+
+
+
+
+	
+
+
+
+

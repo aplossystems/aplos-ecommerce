@@ -1,0 +1,20 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">   
+	<div class="aplos-next-previous-product-atom">
+		<div class="aplos-controls">
+			<h:commandLink disabled="#{nextPreviousProductFeDmb.maximum &lt; 1}" action="#{nextPreviousProductFeDmb.previous}">
+				<span class="aplos-icon aplos-next-previous-product-atom-previous-icon">&#8656; </span>Previous
+			</h:commandLink>
+			<h:commandLink disabled="#{nextPreviousProductFeDmb.maximum &lt; 1}" action="#{nextPreviousProductFeDmb.next}">
+				Next<span class="aplos-icon aplos-next-previous-product-atom-next-icon"> &#8658;</span>
+			</h:commandLink>
+		</div>
+		<div class="aplos-summary">
+			<span class="aplos-title">#{nextPreviousProductFeDmb.categoryName}</span> (#{nextPreviousProductFeDmb.indexDisplay} of #{nextPreviousProductFeDmb.maximumDisplay})
+		</div>
+	</div>
+</ui:composition>

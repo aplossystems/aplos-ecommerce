@@ -1,0 +1,43 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	<div class="aplos-associated-products-atom-backend aplos-atom-backend">
+		<table class="aplos-form-table-with-required aplos-form-table">
+			<tr>
+				<td class="aplos-label">Title</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:inputText value="#{crossSellingBeDmb.crossSellingModule.title}" />
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Number of items to display</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:inputText required="true" requiredMessage="You must enter the nubmer of items to display" validatorMessage="You must display at least one item" value="#{crossSellingBeDmb.crossSellingModule.numberOfItemsToDisplay}">
+						<f:validateLongRange minimum="1" />
+					</h:inputText>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">how are you using this atom?</td>
+				<td class="aplos-required-asterisk">*</td>
+				<td class="aplos-field">
+					<h:selectOneRadio id="usageRadBtns" value="#{crossSellingBeDmb.crossSellingModule.useShoppingCart}" layout="pageDirection">
+						<f:selectItems value="#{crossSellingBeDmb.referenceObjectSelectItems}" /> 		
+					</h:selectOneRadio>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Display an 'Add' button on each item?</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:selectBooleanCheckbox value="#{crossSellingBeDmb.crossSellingModule.displayAddButton}" />
+				</td>
+			</tr>
+		</table>
+	</div>
+</ui:composition>

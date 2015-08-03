@@ -1,0 +1,51 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label">Size Name</td>
+				<td class="aplos-field"><h:inputText value="#{productSize.name}" /></td>
+			</tr>
+		</table>
+		
+		<aplos:panel rendered="#{ ecommerceConfiguration.moduleConfiguration.ecommerceSettings.usingPlayCom and productSize.productSizeType.playSizeType != null }">
+			<table class="aplos-form-table">
+				<tr>
+					<td class="aplos-label">Play size</td>
+					<td class="aplos-field">
+						<aploscc:aplosBeanMenu label="Play size" value="#{ productSize.playSize }" selectItems="#{ backingPage.playSizeSelectItems }" />
+					</td>
+				</tr>
+			</table>
+		</aplos:panel>
+		
+		<aplos:panel rendered="#{ ecommerceConfiguration.moduleConfiguration.ecommerceSettings.usingAmazon  }">
+			<table class="aplos-form-table">
+				<tr>
+					<td class="aplos-label">Amazon size</td>
+					<td class="aplos-field">
+						<aploscc:aplosBeanMenu label="Amazon size" value="#{ productSize.amazonSize }" selectItems="#{ backingPage.amazonSizeSelectItems }" />
+					</td>
+				</tr>
+			</table>
+		</aplos:panel>
+		
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label">Position in List</td>
+				<td class="aplos-field">
+					<h:selectOneMenu value="#{productSize.positionIdx}">
+						<f:selectItems value="#{backingPage.positionIdxSelectItems}" />   
+					</h:selectOneMenu>
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+	
+</ui:composition>

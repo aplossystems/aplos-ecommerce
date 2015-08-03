@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<sagePayConfigurationDetails>
+	<connectToType>SIMULATOR</connectToType>
+	<virtualDir></virtualDir>
+	<yourSiteFQDN>http://localhost:8080{CONTEXT_ROOT}/</yourSiteFQDN> 
+	<yourSiteInternalFQDN>http://localhost:8080{CONTEXT_ROOT}/</yourSiteInternalFQDN>
+	<notificationPageName>sagePayServerNotification.jsf</notificationPageName> 
+	<frontEndSuccessfulRedirectionUrl>payment-result.aplos?paymentSuccessful=1</frontEndSuccessfulRedirectionUrl>
+	<frontEndFailedRedirectionUrl>payment-result.aplos?paymentSuccessful=0</frontEndFailedRedirectionUrl>
+	<backEndSuccessfulRedirectionUrl>/cms/paymentEdit.jsf?paymentSuccessful=1</backEndSuccessfulRedirectionUrl>
+	<backEndFailedRedirectionUrl>/cms/paymentEdit.jsf?paymentSuccessful=0</backEndFailedRedirectionUrl>
+	<defaultOrderDescription>Aplos Test Order</defaultOrderDescription>
+	<vendorName>aplossystems</vendorName>
+	<currency>GBP</currency>
+	<partnerID></partnerID>
+</sagePayConfigurationDetails>

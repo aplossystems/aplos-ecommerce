@@ -1,0 +1,102 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+xmlns:p="http://primefaces.org/ui">
+	<ui:define name="editContent">
+		<table class="aplos-form-table-with-required aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:200px;">Use Repeat-Custom Enticements?</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field">
+					<h:selectBooleanCheckbox value="#{ecommerceConfiguration.getEcommerceSettings(true).usingRepeatCustomEnticements}">
+<p:ajax process="@form" event="change" update="enticementsUsed" />
+					</h:selectBooleanCheckbox>
+				</td>
+				<td></td>
+			</tr> 
+		</table>
+		<aplos:panel id="enticementsUsed">
+			<h:panelGroup rendered="#{ecommerceConfiguration.getEcommerceSettings(true).usingRepeatCustomEnticements}">
+				<table class="aplos-form-table-with-required aplos-form-table">
+					<tr>
+						<td class="aplos-label" style="width:200px;">For new customers only?</td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+							<h:selectBooleanCheckbox value="#{ecommerceConfiguration.getEcommerceSettings(true).repeatCustomEnticementForNewCustomersOnly}" />
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="aplos-label" style="width:200px;">Base Promotion</td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+							<h:selectOneMenu required="#{backingPage.isValidationRequired}" requiredMessage="Base promotion is required" value="#{ecommerceConfiguration.getEcommerceSettings(true).enticementEmailPromotion}" converter="aplosAbstractBeanConverter">
+								<f:selectItems value="#{backingPage.promotionSelectItemBeans}" />   
+							</h:selectOneMenu>
+						</td>
+						<td></td>
+					</tr> 
+					<tr>
+						<td class="aplos-label" style="width:200px;">Days after purchase that enticement promotion is valid for</td>
+						<td class="aplos-required-asterisk">*</td>
+						<td class="aplos-field">
+							<h:inputText required="#{backingPage.isValidationRequired}" validatorMessage="Days valid for, must be between 3 and 365" requiredMessage="Days valid for, is required" value="#{ecommerceConfiguration.getEcommerceSettings(true).enticementValidForDays}">
+								<f:validateLongRange minimum="3" maximum="365" />
+							</h:inputText>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Email List</td>
+						<td></td>
+						<td class="aplos-field" style="width:500px">
+						<aplos:panel id="emailListTableWrapper">
+							<p:dataTable style="width:100%" id="emailListTable" value="#{ ecommerceConfiguration.getEcommerceSettings(true).enticementEmailList }" var="tableBean" styleClass="listDatatable"> <p:column>
+									<f:facet name="header">Template</f:facet>
+									<h:outputText value="#{tableBean.emailTemplate.displayName}" />
+								</p:column>
+								<p:column>
+									<f:facet name="header">Day</f:facet>
+									<h:inputText required="true" requiredMessage="All emails in the list require their day to send to be set" value="#{tableBean.sendDay}" />
+								</p:column>
+								<p:column width="24px">
+									<h:commandButton action="#{ backingPage.removeEmailFromList }" image="/images/action_delete.gif" reRender="emailListTableWrapper" />
+								</p:column>
+							</p:dataTable>
+						</aplos:panel>
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label"></td>
+						<td></td>
+						<td class="aplos-field">
+							<h:selectOneMenu value="#{backingPage.emailTemplate}" converter="aplosAbstractBeanConverter">
+								<f:selectItems value="#{backingPage.emailTemplateSelectItemBeans}" />   
+							</h:selectOneMenu>
+							<h:inputText value="#{ backingPage.sendDelayDays }" />
+							<aploscc:ajaxButton ajaxEnabled="true" action="#{ backingPage.addEmailToList }" value="Add" reRender="emailListTableWrapper" />
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label"></td>
+						<td></td>
+						<td class="aplos-description">
+							With day, 0 would mean send the email on the day of purchase, 7 would mean send it 7 days after the purchase
+						</td>
+					</tr>
+				</table>
+			</h:panelGroup>
+		</aplos:panel>
+	</ui:define>
+	<ui:define name="editButtons">
+	<aploscc:controlPanel>
+		<f:facet name="upperRightControlPanel">
+		<aploscc:ajaxButton action="#{backingPage.applyBtnAction}" value="Save / Apply" />
+	</f:facet>
+	</aploscc:controlPanel>
+</ui:define>
+</ui:composition>

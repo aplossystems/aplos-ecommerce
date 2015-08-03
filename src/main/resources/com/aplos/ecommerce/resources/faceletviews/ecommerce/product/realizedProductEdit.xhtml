@@ -1,0 +1,76 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td>
+					<table>
+						<tr>
+							<td class="aplos-label" style="width:200px">Colour</td>
+							<td class="aplos-field">
+								<h:selectOneMenu value="#{realizedProduct.productColour}" converter="aplosAbstractBeanConverter">
+									<f:selectItems value="#{productColour.selectItemBeans}" />   
+								</h:selectOneMenu>
+							</td>
+						</tr>
+						<tr>
+							<td class="aplos-label">Quantity</td>
+							<td class="aplos-field"><h:inputText value="#{realizedProduct.quantity}" /></td>
+						</tr>
+						<tr>
+							<td class="aplos-label">Price</td>
+							<td class="aplos-field"><h:inputText value="#{realizedProduct.price}" /></td>
+						</tr>
+						<tr>
+							<td class="aplos-label">Weight (g)</td>
+							<td class="aplos-field"><h:inputText value="#{realizedProduct.weight}" /></td>
+						</tr>
+						<tr>
+							<td class="aplos-label">Default for product</td>
+							<td class="aplos-field"><h:selectBooleanCheckbox value="#{backingPage.defaultRealizedProduct}" /></td>
+						</tr>
+						<tr>
+							<td class="aplos-description" colspan="2">Is this the default item (size/colour) to show for this product?</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<table>
+						<tr>
+							<td class="aplos-field" style="padding:0px 0px 15px 0px">Product Images</td>
+						</tr>
+						<tr>
+							
+							<td style="padding:0px 0px 0px 10px">
+							<aplos:panel id="imageDetailsTableWrapper">
+								<p:dataTable id="imageDetailsTable" value="#{ realizedProduct.imageDetailsList }" var="tableBean" styleClass="listDatatable" style="margin-top:-12px;width:100%">
+									<p:column>
+										<f:facet name="header">Image</f:facet>
+										<img src="#{tableBean.getFullFileUrl(true)}&amp;maxWidth=100&amp;maxHeight=100" />
+									</p:column>
+									<p:column>
+										<f:facet name="header">Image Url</f:facet>
+										#{tableBean.displayName}
+									</p:column>
+									<p:column width="24px">
+										<h:commandButton action="#{ backingPage.removeImageDetailsFromList }" image="/images/action_delete.gif" reRender="imageDetailsTableWrapper,:edit:imageRadBtns" />
+									</p:column>
+								</p:dataTable>
+							</aplos:panel>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>
+

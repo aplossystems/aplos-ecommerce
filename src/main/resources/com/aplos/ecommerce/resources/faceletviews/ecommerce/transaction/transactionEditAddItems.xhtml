@@ -1,0 +1,147 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<style>
+		.editLabelColumn {
+		 	width : 120px;
+		}
+	</style>
+		
+	<table style="float:left" class="aplos-form-table aplos-form-table-with-required">
+		<tr>
+			<td class="aplos-label editLabelColumn">
+				Order date
+			</td>
+			<td></td>
+			<td style="min-width:270px">
+				<aploscc:dateTime id="transactionDateInput" startYearDiff="#{-5}" endYearDiff="#{5}" showCheckbox="#{false}" showTime="true" value="#{ transaction.transactionDate }" minuteStep="5"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Type</td>
+			<td></td>
+			<td class="aplos-field">
+				<h:selectOneMenu id="transactionTypeDdl" value="#{ transaction.transactionType }">
+					<f:selectItems value="#{ transactionEditAddItemsPage.typeSelectItems }" />   
+				</h:selectOneMenu>
+			</td>
+		</tr>
+	</table>
+	<table style="float:left" class="aplos-form-table aplos-form-table-with-required">
+		<tr>
+			<td class="aplos-label editLabelColumn">Items</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td colspan="2" style="width:940px">
+				<aplos:panel id="addItemTableWrapper">
+					<p:dataTable id="addItemTable" value="#{ transaction.ecommerceShoppingCart.items }" var="cartItem" styleClass="listDatatable" style="width:100%;"> 
+						<p:column style="width:80px">
+							<f:facet name="header">Cust. ref.</f:facet>
+							<h:inputText value="#{cartItem.customerReference}" style="width:80px" />
+						</p:column>
+						<p:column style="width:40px">
+							<f:facet name="header">Stock</f:facet>
+							<h:outputText value="#{cartItem.realizedProduct.calculateStockQuantity()}" rendered="#{ cartItem.realizedProduct != null }" />
+						</p:column>
+						<p:column style="width:80px">
+							<f:facet name="header">Code</f:facet>
+							<!-- <h:commandLink value="# {cartItem.itemCode}" action="# { teletestRealizedProductEditPage.redirectToPage( cartItem.realizedProduct ) }" styleClass="stdLink" rendered="# { cartItem.realizedProduct != null }" />-->
+							<aploscc:quickView text="#{ cartItem.itemCode }" bean="#{ cartItem.realizedProduct }" action="#{ teletestRealizedProductEditPage.redirectToPage( cartItem.realizedProduct ) }" rendered="#{ cartItem.realizedProduct != null }" />
+						</p:column >
+						<p:column style="width:320px">
+							<f:facet name="header">Name</f:facet>
+							<aploscc:quickView text="#{ cartItem.itemName }" bean="#{ cartItem.realizedProduct }" action="#{ teletestRealizedProductEditPage.redirectToPage( cartItem.realizedProduct ) }" rendered="#{ !cartItem.customisable }" />
+							<h:inputText value="#{cartItem.itemName}" rendered="#{ cartItem.customisable }" />
+							<h:panelGroup layout="none" rendered="#{ cartItem.realizedProduct != null }" >
+								<br/>
+							</h:panelGroup>
+							<h:outputText value="#{cartItem.realizedProduct.productInfo.salesComments}" rendered="#{ cartItem.realizedProduct != null }" style="color:red" />
+						</p:column>
+						<p:column style="width:70px">
+							<f:facet name="header">Quantity</f:facet>
+							<h:inputText value="#{cartItem.quantity}" style="width:40px" required="true"
+								converterMessage="Please enter a product quantity greater between -1,000,000 and 1,000,000" 
+								validatorMessage="Please enter a product quantity greater than -1"
+								requiredMessage="Please enter a product quantity">
+								<f:validateLongRange minimum="-10000000" maximum="1000000" />
+								<p:ajax process="@form" event="blur" update="addItemTableWrapper total partsInfo transactionTypeDdl totalsPnl" listener="#{ transactionEditAddItemsPage.itemQuantityUpdated() }" />
+							</h:inputText>
+				   		</p:column>
+						<p:column style="width:70px">
+							<f:facet name="header"><div>Discount</div></f:facet>
+							<h:inputText value="#{cartItem.singleItemDiscountPercentage}" style="width:40px" required="true" 
+								converterMessage="Please enter a discount greater than between 1 and 100" 
+								validatorMessage="Please enter a discount greater than between 1 and 100"
+								requiredMessage="Please enter a discount greater than between 1 and 100">
+								<f:validateLongRange minimum="0" maximum="100" />
+								<p:ajax process="@form" event="blur" update="addItemTableWrapper total partsInfo transactionTypeDdl totalsPnl" listener="#{ cartItem.updateAllValues() }" />
+							</h:inputText>
+				   		</p:column>
+						<p:column style="width:70px">
+							<f:facet name="header">Price</f:facet>
+							#{transaction.ecommerceShoppingCart.currency.prefix}
+								<h:outputText value="#{cartItem.singleItemBasePrice}" style="width:55px" rendered="#{ !cartItem.customisable }" />
+								<h:inputText value="#{cartItem.singleItemBasePrice}" style="width:55px" rendered="#{ cartItem.customisable }" >
+									<f:validateLongRange />
+								<p:ajax process="@form" event="blur" update="addItemTableWrapper total partsInfo transactionTypeDdl totalsPnl" listener="#{ cartItem.updateAllValues() }" />
+								</h:inputText>
+							#{transaction.ecommerceShoppingCart.currency.suffix}
+						</p:column>
+						<p:column style="width:70px">
+							<f:facet name="header">Line total</f:facet>
+							#{transaction.ecommerceShoppingCart.currency.prefix}#{cartItem.cachedNetLinePriceString}#{transaction.ecommerceShoppingCart.currency.suffix}
+						</p:column>
+					</p:dataTable>
+				</aplos:panel>
+				<aplos:panel style="float:right" id="totalsPnl">
+					<table>
+						 <tr>
+						 	<td class="aplos-label totalsLabelColumn">Sub-total:</td>
+						 	<td>#{ transaction.currency.prefix }#{ transaction.ecommerceShoppingCart.cachedNetTotalAmountString }#{transaction.currency.suffix}</td>
+					 	</tr>
+					 </table>
+					<table>
+					 	<tr>
+						 	<td class="aplos-label totalsLabelColumn">VAT:</td>
+						 	<td>#{ transaction.currency.prefix }#{ transaction.ecommerceShoppingCart.cachedTotalVatAmountString }#{transaction.currency.suffix}</td>
+					 	</tr>
+					 </table>
+					 <table>
+					 	<tr>
+						 	<td class="aplos-label totalsLabelColumn">Total:</td>
+						 	<td>#{ transaction.currency.prefix }#{ transaction.ecommerceShoppingCart.cachedGrossTotalAmountString }#{transaction.currency.suffix}</td>
+					 	</tr>
+					</table>
+				</aplos:panel>
+			</td>
+		</tr>
+	</table>
+	<table style="float:left" class="aplos-form-table aplos-form-table-with-required">
+		<tr>
+			<td class="aplos-label editLabelColumn">Add new product</td>
+			<td></td>
+			<td class="aplos-field">
+				<aplos:autoComplete id="newProduct" value="#{transactionEditAddItemsPage.selectedRealizedProductListBean}"   
+                    completeMethod="#{transactionEditAddItemsPage.retrieveRealizedProductResults}" var="autoBean" itemValue="#{autoBean}" converter="autoCompleteBeanConverter">
+                   <p:ajax event="itemSelect" listener="#{transactionEditAddItemsPage.addRealizedProduct}" update="newProduct addItemTableWrapper totalsPnl"/>
+                   <p:column>
+                   		<span style="#{ transactionEditAddItemsPage.getProductDisplayStyle( transaction, autoBean ) }">#{ transactionEditAddItemsPage.getProductDisplayString( transaction, autoBean ) }</span>
+                   </p:column>
+                </aplos:autoComplete>
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label"></td>
+			<td></td>
+			<td class="aplos-field"><aploscc:ajaxButton value="Add Custom Product" action="#{ transactionEditAddItemsPage.addCustomProductToCart }" /></td>
+		</tr>
+	</table>
+	<br style="clear:both" />
+</ui:composition>

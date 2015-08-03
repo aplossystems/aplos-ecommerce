@@ -1,0 +1,56 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	
+	<ui:define name="heading">Book out for transaction ##{ transaction.id }</ui:define>
+	
+	<ui:define name="editContent">
+		<aplos:panel autoUpdate="true">
+			<aplos:panel id="itemTableWrapper">
+				<p:dataTable id="itemTable" value="#{ transaction.ecommerceShoppingCart.items }" var="cartItem" styleClass="listDatatable"> <p:column>
+						<f:facet name="header">Product name</f:facet>
+						<div style="width:200px">#{cartItem.itemName}</div>
+					</p:column>
+					<p:column>
+						<f:facet name="header">Product part #</f:facet>
+						<div style="width:100px">#{cartItem.itemCode}</div>
+					</p:column>
+					<p:column>
+						<f:facet name="header">Expected Quantity</f:facet>
+						<div style="width:80px">#{cartItem.quantity}</div>
+					</p:column>
+					<p:column>
+						<f:facet name="header">Scanned Quantity</f:facet>
+						<div style="width:80px ; font-weight:bold ; color:#{ backingPage.scannedQuantityColour }">#{backingPage.getNumberOfScanned( cartItem )}</div>
+					</p:column>
+					<p:column>
+						<f:facet name="header"></f:facet>
+						<aploscc:ajaxButton id="cartItemBookOutBtn" ajaxButtons="true" action="#{ backingPage.addNonSerialisedProduct }" value="book out" rendered="#{ backingPage.nonSerialBookOutAvailable }" reRender="cartItemBookOutBtn,itemTableWrapper,controlPanel:controlPanelContainer" />
+					</p:column>
+					<p:column>
+						<f:facet name="header"></f:facet>
+						<aploscc:ajaxButton id="cartItemBookAllOutBtn" ajaxButtons="true" action="#{ backingPage.addAllNonSerialisedProduct }" value="book all out" rendered="#{ backingPage.nonSerialBookOutAvailable }" reRender="cartItemBookOutBtn,itemTableWrapper,controlPanel:controlPanelContainer" />
+					</p:column>
+				</p:dataTable>
+			</aplos:panel>
+		</aplos:panel>
+		<aplos:panel autoUpdate="true" >
+			<h:inputText id="serialNumberInputField" value="#{ backingPage.scannedSerialNumberStr }" style="margin-top:30px; width:200px" onload="focus()"/>
+		</aplos:panel>
+		<aploscc:ajaxButton ajaxEnabled="true" value="book out item" action="#{ backingPage.serialNumberScanned() }" reRender="controlPanel:controlPanelContainer,serialNumberInputField" />
+	</ui:define>
+	
+	<ui:define name="editButtons">
+	<aploscc:controlPanel id="controlPanel">
+		<f:facet name="upperRightControlPanel">
+			<h:commandButton id="bookOutBtn" disabled="#{ backingPage.bookOutBtnDisabled }" value="Book out order" action="#{ backingPage.redirectToTransactionBookedOutPage }" />
+			<aploscc:ajaxButton id="cancelBtn" value="Cancel" action="#{ backingPage.cancelBtnAction }" />
+		</f:facet>
+	</aploscc:controlPanel>
+</ui:define>
+</ui:composition>

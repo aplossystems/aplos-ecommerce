@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	<div class="aplos-checkout aplos-checkout-confirm">
+		<div class="aplos-checkout-wizard-contents">
+		<table class="aplos-checkout-addresses">
+				<tr>
+					<th></th>
+					<th></th>
+					<th>Delivery address</th>
+					<th>Invoice address</th>
+				</tr>
+				<tr>
+					<td class="aplos-label">Full name</td>
+					<td class="aplos-required-asterisk"></td>
+					<td class="aplos-field" style="width:180px">#{transaction.shippingAddress.contactFullName}</td>
+					<td class="aplos-field">#{transaction.billingAddress.contactFullName}</td>
+				</tr>
+				<tr>
+					<td class="aplos-label">Address</td>
+					<td class="aplos-required-asterisk"></td>
+					<td class="aplos-field"><h:outputText
+						value="#{transaction.shippingAddress.toHtmlFull( '', false )}"
+						escape="false" /><br />
+					#{transaction.billingAddress.country}</td>
+					<td class="aplos-field"><h:outputText
+						value="#{transaction.billingAddress.toHtmlFull( '', false )}"
+						escape="false" /><br />
+					#{transaction.billingAddress.country}</td>
+				</tr>
+				<tr>
+					<td class="aplos-label aplos-first-letter-uppercase">#{ contextListener.translate('PHONE') }</td>
+					<td class="aplos-required-asterisk"></td>
+					<td class="aplos-field">#{transaction.shippingAddress.phone}</td>
+					<td class="aplos-field">#{transaction.billingAddress.phone}</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td><aploscc:ajaxButton
+						action="#{checkoutPaymentFeDmb.goToShipping}" immediate="true"
+						value="Edit"
+						rendered="#{ checkoutPaymentFeDmb.developerCmsAtom.showingAddressEditBtns }" />
+					</td>
+					<td><aploscc:ajaxButton
+						action="#{checkoutPaymentFeDmb.editBillingAddress}"
+						immediate="true" value="Edit"
+						rendered="#{ checkoutPaymentFeDmb.developerCmsAtom.showingAddressEditBtns }" />
+					</td>
+				</tr>
+			</table>
+			<hr class="aplos-divider" /><br/>
+			<ui:include src="/ecommerce/cartTable.xhtml" />
+  			<hr/>
+		</div>
+		<ui:insert name="navigation-buttons">
+			<table class="next-previous-buttons">
+				<tr>
+					<td>
+		              	<aploscc:ajaxButton
+						value="#{ checkoutConfirmFeDmb.previousBtnText }"
+						action="#{checkoutConfirmFeDmb.goToCheckoutPayment}" />
+					</td>
+					<td class="aplos-align-right">
+						<aploscc:ajaxButton
+						id="checkoutBtn" action="#{checkoutConfirmFeDmb.processPayment}"
+						value="#{ checkoutConfirmFeDmb.nextBtnText }" />
+					</td>
+				</tr>
+			</table>
+		</ui:insert>
+	</div>
+</ui:composition>

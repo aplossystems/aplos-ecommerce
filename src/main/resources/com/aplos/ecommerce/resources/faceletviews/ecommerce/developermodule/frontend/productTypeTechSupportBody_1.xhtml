@@ -1,0 +1,48 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	
+	<div style="padding-top:2px">
+		<ui:repeat value="#{ productTypeTechSupportCmsAtom.sortedProductTypeTechSupports }" var="productTypeTechSupport">
+	        <h:commandLink action="#{ productTypeTechSupportFeDmb.productTypeSelected }" class="theme-narrow-box-link">
+				<div class="theme-narrow-floatcontent">
+		          	<div class="theme-narrow-rounded-box-top">
+		            	#{productTypeTechSupport.productType.displayName} 
+		          	</div>
+		          	<div class="theme-narrow-rounded-box-content narrow-fixed-height-box-content" style="text-align:center">
+		          		<h:graphicImage url="#{productTypeTechSupport.productType.getFullSmallPhotoUrl(false)}&amp;maxWidth=150&amp;maxHeight=160" alt="#{productTypeTechSupport.productType.displayName}" />
+		          	</div>
+		        	<div class="theme-narrow-rounded-box-bottom">&#160;</div>
+	        	</div>
+	    	</h:commandLink>
+		</ui:repeat>
+	</div>
+	<div style="clear:both" />
+	<aplos:panel id="productTypeReviewPanel">
+		<aplos:panel rendered="#{ productTypeTechSupportFeDmb.selectedProductType != null }" >
+			<div class="theme-floatcontent">
+	          	<div class="theme-triple-rounded-box-top">
+	            	Technical Support: #{productTypeTechSupportFeDmb.selectedProductType.displayName} 
+	          	</div>
+	          	<div class="theme-triple-rounded-box-content">
+	          		<h:outputText value="#{ productTypeTechSupportFeDmb.selectedProductType.technicalSupport }" escape="false" />
+	          	</div>
+	        	<div class="theme-triple-rounded-box-bottom">&#160;</div>
+	        </div>
+		</aplos:panel>
+		<aplos:panel rendered="#{ productTypeTechSupportFeDmb.selectedProductType == null }">
+			<div class="theme-floatcontent">
+	          	<div class="theme-triple-rounded-box-top">
+	            	Technical Support
+	          	</div>
+	          	<div class="theme-triple-rounded-box-content">
+					<h:outputText value="#{ productTypeTechSupportCmsAtom.description }" escape="false" />
+	          	</div>
+	        	<div class="theme-triple-rounded-box-bottom">&#160;</div>
+	        </div>
+		</aplos:panel>
+	</aplos:panel>
+</ui:composition>

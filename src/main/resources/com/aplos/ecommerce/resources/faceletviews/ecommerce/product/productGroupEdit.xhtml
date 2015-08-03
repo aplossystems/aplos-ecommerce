@@ -1,0 +1,49 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="editContent">
+		<table class="aplos-form-table">
+			<tr>
+				<td class="aplos-label" style="width:140px">Name</td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field"><h:inputText value="#{productGroup.name}" /></td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Optional accessories</td>
+				<td></td>
+				<td class="aplos-field" style="width:400px">
+				<aplos:panel id="realizedProductsTableWrapper">
+					<p:dataTable id="realizedProductsTable" value="#{ productGroup.productRetrieverList }" var="tableBean" styleClass="listDatatable" style="width:100%">
+						<p:column style="width:80px">
+							<f:facet name="header">Code</f:facet>
+							#{tableBean.determineItemCode}
+						</p:column>
+						<p:column style="width:300px">
+							<f:facet name="header">Name</f:facet>
+							<aploscc:quickView bean="#{tableBean}" action="#{ teletestRealizedProductEditPage.redirectToPage( tableBean ) }" />
+						</p:column>
+						<p:column width="24px">
+							<h:commandButton action="#{ backingPage.removeRealizedProduct }" image="/images/action_delete.gif" reRender="realizedProductsTableWrapper" />
+						</p:column>
+					</p:dataTable>
+				</aplos:panel>
+				</td>
+			</tr>
+			<tr>
+				<td class="aplos-label">Add product</td>
+				<td></td>
+				<td class="aplos-field">
+					<aplos:autoComplete id="realizedProductAc" value="#{backingPage.selectedRealizedProductListBean}"   
+	                    completeMethod="#{backingPage.suggestRealizedProducts}" var="autoBean" itemValue="#{autoBean}" itemLabel="#{ backingPage.getProductDisplayString( autoBean ) }" converter="autoCompleteBeanConverter">
+	                   <p:ajax process="@form" event="itemSelect" listener="#{backingPage.setSelectedRealizedProduct}" update="realizedProductAc,realizedProductsTable"/>  
+	                </aplos:autoComplete>
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>

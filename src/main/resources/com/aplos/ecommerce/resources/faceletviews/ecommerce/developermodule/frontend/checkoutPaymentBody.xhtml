@@ -1,0 +1,194 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+xmlns:p="http://primefaces.org/ui">
+	<div class="aplos-checkout aplos-checkout-payment">
+		<div class="aplos-checkout-wizard-contents">
+			<aplos:panel styleClass="aplos-checkout-addresses" rendered="#{ ecommerceUtil.showingAddresses }">
+				<h3 class="aplos-title">Addresses</h3>
+				<table class="aplos-form-table aplos-addresses-table">
+					<thead>
+						<tr>
+							<th>#{contextListener.translate('DELIVERY_ADDRESS')}</th>
+							<th>#{contextListener.translate('BILLING_ADDRESS')}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								<aploscc:address disabled="true" bean="#{transaction.shippingAddress}" companyName="#{ecommerceConfiguration.ecommerceSettings.businessToBusiness}" phone="true" ecommerceFieldsRequired="true" />
+							</td>
+							<td>
+								<aploscc:address disabled="true" bean="#{transaction.billingAddress}" companyName="#{ecommerceConfiguration.ecommerceSettings.businessToBusiness}" phone="true" ecommerceFieldsRequired="true" />
+							</td>
+						</tr>
+						<tr>
+							<td class="aplos-change-shipping-address">
+								<aploscc:ajaxButton
+								action="#{checkoutPaymentFeDmb.goToShipping}" immediate="true"
+								value="Change delivery address"
+								rendered="#{ checkoutPaymentFeDmb.showingEditShippingAddress }" />
+							</td>
+							<td class="aplos-change-billing-address"><aploscc:ajaxButton
+								action="#{checkoutPaymentFeDmb.editBillingAddress}"
+								immediate="true" value="Change billing address"
+								rendered="#{ checkoutPaymentFeDmb.showingEditBillingAddress }" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<hr class="aplos-divider" />
+			</aplos:panel>
+			<h3 class="aplos-title">Order details</h3>
+			<aplos:panel styleClass="aplos-section" rendered="#{ transaction.customerACompanyContact or transaction.customer.companyConnectionRequested }">
+				<table class="aplos-form-table aplos-form-table-with-required">
+					<tr>
+						<td class="aplos-label">Order no.</td>
+						<td class="aplos-required-asterisk"><h:outputText value="*" rendered="#{ checkoutPaymentFeDmb.isAccountCustomer() }" /></td>
+						<td class="aplos-field" style="width: 200px"><h:inputText value="#{ transaction.customerReference }" required="#{ checkoutPaymentFeDmb.isOrderNumberRequired() }" />
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Date delivered by</td>
+						<td></td>
+						<td>
+							<aploscc:dateTime
+								id="deliveryRequiredDateInput" startYearDiff="#{0}"
+								endYearDiff="#{1}" showCheckbox="#{true}"
+								value="#{ transaction.deliveryRequiredByDate }" />
+						</td>
+					</tr>
+					<tr>
+						<td class="aplos-label"></td>
+						<td></td>
+						<td class="aplos-description">Unless you select this, your goods will be delivered as soon as possible</td>
+					</tr>
+				</table>
+			</aplos:panel>
+			<aplos:panel id="cartPanel">
+				<ui:include src="/ecommerce/cartTable.xhtml" />
+				<hr class="aplos-divider"/>
+			</aplos:panel>	
+			<aplos:panel styleClass="aplos-section" rendered="#{ shoppingCart.containsGiftItems() }">
+				<h3 class="aplos-title">Gift Recipient</h3>
+				<table class="aplos-form-table aplos-form-table-with-required">
+					<tr>
+						<td class="aplos-label">Deliver gifts direct to me</td>
+						<td class="aplos-field">
+							<h:selectBooleanCheckbox value="#{ checkoutPaymentFeDmb.deliverGiftsToBuyer }">
+<p:ajax process="@form" event="change" update="recipientAddressPanel" />
+							</h:selectBooleanCheckbox>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" class="aplos-description">(uncheck the box above to send vouchers/gift items directly to the recipient)</td>
+					</tr>
+				</table>
+				<table class="aplos-form-table aplos-form-table-with-required">
+					<tr>
+						<td class="aplos-label">Deliver via Email</td>
+						<td class="aplos-field">
+							<h:selectBooleanCheckbox value="#{ checkoutPaymentFeDmb.deliverGiftsViaEmail }">
+<p:ajax process="@form" event="change" update="recipientAddressPanel" />
+							</h:selectBooleanCheckbox>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" class="aplos-description">(uncheck the box above to send to a physical address)</td>
+					</tr>
+				</table>
+				<aplos:panel id="recipientAddressPanel">
+					<h:panelGroup rendered="#{ !checkoutPaymentFeDmb.deliverGiftsToBuyer }">
+						<h:panelGroup rendered="#{ checkoutPaymentFeDmb.deliverGiftsViaEmail }">
+							<aploscc:address 
+								bean="#{checkoutPaymentFeDmb.giftDeliveryAddress}" 
+								validation="#{ checkoutShippingFeDmb.validationRequired }"
+								contactName="required" 
+								email="required"
+								line1="false"
+								line2="false"
+								line3="false"
+								city="false"
+								state="false"
+								country="false"
+								postcode="false"
+							/>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{ !checkoutPaymentFeDmb.deliverGiftsViaEmail }">
+							<aploscc:address ecommerceFieldsRequired="true"
+								bean="#{checkoutPaymentFeDmb.giftDeliveryAddress}" 
+								validation="#{ checkoutShippingFeDmb.validationRequired }" 
+							/>
+						</h:panelGroup>					
+					</h:panelGroup>
+				</aplos:panel>
+			</aplos:panel>
+			<aplos:panel display="block" styleClass="aplos-paypal-button" rendered="false">
+				<h:commandButton id="payPalBtn" action="#{checkoutConfirmFeDmb.processPayPalPayment}" image="/images/paypalButton.gif" />
+			</aplos:panel>
+			<aplos:panel display="block" styleClass="aplos-paypal-button" rendered="#{ commonConfiguration.moduleConfiguration.payPalEmail != null and commonConfiguration.moduleConfiguration.payPalEmail != '' }">
+				<h:commandButton id="offsitePayPalBtn" action="#{checkoutPaymentFeDmb.processOffsitePayPalPayment}" image="/images/paypalButton.gif">	
+				</h:commandButton>
+			</aplos:panel>
+			
+			<aplos:panel styleClass="aplos-section" rendered="#{ ecommerceUtil.showingPaymentEntry }">
+				<!-- <hr class="aplos-divider" /> -->
+				<h3 class="aplos-title">Payment details</h3>
+				<table class="aplos-form-table aplos-form-table-with-required">
+					<tr>
+						<td class="aplos-label">Payment method</td>
+						<td class="aplos-required-asterisk">*</td>
+						<td class="aplos-field"><h:selectOneMenu
+							value="#{ transaction.paymentMethod }"
+							converter="aplosAbstractBeanConverter"
+							required="#{ checkoutPaymentFeDmb.validationRequired }"
+							rendered="#{checkoutPaymentFeDmb.paymentMethodSelectItems.size() &gt; 1}"
+							label="Payment method">
+							<f:selectItems
+								value="#{ checkoutPaymentFeDmb.paymentMethodSelectItems }" />
+								<p:ajax process="@form" event="change" listener="#{ transaction.paymentMethodChanged() }" update="creditCardPanel,costsPanel" />
+							</h:selectOneMenu>
+							<h:outputText value="#{transaction.paymentMethod.displayName}" rendered="#{checkoutPaymentFeDmb.paymentMethodSelectItems.size() == 1}" />
+						</td>
+					</tr>
+				</table>
+			</aplos:panel>
+			<aplos:panel id="creditCardPanel">
+				<aploscc:creditCardEntry creditCardDetails="#{transaction.creditCardDetails}" 
+         								 storedCreditCardDetails="#{transaction.customer.creditCardDetails}"
+					                     usingStoredCreditCardDetails="#{transaction.usingStoredCreditCardDetails}" 
+				                         validationRequired="#{ checkoutPaymentFeDmb.paymentMethodValidationRequired }"
+				                         rememberCreditCardDetails="#{shoppingCart.customer.rememberCreditCardDetails}"
+				                         creditCardEntryListener="#{ checkoutPaymentFeDmb.creditCardEntryListener }"
+				                         rendered="#{ transaction.showingCardDetails }" />
+			</aplos:panel>
+		</div>
+		<ui:insert name="navigation-buttons">
+			<h:panelGroup id="nxtPrev">
+				<table class="next-previous-buttons">
+					<tr>
+						<td>
+			              	<aploscc:ajaxButton value="#{ checkoutPaymentFeDmb.previousBtnText }" action="#{checkoutPaymentFeDmb.goToBillingOrCart}" rendered="#{ !transaction.customer.companyConnectionRequested }" />
+						</td>
+						<td class="aplos-align-right">
+							<aploscc:ajaxButton
+								id="continueBtn" value="#{ checkoutPaymentFeDmb.nextBtnText }"
+								action="#{checkoutPaymentFeDmb.goToConfirmation}"
+								rendered="#{ !transaction.customer.companyConnectionRequested }" />
+								
+							<aploscc:ajaxButton id="confirmBtn" value="Confirm"
+								action="#{checkoutConfirmFeDmb.processPayment}"
+								rendered="#{ transaction.customer.companyConnectionRequested }" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" class="aplos-align-right" style="padding-right:5px;"><span class="aplos-required-asterisk">*</span> required fields</td>
+					</tr>
+				</table>
+			</h:panelGroup>
+		</ui:insert>
+	</div>
+</ui:composition>

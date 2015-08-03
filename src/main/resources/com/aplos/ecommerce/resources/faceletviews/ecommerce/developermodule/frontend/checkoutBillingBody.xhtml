@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+xmlns:p="http://primefaces.org/ui">
+	<div class="aplos-checkout aplos-checkout-billing">
+		<div class="aplos-checkout-wizard-contents">
+			<ui:insert name="billing-address-load-buttons">
+				<aplos:panel layout="none" rendered="#{checkoutBillingFeDmb.showingUseDefaultAddress }">
+					<table class="aplos-form-table aplos-form-table-with-required">
+						<tr>
+							<td class="aplos-checkout-controls">
+								<aploscc:ajaxButton value="Reset to stored details" action="#{ checkoutBillingFeDmb.useDefaultBillingAddress }" rendered="#{checkoutBillingFeDmb.showingUseDefaultAddress}" />&#160;&#160;
+							</td>
+						</tr>
+					</table>
+				</aplos:panel>
+			</ui:insert>
+			<ui:insert name="use-shipping-address">
+				<aplos:panel layout="none" rendered="#{checkoutBillingFeDmb.showingUseShippingAddress }">
+					<table class="aplos-form-table aplos-form-table-with-required">
+						<tr>
+							<td class="aplos-label">
+								Use #{contextListener.translate('SHIPPING_ADDRESS')}
+							</td>
+							<td class="aplos-required-asterisk"></td>
+							<td class="aplos-field">
+								<h:selectBooleanCheckbox value="#{ transaction.deliveryAddressTheSame }" >
+	<p:ajax process="@form" event="click" update="aplosBillingAddressPnl" />
+								</h:selectBooleanCheckbox>
+							</td>
+						</tr>
+					</table>
+				</aplos:panel>
+			</ui:insert> 
+			<ui:insert name="billing-address-form">
+				<aplos:panel id="aplosBillingAddressPnl">
+					<aplos:panel rendered="#{ !transaction.deliveryAddressTheSame }" >
+						<aploscc:address bean="#{transaction.billingAddress}" companyName="#{ transaction.customerACompanyContact and ecommerceConfiguration.ecommerceSettings.businessToBusiness}" phone="required" validation="#{ checkoutBillingFeDmb.validationRequired }" ecommerceFieldsRequired="true" />
+					</aplos:panel>
+				</aplos:panel>
+			</ui:insert>
+		</div>
+		<ui:insert name="navigation-buttons">
+			<h:panelGroup id="nxtPrev">
+				<table class="next-previous-buttons">
+					<tr>
+						<td>
+			              	<aploscc:ajaxButton value="#{ checkoutBillingFeDmb.previousBtnText }" action="#{checkoutBillingFeDmb.goToShipping}" rendered="#{ checkoutBillingFeDmb.showingGoToShippingAddress }" />
+						</td>
+						<td class="aplos-align-right">
+							<aplos:panel autoUpdate="true">
+								<aploscc:ajaxButton id="checkoutBtn" value="#{ checkoutBillingFeDmb.nextBtnText }" action="#{checkoutBillingFeDmb.goToPayment}" />
+							</aplos:panel>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" class="aplos-align-right" style="padding-right:5px;"><span class="aplos-required-asterisk">*</span> required fields</td>
+					</tr>
+				</table>
+			</h:panelGroup>
+		</ui:insert>
+	</div>
+</ui:composition>

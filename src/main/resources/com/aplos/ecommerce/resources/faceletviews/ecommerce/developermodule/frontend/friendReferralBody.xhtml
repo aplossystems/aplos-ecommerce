@@ -1,0 +1,82 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	<div class="aplos-friend-referral-atom">
+		<div class="aplos-atom-header">
+			<h3 class="aplos-title">Recommend a Friend - Add Friend</h3>
+			<p>Please add your friends details.</p>
+			<p><h:outputText value="#{friendReferralModule.generatedDescription}" escape="false" /></p>
+	  		<p>To start, choose 'Refer Friend by Email Address' or ' Refer Friend By Postal Address'</p>
+	  		<p>Click 'Finished' when you are done, or, if you would like to add the details of more than one friend then simply click the
+	  			'Add another' button.</p><br/>
+	  			<ui:repeat id="existingPane" var="friend" value="#{friendReferralFeDmb.friendList}" rendered="#{friendReferralFeDmb.friendList.size() > 0}">
+					<div class="aplos-float-box">
+						<h:outputText escape="false" value="#{friend.contactDetailsText}" /><br/><br/>
+						<div class="aplos-controls"><aploscc:ajaxButton id="switchReferralBtn" value="Edit" action="#{friendReferralFeDmb.switchFriend}" ajaxOnChange="takeDetailsPane,existingPane" />
+						<aploscc:ajaxButton id="deleteReferralBtn" value="Delete" action="#{friendReferralFeDmb.deleteFriend}" ajaxOnChange="takeDetailsPane,existingPane" /></div>
+					</div>
+				</ui:repeat>
+				<br style="clear:both;"/><br/>
+  		</div>
+  			  		<h:panelGroup layout="none" rendered="#{friendReferralModule.allowEmailReferrals and friendReferralModule.allowAddressReferrals}">
+		  		<table class="aplos-form-table-with-required aplos-form-table">
+					<tr>
+						<td class="aplos-label"></td>
+						<td class="aplos-required-asterisk"></td>
+						<td class="aplos-field">
+							<aploscc:ajaxButton value="Refer friend by Email address" ajaxOnChange="takeDetailsPane,existingPane" action="#{friendReferralFeDmb.selectEmailReferral}" />
+						</td>
+						<td class="aplos-field">
+							<aploscc:ajaxButton value="Refer friend by postal Address" ajaxOnChange="takeDetailsPane,existingPane" action="#{friendReferralFeDmb.selectAddressReferral}" />
+						</td>
+					</tr>
+				</table>
+	  		</h:panelGroup>
+  		<br/>
+  		<h:panelGroup id="takeDetailsPane" rendered="#{!(friendReferralModule.allowEmailReferrals and friendReferralModule.allowAddressReferrals) or friendReferralFeDmb.addressReferral or friendReferralFeDmb.emailReferral}">
+			
+		
+			  		</h:panelGroup>
+		  		<h:panelGroup layout="none" id="emailReferral" rendered="#{friendReferralFeDmb.emailReferral}">
+		  			<aploscc:address 
+		  			    contactName="required"
+		  				line1="false" 
+		  				line2="false" 
+		  				line3="false" 
+		  				city="false"
+		  				state="false"
+		  				country="false"
+		  				postcode="false"
+		  				email="required" 
+		  				validation="#{friendReferralFeDmb.validationRequired}" 
+		  				bean="#{friendReferralFeDmb.currentFriend.address}" 
+		  			/>
+
+		  		</h:panelGroup>
+	
+
+	  	</h:panelGroup>
+	  	<br/><br/>
+	  	<table class="aplos-form-table-with-required aplos-form-table">
+			<tr>
+				<td class="aplos-label"></td>
+				<td class="aplos-required-asterisk"></td>
+				<td class="aplos-field" colspan="2">
+					<aploscc:ajaxButton id="finishedReferralBtn" value="Finished" action="#{friendReferralFeDmb.completeReferral}" />
+					<aploscc:ajaxButton id="anotherReferralBtn" value="Add Another" ajaxOnChange="takeDetailsPane,existingPane" action="#{friendReferralFeDmb.addAnother}" />
+				</td>
+			</tr>
+		</table>
+  		<br/><br/>
+  		<div class="aplos-atom-footer">
+	  		<strong>Terms and Conditions</strong>
+			<ul class="aplos-terms">
+				<h:outputText id="genTandCs" value="#{friendReferralModule.termsAndConditionsHtmlListItems}" escape="false" />
+			</ul>
+		</div>
+	</div>
+</ui:composition>

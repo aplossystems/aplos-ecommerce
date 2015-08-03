@@ -1,0 +1,64 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+    xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	
+		<aplos:panel id="mainContent" style="float:left;">
+			<table class="aplos-form-table">
+				<tr>
+					<td class="aplos-label">Serial Number</td>
+					<td class="aplos-field" style="width:500px">
+						<aplos:autoComplete id="serialNumberAc" value="#{backingPage.selectedSerialNumber}"   
+		                    completeMethod="#{backingPage.suggestSerialNumbers}" var="autoBean" itemValue="#{autoBean}" itemLabel="#{ backingPage.getSerialNumberDisplayText( autoBean ) }" converter="autoCompleteBeanConverter">
+		                   <p:ajax process="@form" event="itemSelect" listener="#{backingPage.setSerialNumber}" update="serialNumberAc partNumberAc productNameAc topBoxPanel createSerialNumberPanel returnsMenuPanel"/>  
+		                </aplos:autoComplete>
+					</td>
+				</tr>
+				<tr>
+					<td class="aplos-label"></td>
+					<td style="text-align:left">
+						If you don't have a serial number then you can enter a part number or product name so that you can access the
+						technical support and create a returns authorisation note.  However you will need to create a serial number to get an further, to do 
+						this select the product you are after and click the create serial number button.
+					</td>
+				</tr>
+				<tr>
+					<td class="aplos-label">Part Number</td>
+					<td class="aplos-field">
+						<aplos:autoComplete id="partNumberAc" value="#{backingPage.selectedRealizedProduct}"   
+		                    completeMethod="#{backingPage.suggestItemCodes}" var="autoBean" itemValue="#{autoBean}" itemLabel="#{ backingPage.getItemCodeDisplayText( autoBean ) }" converter="autoCompleteBeanConverter">
+		                   <p:ajax process="@form" event="itemSelect" listener="#{backingPage.setReturnProductFromItemCode}" update="serialNumberAc partNumberAc productNameAc topBoxPanel createSerialNumberPanel returnsMenuPanel"/>  
+		                </aplos:autoComplete>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align:center">OR</td>
+				</tr>
+				<tr>
+					<td class="aplos-label">Product name</td>
+					<td class="aplos-field">
+						<aplos:autoComplete id="productNameAc" value="#{backingPage.selectedRealizedProduct}"   
+		                    completeMethod="#{backingPage.suggestProductNames}" var="autoBean" itemValue="#{autoBean}" itemLabel="#{ backingPage.getProductNameDisplayText( autoBean ) }" converter="autoCompleteBeanConverter">
+		                   <p:ajax process="@form" event="itemSelect" listener="#{backingPage.setReturnProductFromProductName}" update="serialNumberAc partNumberAc productNameAc topBoxPanel createSerialNumberPanel returnsMenuPanel"/>  
+		                </aplos:autoComplete>
+					</td>
+				</tr>
+			</table>
+			<aplos:panel id="createSerialNumberPanel">
+				<aplos:panel rendered="#{ realizedProductReturn.returnProductBeforeSerialNumberSet != null and realizedProductReturn.serialNumber == null }" >
+					<table class="aplos-form-table">
+						<tr>
+							<td class="aplos-label"></td>
+							<td class="aplos-field">
+								<aploscc:ajaxButton value="Create serial number" action="#{ backingPage.createSerialNumber }" />
+							</td>
+						</tr>
+					</table>
+				</aplos:panel>
+			</aplos:panel>
+		</aplos:panel>
+</ui:composition>

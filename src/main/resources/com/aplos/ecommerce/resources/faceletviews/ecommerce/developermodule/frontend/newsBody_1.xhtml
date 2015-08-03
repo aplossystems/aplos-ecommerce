@@ -1,0 +1,161 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	<div id="news_container">
+		<h:panelGroup rendered="#{newsFeDmb.selectedNewsEntry == null}">
+	      <aplos:panel id="news_controls" rendered="#{newsFeDmb.newsAtom.includeRecentPostsMenu or newsFeDmb.newsAtom.includeArchivedPostsMenu}">
+		    <h:panelGroup rendered="#{newsFeDmb.newsAtom.includeRecentPostsMenu}">
+		        <h:panelGroup rendered="#{newsFeDmb.newsAtom.includeRecentPostsTitle}">
+		        	<h1 id="recent_title">Recent Articles</h1>
+		        </h:panelGroup>
+		        <ui:repeat id="latestPosts" value="#{ newsFeDmb.newsEntryList }" var="entry">
+		          	<p><a href="##{entry.id}"><h:outputText value="#{entry.title}" /></a></p>
+		        </ui:repeat>   
+	        </h:panelGroup>  
+	        <h:panelGroup rendered="#{newsFeDmb.newsAtom.includeArchivedPostsMenu}">
+		        <h:panelGroup rendered="#{newsFeDmb.newsAtom.includeArchivedPostsTitle}">  
+	        		<h1 id="archived_title">Archived Articles</h1>
+	        	</h:panelGroup>
+		        <p><h:commandLink action="#{newsFeDmb.getLatestPostList}" value="Latest" reRender="article_content" /></p>
+		        <ui:repeat id="archives" value="#{ newsFeDmb.archiveMonthList }" var="archive">
+				    <p><h:commandLink action="#{newsFeDmb.fetchArchive}" value="#{archive}" reRender="article_content" /></p>
+				</ui:repeat>
+			</h:panelGroup>
+	      </aplos:panel>
+		</h:panelGroup>
+      <div id="news_article">
+      	<aplos:panel autoUpdate="true" id="article_content">
+      		<aplos:panel rendered="#{ newsFeDmb.selectedNewsEntry == null }">
+	      		<ui:repeat id="newsEntries" value="#{ newsFeDmb.newsEntryList }" var="entry">
+		     		<h:panelGroup rendered="#{entry.showsInNewsPage }">
+		      			<div class="theme-floatcontent">
+							<div class="theme-triple-rounded-box-top">
+								<a name="#{entry.id}"></a>
+								<div style="float:left;margin-left:10px;"><h:outputText value="#{ entry.title }" /></div>
+								<div style="float:right;margin-right:10px;"><h:outputText value="#{ newsFeDmb.getEntryDateString( entry ) }" /></div>
+							</div>
+							<div class="theme-triple-rounded-box-content">
+								<br /><!-- dont remove the seemingly pointless br's - they stop margins ruining our box -->
+								<h:panelGroup rendered="#{ entry.initialImageDetails != null }">
+									<div style="text-align:center">
+										<img class="news_image" src="#{ entry.initialImageDetails.getFullFileUrl(true) }&amp;maxWidth=710" alt="news" />
+									</div>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{ entry.content != '' }">
+									<div style="padding-top:10px;padding-bottom:10px">
+				            			<h:outputText value="#{ entry.content }" escape="false" />
+				            		</div>
+				            	</h:panelGroup>
+					            <h:panelGroup rendered="#{newsFeDmb.selectedNewsEntry == null}">
+					            	<aploscc:ajaxButton value="See Full Article" action="#{ newsFeDmb.redirectToNewsEntry }" />
+					            </h:panelGroup>
+								<br style="clear:both;" />
+							</div>
+							<div class="theme-triple-rounded-box-bottom">&#160;</div>
+						</div>	
+					</h:panelGroup>
+				</ui:repeat>
+			</aplos:panel>
+      		<aplos:panel rendered="#{ newsFeDmb.selectedNewsEntry != null }">
+      			<h:panelGroup rendered="#{newsFeDmb.selectedNewsEntry != null and newsFeDmb.selectedNewsEntry.showsInNewsPage }">
+		      			<div class="theme-floatcontent">
+							<div class="theme-triple-rounded-box-top">
+								<a name="#{newsFeDmb.selectedNewsEntry.id}"></a>
+								<div style="float:left;margin-left:10px;"><h:outputText value="#{ newsFeDmb.selectedNewsEntry.title }" /></div>
+								<div style="float:right;margin-right:10px;"><h:outputText value="#{ newsFeDmb.getEntryDateString( newsFeDmb.selectedNewsEntry ) }" /></div>
+							</div>
+							<div class="theme-triple-rounded-box-content">
+								<br /><!-- dont remove the seemingly pointless br's - they stop margins ruining our box -->
+								<h:panelGroup rendered="#{ newsFeDmb.selectedNewsEntry.initialImageDetails != null }">
+									<div style="text-align:center">
+										<img class="news_image" src="#{ newsFeDmb.selectedNewsEntry.initialImageDetails.getFullFileUrl(true) }&amp;maxWidth=710" alt="news" />
+									</div>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{ newsFeDmb.selectedNewsEntry.content != '' }">
+									<div style="padding-top:10px;padding-bottom:10px">
+				            			<h:outputText value="#{ newsFeDmb.selectedNewsEntry.content }" escape="false" />
+				            		</div>
+				            	</h:panelGroup>
+				            	<h:panelGroup rendered="#{ newsFeDmb.selectedNewsEntry.video != null }">
+									<h4>Video:&#160;#{newsFeDmb.selectedNewsEntry.video.title}</h4>
+									<h:outputText escape="false" value="#{newsFeDmb.selectedNewsEntry.video.getEmbedCode(710,350)}" />
+									<br/><br/>
+								</h:panelGroup>
+				            	<h:panelGroup rendered="#{ newsFeDmb.selectedNewsEntry.middleImageDetails != null }">
+				            		<div style="text-align:center">
+										<img class="news_image news_image_alt" src="#{ newsFeDmb.selectedNewsEntry.middleImageDetails.getFullFileUrl(true) }&amp;maxWidth=710" alt="news" />
+									</div>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{ newsFeDmb.selectedNewsEntry.contentMid != '' }">
+									<div style="padding-top:10px;padding-bottom:10px">
+				            			<h:outputText value="#{ newsFeDmb.selectedNewsEntry.contentMid }" escape="false" />
+				            		</div>
+				            	</h:panelGroup>
+				            	<h:panelGroup rendered="#{ newsFeDmb.selectedNewsEntry.footerImageDetails != null }">
+				            		<div style="text-align:center">
+										<img class="news_image" src="#{ newsFeDmb.selectedNewsEntry.footerImageDetails.getFullFileUrl(true) }&amp;maxWidth=710" alt="news" />
+									</div>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{ newsFeDmb.selectedNewsEntry.contentBottom != '' }">
+									<div style="padding-top:10px;padding-bottom:10px">
+					            		<h:outputText value="#{ newsFeDmb.selectedNewsEntry.contentBottom }" escape="false" />
+					            	</div>
+				            	</h:panelGroup>
+				            	<h:panelGroup rendered="#{ newsFeDmb.selectedNewsEntry.product != null }">
+				            		<h:outputLink styleClass="newsLink" value="#{request.contextPath}/#{newsFeDmb.getProductMapping( newsFeDmb.selectedNewsEntry.product )}">
+				            			<h:outputText value="View the product details for #{newsFeDmb.selectedNewsEntry.product.displayName} here" />
+				            		</h:outputLink>
+				            	</h:panelGroup>
+								<br style="clear:both;" />
+							</div>
+							<div class="theme-triple-rounded-box-bottom">&#160;</div>
+						</div>
+						<h:panelGroup rendered="#{newsFeDmb.selectedNewsEntry.pdfDetails != null and newsFeDmb.selectedNewsEntry.pdfDetails != ''}">
+					   		<div class="theme-floatcontent">
+								<div class="theme-triple-rounded-box-top">
+									Auto-Info-Pack: Instant download via email
+								</div>
+								<div class="theme-triple-rounded-box-content">
+									<br />
+									<h:panelGroup rendered="#{newsFeDmb.infoPackSent}">
+										An Information Pack has now been sent to the address you provided.<br/><br/>
+									</h:panelGroup>
+									<h:panelGroup rendered="#{!newsFeDmb.infoPackSent}">
+										<table style="width:100%;">
+											<tr>
+												<td>First Name:</td>
+												<td>
+													<h:inputText value="#{newsFeDmb.firstName}" style="width:90px" />
+												</td>
+												<td>Surname:</td>
+												<td>
+													<h:inputText value="#{newsFeDmb.surname}" style="width:90px" />
+												</td>
+												<td>Email:</td>
+												<td>
+													<h:inputText value="#{newsFeDmb.email}" style="width:190px" />
+												</td>
+												<td>
+													<aploscc:ajaxButton value="Download" action="#{newsFeDmb.sendInfoPack}" />
+												</td>
+											</tr>
+											<tr>
+												<td colspan="7" class="aplos-description">Teletest will subscribe you to our Newsletter and not share your email address with anyone else.</td>
+											</tr>
+										</table>
+									</h:panelGroup>
+									<br style="clear:both;" />
+								</div>
+								<div class="theme-triple-rounded-box-bottom">&#160;</div>
+							</div>
+						</h:panelGroup>	
+					</h:panelGroup>
+      		</aplos:panel>
+      	</aplos:panel>
+      </div>								
+ 	</div>
+</ui:composition>

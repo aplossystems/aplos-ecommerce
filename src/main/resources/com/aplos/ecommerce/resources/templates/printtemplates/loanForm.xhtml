@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Loan Form</title>
+<style type="text/css">
+	.font1 {
+		font-size:12px;
+	}
+	
+	.font2 {
+		font-size:15px;
+		font-family:Verdana, Geneva, sans-serif;
+	}
+	
+	.orderItemCell {
+		border: solid black 1px;
+		padding:4px;
+	}
+	
+	.orderItem {
+		font-family: Verdana, Arial, Helvetica, sans-serif; 
+		font-size: 10px;  
+		line-height:10px; 
+		margin:0px; 
+	}
+
+@page {
+	margin: 10pt;
+}
+</style>
+</head>
+
+<body>
+
+<table style="max-width: 560pt; min-width: 560pt; width: 560pt; max-height: 792pt; min-height: 792pt; height: 792pt;">
+	<tr valign="top">
+		<td>
+			<div style="min-height: 470pt; max-height: 470pt; height: 470pt;">
+	<table style="font-family: Verdana, Geneva, sans-serif ; font-size:12px;width:100%" cellspacing="0" cellpadding="0">
+	  <tr>
+		<td width="50%" style="height:50px"><img src="{COMPANY_LOGO}" style="height:50px"/></td>
+	    <td width="50%"><div align="right"><font size="5"><strong>LOAN FORM</strong></font></div></td>
+	  </tr>
+	  <tr>
+	    <td width="60%" height="91">
+		    <p class="font1"><strong>{COMPANY_NAME}</strong><br />
+		      {COMPANY_ADDRESS_1}{COMPANY_ADDRESS_2}{COMPANY_ADDRESS_3}, {COMPANY_TOWN}, {COMPANY_COUNTY}, {COMPANY_POSTCODE}, UK<br />
+		  	<strong>Tel:</strong> {COMPANY_PHONE} <strong> Fax:</strong> {COMPANY_FAX}<br />
+			<strong>International:</strong> +44 {COMPANY_INTERNATIONAL_PHONE}<br />
+		  	<strong>Email:</strong> {COMPANY_EMAIL} <strong> Web:</strong> {COMPANY_WEB}<br />
+		    <strong>VAT #:</strong> {COMPANY_VATNO}
+		    </p>
+	    </td>
+	    <td>
+	    <p align="right" style="font-size:12px">
+		    <b>Transaction date:</b> {TRANSACTION_DATE}<br />
+		    <b>Valid until date:</b> {VALID_UNTIL_DATE}<br />
+		    <b>Transaction ref:</b> {TRANSACTION_NUMBER}<br />
+		    <b>Your ref:</b> {CUSTOMER_REFERENCE}<br />
+		    <!-- BEGIN DYNAMIC : companyIds -->
+			    <b>Company ID:</b> {COMPANY_ID}<br/>
+			    <b>Contact ID:</b> {CONTACT_ID}
+		<!-- END DYNAMIC : companyIds -->
+		<!-- BEGIN DYNAMIC : customerId -->
+			    <b>Customer ID:</b> {CUSTOMER_ID}
+		<!-- END DYNAMIC : customerId -->
+		</p></td>
+	  </tr>
+	</table><br />
+	
+	<table style="font-family: Verdana, Geneva, sans-serif ; font-size:12px;" width="100%" border="0" cellspacing="0" cellpadding="0">
+	  <tr>
+	    <td width="300px">Delivery Address</td>
+	    <td>
+		  </td>
+	  </tr>
+	  <tr>
+		  <td colspan="2">
+		  	&#160;
+		  </td>
+	  </tr>
+	  <tr>
+	    <td style="text-transform:capitalize">
+         {DA_CUSTOMER_NAME}<br />
+	     {DA_ADDRESS}<br />
+	     {DA_COUNTRY}</td>
+	  	<td />
+	  	<td>
+		  	<table>
+		  		<tr>
+		  			<td><b>Dispatch: </b></td>
+		  			<td>{DISPATCH_DATE}</td>
+		  		</tr>
+		  		<tr>
+		  			<td><b>Loan return by: </b></td>
+		  			<td>{LOAN_RETURN_DATE}</td>
+		  		</tr>
+		  	</table>
+	  	</td>
+	  </tr>
+	</table>
+	<br />
+	<div style="height:80pt;max-height:80pt;min-height:80pt;font-family: Verdana, Geneva, sans-serif ; font-size:11px ; width:100%">
+		{MAIN_TEMPLATE_TEXT}
+	</div>
+	<div style="font-family: Verdana, Geneva, sans-serif ; font-size:11px ; text-align:right">
+		Currency : {INVOICE_CURRENCY}<br />
+	</div>
+	<table style="height:190pt;max-height:190pt;min-height:190pt;font-family: Verdana, Geneva, sans-serif ; font-size:10px ; border: solid black 1px ; border-collapse:collapse" width="100%" border="0">
+	  <tr style="height:25px;max-height:25px">
+		<!-- BEGIN DYNAMIC : customerReferenceHead -->
+	    <td width="8%" style="border: solid black 1px ; text-align:center"><strong>Your Ref.</strong></td>
+		<!-- END DYNAMIC : customerReferenceHead -->
+		<!-- BEGIN DYNAMIC : itemCodeHead -->
+	    <td width="8%" style="border: solid black 1px ; text-align:center"><strong>Code</strong></td>
+		<!-- END DYNAMIC : itemCodeHead -->
+	    <td width="8%" style="border: solid black 1px ; text-align:center"><strong>Qty</strong></td>
+	    <td style="border: solid black 1px;min-width:50%"><strong>Name</strong></td>
+	    <td width="8%" style="border: solid black 1px ; text-align:right"><strong>Each</strong></td>
+	    <td width="10%" style="border: solid black 1px ; text-align:right"><strong>Total</strong></td>
+	  </tr>
+	  <!-- BEGIN DYNAMIC : productList -->
+	  <tr valign="top">
+		<!-- BEGIN DYNAMIC : customerReferenceRow -->
+	    <td class="orderItemCell" style="text-align:center"><p class="orderItem">{CUSTOMER_REFERENCE_REPEATED}</p></td>
+		<!-- END DYNAMIC : customerReferenceRow -->
+		<!-- BEGIN DYNAMIC : itemCodeRow -->
+	    <td class="orderItemCell" style="text-align:center"><p class="orderItem">{PRODUCT_CODE_REPEATED}</p></td>
+		<!-- END DYNAMIC : itemCodeRow -->
+	    <td class="orderItemCell" style="text-align:center"><p class="orderItem">{PRODUCT_QUANTITY_REPEATED}</p></td>
+	    <td class="orderItemCell"><p class="orderItem">{PRODUCT_NAME_REPEATED}</p></td>
+	    <td class="orderItemCell" style="text-align:right"><p class="orderItem">{PRODUCT_PRICE_REPEATED}</p></td>
+	    <td class="orderItemCell" style="text-align:right"><p class="orderItem">{PRODUCT_TOTAL_REPEATED}</p></td>
+	  </tr>
+	  <!-- END DYNAMIC : productList -->
+	</table>
+</div>
+			<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			  <tr>
+			  	<td>&#160;</td>
+			  	<td></td>
+			  </tr>
+			  <tr>
+			  	<td colspan="2" style="padding-bottom:20px"></td>
+			  </tr>
+			  <tr valign="top">
+			    <td height="50px" style="min-width:241pt;max-width:241pt;width:241pt;font-family: Verdana, Geneva, sans-serif ">
+			    	<table cellpadding="5" border="0" cellspacing="0" style="width:241pt;height:50px;text-align:left; font-size:13px;">
+			    		<!-- BEGIN DYNAMIC : deliveryRequiredBy -->
+			    		<tr valign="top">
+			    			<td style="text-align:right;width:70pt">
+							    Delivery required by:
+						    </td>
+						    <td style="text-align:left;">
+						    	{DELIVERY_REQUIRED_BY}
+						    </td>
+					    </tr>
+					    <!-- END DYNAMIC : deliveryRequiredBy -->
+					    <tr><td></td></tr>
+					    <tr valign="top">
+			    			<td style="text-align:right;">
+							    {SPECIAL_DELIVERY_INSTRUCTIONS_LABEL}
+						    </td>
+						    <td style="text-align:left;">
+						    	{SPECIAL_DELIVERY_INSTRUCTIONS}
+						    </td>
+					    </tr>
+			    	</table>
+			    </td>
+			    <td align="right" height="50px" style="min-width:241pt;max-width:241pt;width:241pt;max-height:50px;min-height:50px;height:50px;font-family: Verdana, Geneva, sans-serif ; font-size:13px; text-align:right">
+			    	<table cellpadding="2" cellspacing="0"
+							style="width: 250pt; height: 50px; min-height: 50px; max-height: 50px; text-align: right; float: right">
+							<tr valign="top">
+								<td style="text-align: right; width: 50pt">Items total</td>
+								<td style="text-align: right; width: 50pt">
+								{CURRENCY_PREFIX}{ITEMS_TOTAL}{CURRENCY_SUFFIX}</td>
+							</tr>
+							<tr valign="top">
+								<td style="text-align: right">Delivery charge</td>
+								<td style="text-align: right">
+								{CURRENCY_PREFIX}{DELIVERY_CHARGE}{CURRENCY_SUFFIX}</td>
+							</tr>
+							<tr valign="top">
+								<td style="text-align: right">VAT</td>
+								<td style="text-align: right">
+								{CURRENCY_PREFIX}{VAT_CHARGE}{CURRENCY_SUFFIX}</td>
+							</tr>
+							<tr valign="top">
+								<td style="text-align: right"><b>Invoice total</b></td>
+								<td style="text-align: right"><b>{CURRENCY_PREFIX}{INVOICE_GROSS_TOTAL}{CURRENCY_SUFFIX}</b>
+								</td>
+							</tr>
+						</table>
+			    </td>
+			  </tr>
+			</table>
+			<div style="font-family: Verdana, Geneva, sans-serif ; font-size:11px;padding-top:15pt">
+				<h3 style="padding-bottom:1pt;padding-top:2pt;margin:0px">Loan Form Terms and Conditions</h3>
+				<br/>
+				<b>1)</b> Please complete the following form and return it to the above address by email, post or fax.
+				<br/>
+				<b>2)</b> We will loan the goods listed (postage is charged) for an agreed time.
+				<br/>
+				<b>3)</b> An invoice for the amount shown will be included with the goods.
+				<br/>
+				<b>4)</b> A full credit note (minus postage for overseas loans) will be raised if the goods are returned
+				within the agreed timescale and in their original condition.  This includes the packaging.
+				<br/>
+				<b>5)</b> Therefore, if you do no wish to purchase the goods please return them "carriage paid" suitably
+				packaged (the products MUST be in their original packaging).
+				<br/>
+				<b>That package must then be placed INSIDE ANOTHER BOX to avoid any damage to the goods during transit.</b>
+				<br/>
+				<b>6)</b> Include a copy of this form.
+				<br/>
+				<b>Warning:</b> If the goods are NOT packaged as shown in the diagram below, we will automatically 
+				charge a minimum of <b>&#163;50</b> to cover our inspection and re-packaging costs.
+			</div>
+			<table style="font-family: Verdana, Geneva, sans-serif ; font-size:11px;padding-top:20px">
+				<tr>
+					<td style="width:330px"><h3>Return packing instructions</h3></td>
+					<td style="text-align:center"><img src="{BOX_PACKAGING_IMAGE}" style="height:70px" /></td>
+				</tr>
+				<tr>
+					<td>I confirm all details are correct &amp; agree with the terms &amp; conditions, particularly the return packaging instructions.</td>
+					<td>
+						<b>
+							Name:___________________________________  Date:_____________________
+							<br/><br/>
+						    Signature:__________________________________________________________
+						</b>
+					</td>
+				</tr>
+			</table>
+
+		</td>
+	</tr>
+</table>
+</body>
+</html>

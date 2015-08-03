@@ -1,0 +1,164 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="heading">Daily recorded statistics</ui:define>
+	<ui:define name="editContent">
+	
+		<table class="aplos-form-table">
+			<tr>
+				<td>
+					<h:selectOneMenu value="#{ backingPage.dataDisplayType }">
+						<f:selectItem itemValue="display_area" itemLabel="Area" />
+						<f:selectItem itemValue="display_bar_unstacked" itemLabel="Bar" />
+						<f:selectItem itemValue="display_donut" itemLabel="Donut" />
+						<f:selectItem itemValue="display_line" itemLabel="Line" />
+						<f:selectItem itemValue="display_pie" itemLabel="Pie" />
+						<f:selectItem itemValue="display_bar" itemLabel="Stacked Bar" />
+						<p:ajax process="@form" event="change" listener="#{ backingPage.reDraw }" update="chartPanel" />
+					</h:selectOneMenu>
+				</td>
+				<td>
+					<h:selectOneMenu value="#{ backingPage.chartDataClassName }">
+						<f:selectItems value="#{ backingPage.chartDataSelectItems }" />
+						<p:ajax process="@form" event="change" listener="#{ backingPage.chartDataTypeUpdated }" update="chartPanel" />
+					</h:selectOneMenu>
+				</td>
+				<td>between</td>
+				<td>
+					<aploscc:dateTime id="startDateInput"
+						showCheckbox="#{false}" startYearDiff="#{-5}" endYearDiff="#{1}"
+						value="#{backingPage.startDate}"
+						ajaxOnchange="chartPanel">
+					</aploscc:dateTime>
+				</td>
+				<td>and</td>
+				<td>
+					<aploscc:dateTime id="endDateInput"
+						showCheckbox="#{false}" startYearDiff="#{-5}" endYearDiff="#{2}"
+						value="#{backingPage.endDate}"
+						ajaxOnchange="chartPanel">
+					</aploscc:dateTime>
+				</td>
+				<td>
+					<h:selectOneMenu value="#{ backingPage.viewInterval }">
+						<f:selectItems value="#{ backingPage.intervalSelectItems }" />
+						<p:ajax process="@form" event="change" listener="#{ backingPage.reCacheAndDraw }" update="chartPanel" />
+					</h:selectOneMenu>
+				</td>
+				<td>
+					<aploscc:ajaxButton value="Update Chart" action="#{ backingPage.reCacheAndDraw }" reRender="chartPanel">
+
+					</aploscc:ajaxButton>
+				</td>
+			</tr>
+		</table>
+	
+		<br/><br/><hr/><br/><br/><br/>
+	
+		<aplos:panel id="chartPanel">
+		
+			<p:barChart rendered="#{ backingPage.dataDisplayType == 'display_bar' }"
+				value="#{backingPage.graphModel}" 
+				legendPosition="ne" 
+	            title="#{ backingPage.title }" 
+	            style="height:500px" 
+	            min="0" 
+	            max="#{backingPage.cumulativeMax}"
+	            animate="true"
+	            enhancedLegend="true"
+	             xaxisAngle="90"
+	           
+	            stacked="true"
+             	xaxisLabel="#{ backingPage.chartData.horizontalAxisLabel }"
+	            yaxisLabel="#{ backingPage.chartData.verticalAxisLabel }"
+	        />
+	        
+	        <p:barChart rendered="#{ backingPage.dataDisplayType == 'display_bar_unstacked' }"
+				value="#{backingPage.graphModel}" 
+				legendPosition="ne" 
+	            title="#{ backingPage.title }" 
+	            style="height:500px" 
+	            min="0" 
+	            max="#{backingPage.cumulativeMax}"
+	            animate="true"
+	            enhancedLegend="true"
+	            xaxisAngle="90"
+	           
+	            stacked="false"
+	            barMargin="3"
+	            barPadding="3"
+             	xaxisLabel="#{ backingPage.chartData.horizontalAxisLabel }"
+	            yaxisLabel="#{ backingPage.chartData.verticalAxisLabel }"
+	        />
+	        
+	        <p:lineChart rendered="#{ backingPage.dataDisplayType == 'display_line' or backingPage.dataDisplayType == 'display_area' }"
+	        	value="#{backingPage.graphModel}" 
+	        	legendPosition="ne" 
+             	title="#{ backingPage.title }" 
+             	style="height:500px;" 
+	            min="0" 
+	            max="#{backingPage.cumulativeMax}"
+	            animate="true"
+	            enhancedLegend="true"
+	            xaxisAngle="90"
+	            
+	            stacked="false"
+             	xaxisLabel="#{ backingPage.chartData.horizontalAxisLabel }"
+	            yaxisLabel="#{ backingPage.chartData.verticalAxisLabel }"
+	            
+             	fill="#{ backingPage.dataDisplayType == 'display_area' }"  
+             /> 
+             <aplos:panel layout="block" rendered="#{ backingPage.dataDisplayType == 'display_pie' }">
+	              <div style="float:left"> 
+	            
+		              <p:pieChart
+		             	value="#{backingPage.graphModelFullMonth}" 
+			        	showLegend="false"
+		             	title="#{ backingPage.title } (Full Period)" 
+		             	style="height:500px;" 
+			            min="0" 
+			            max="#{backingPage.cumulativeMax}"
+			            animate="true"
+			            enhancedLegend="true"
+			            
+						fill="true" 
+						showDataLabels="true"  
+		                sliceMargin="3" 
+		                diameter="250" 
+		             />  
+		        </div>
+             </aplos:panel>
+             
+             <p:donutChart rendered="#{ backingPage.dataDisplayType == 'display_donut' }"
+            			value="#{backingPage.donutModel}" 
+			        	legendPosition="ne" 
+		             	title="#{ backingPage.title }" 
+		             	style="height:500px;" 
+			            min="0" 
+			            max="#{backingPage.cumulativeMax}"
+			            animate="true"
+			            enhancedLegend="true"
+			            showLegend="false"
+			    />  
+             
+		</aplos:panel>
+	
+	
+	</ui:define>
+	<ui:define name="editButtons">
+		<aploscc:controlPanel>
+			<f:facet name="upperRightControlPanel">
+				<aploscc:ajaxButton value="&lt; Previous Month" action="#{ backingPage.previousMonth }" />	
+				<aploscc:ajaxButton value="#{backingPage.originalMonthYear}" action="#{ backingPage.thisMonth }" />	
+				<aploscc:ajaxButton value="Next Month &gt;" action="#{ backingPage.nextMonth }" />	
+			</f:facet>
+		</aploscc:controlPanel>
+	</ui:define>
+</ui:composition>
+

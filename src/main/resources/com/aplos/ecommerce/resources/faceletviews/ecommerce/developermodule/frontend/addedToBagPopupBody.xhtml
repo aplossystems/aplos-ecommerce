@@ -1,0 +1,96 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	
+	<!-- The added-to-bag popup needs to be placed within a panel which is rerendered by the add to
+	     bag button - for example the total count at the top of the page. The atom *should* use fixed
+	     position (if not overriden) so it will not break your layout -->
+
+	<h:panelGroup rendered="#{shoppingCart.contentsUpdated != null}">
+		<div id="addToBagFlash" style="display:none">
+ 			<span>The following item&#39;s have been added to your #{ecommerceConfiguration.cartDisplayName}.</span>
+			<table class="aplos-added-to-cart-list">
+		       	<tbody> 
+		        	<ui:repeat value="#{ shoppingCart.contentsUpdated }" var="cartItem">
+		        		<tr>
+		        			<td>
+		        				<img src="#{cartItem.realizedProduct.defaultImageDetails.getFullFileUrl(true)}&#38;maxWidth=48&#38;maxHeight=64" alt="Ordered Product Image" />
+		        			</td>
+		        			<td>
+		        				<h:panelGroup layout="none" rendered="#{cartItem.kitItems == null}">
+		        					<table>
+			        					<tr>
+			        						<td class="aplos-name" colspan="2">
+												<h:outputText escape="false" value="#{cartItem.realizedProduct.productInfo.product.name}" />
+											</td>
+			        					</tr>
+			        					<h:panelGroup layout="none" rendered="#{ ecommerceConfiguration.getEcommerceSettings( true ).usingProductColours}">
+				        					<tr>
+				        						<td>Colour</td>
+				        						<td><h:outputText escape="false" value="#{cartItem.realizedProduct.productColour.name}" /></td>
+				        					</tr>
+				        				</h:panelGroup>
+				        				<h:panelGroup layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingProductSizes}">
+					        				<tr>
+				        						<td>Size</td>
+				        						<td>
+					        						<h:outputText escape="false" value="#{cartItem.realizedProduct.productSize.name}" />
+					        					</td>
+					        				</tr>
+										</h:panelGroup>
+			        				</table>
+		        				</h:panelGroup>
+		        				<h:panelGroup layout="none" rendered="#{cartItem.kitItems != null}">
+		        					<table>
+		        						<tr>
+			        						<td class="aplos-name" colspan="2">
+												<h:outputText escape="false" value="#{cartItem.realizedProduct.productInfo.product.name}" />
+											</td>
+			        					</tr>
+		        						<ui:repeat value="#{ cartItem.kitItems }" var="kitItem">
+			        						<tr>
+			        							<td colspan="2">
+													-&#160;<h:outputText escape="false" value="#{kitItem.productInfo.product.name}" />
+												</td>
+				        					</tr>
+				        					<h:panelGroup layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingProductColours}">
+					        					<tr>
+					        						<td>&#160;&#160;Colour</td>
+					        						<td><h:outputText escape="false" value="#{kitItem.productColour.name}" /></td>
+					        					</tr>
+					        				</h:panelGroup>
+					        				<h:panelGroup layout="none" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingProductSizes}">
+						        				<tr>
+					        						<td>&#160;&#160;Size</td>
+					        						<td>
+						        						<h:outputText escape="false" value="#{kitItem.productSize.name}" />
+						        					</td>
+						        				</tr>
+											</h:panelGroup>
+										</ui:repeat>
+			        				</table>
+		        				</h:panelGroup>
+		        			</td>
+		        		</tr>
+		        	</ui:repeat>
+		        </tbody>
+		   </table>
+		</div>
+		<script type="text/javascript">
+			function showAddToBagFlash() {
+ 				$j('#addToBagFlash').show();
+    			setTimeout("hideAddToBagFlash()", 2500); 
+			}
+			function hideAddToBagFlash() {
+  				$j('#addToBagFlash').fadeOut('1500'); 
+			}
+			$j(document).ready(function() {
+ 				showAddToBagFlash();
+ 				#{shoppingCart.setContentsUpdated(null)}
+			});
+		</script>
+	</h:panelGroup>
+</ui:composition>

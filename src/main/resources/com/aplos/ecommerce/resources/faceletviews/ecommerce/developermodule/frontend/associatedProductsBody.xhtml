@@ -1,0 +1,24 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	<div class="aplos-associated-products-atom">
+		<h:panelGroup rendered="#{associatedProductsModule.hasProducts}" layout="none">
+			<h:panelGroup rendered="#{associatedProductsModule.imageDetails != null}" layout="none">
+				<img class="aplos-icon" src="#{request.contextPath}#{associatedProductsModule.fullTitleImageUrl}" alt="" />
+			</h:panelGroup>
+			<span class="aplos-title"><h:outputText value="#{associatedProductsModule.title}" /></span>
+		</h:panelGroup>
+ 		<ui:repeat var="associatedProduct" value="#{associatedProductsModule.associatedProductList}">
+			<div class="aplos-float-box"> 
+				<a href="#{request.contextPath}/#{associatedProduct.productInfo.product.productBrand.mappingOrId}/#{associatedProduct.productInfo.mappingOrId}.aplos?type=product">
+					<img src="#{associatedProduct.defaultProductListImageUrl}&amp;maxWidth=86&amp;maxHeight=114" alt="#{associatedProduct.productInfo.product.name} #{currency.prefix}#{associatedProduct.convertedPriceStr}#{currency.suffix}" title="#{associatedProduct.productInfo.product.name} #{currency.prefix}#{associatedProduct.convertedPriceStr}#{currency.suffix}" />
+				</a>
+			</div>
+		</ui:repeat>
+	</div>
+</ui:composition>
+
+ 

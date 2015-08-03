@@ -1,0 +1,21 @@
+<ui:composition template="#{ themeManager.backendTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+	
+	<ui:define name="body">
+		<h:form>
+		65 new serial numbers have just been generated, from #{ backingPage.firstSerialNumberGenerated } to #{ backingPage.lastSerialNumberGenerated }.<br />
+			<div style="float:right">
+				<aplos:aplosSmallBorder rendered="#{ backingPage.areVoidStickersRequired }">
+					<h:commandLink id="printVoid" value="Print void stickers" action="#{ backingPage.printVoidStickers }" target="_blank" style="color:black" />
+				</aplos:aplosSmallBorder><br />
+				<aploscc:ajaxButton value="Back" action="#{ backingPage.redirectToSerialNumberAssignmentList() }" />
+			</div>
+		</h:form>
+	</ui:define>
+	
+</ui:composition>

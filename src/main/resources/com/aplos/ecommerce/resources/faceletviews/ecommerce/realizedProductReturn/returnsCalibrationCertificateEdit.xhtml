@@ -1,0 +1,30 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	
+	<script type="text/javascript">
+		$j(document).ready(function() {
+			ckEditorHelper.createLimitedToolbarCKEditors( '#{ request.contextPath }', { width : "500px", height : "245px" } );
+		}); 
+	</script>
+	
+	<table class="aplos-form-table">
+		<tr>
+			<td class="aplos-label" style="width:200px">Print/Send document</td>
+			<td>
+				<h:commandLink action="#{ backingPage.redirectToCalibrationCertificatePrintSend }"><img src="#{request.contextPath}/images/download32.32.png" border="0"/></h:commandLink>
+			</td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Calibrated Specifications</td>
+			<td class="aplos-field"><h:inputTextarea id="calibrationSpecificationsTxt" styleClass="aplos_ckeditor" value="#{ realizedProductReturn.calibratedSpecifications }" style="width:380px;height:150px" /></td>
+		</tr>
+		<tr>
+			<td class="aplos-label">Calibration certificate comments</td>
+			<td class="aplos-field"><h:inputTextarea id="calibrationCertificatesTxt" styleClass="aplos_ckeditor" value="#{ realizedProductReturn.calibrationCertificateComments }" style="width:380px;height:150px" /></td>
+		</tr>
+	</table>
+</ui:composition>

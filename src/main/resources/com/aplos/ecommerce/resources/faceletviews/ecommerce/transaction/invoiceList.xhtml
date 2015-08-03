@@ -1,0 +1,110 @@
+<ui:composition template="#{ themeManager.listTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="listContent">
+		<div>
+			<table>
+				<tr>
+					<td>
+						Show&#160; 
+						<h:selectOneMenu value="#{ backingPage.dataTableState.lazyDataModel.currentlyShowingTransactionType }" converter="aplosAbstractBeanConverter">
+							<f:selectItems value="#{ backingPage.dataTableState.lazyDataModel.transactionTypeSelectItemBeans }" />				
+							<p:ajax event="change" update=":listForm:wrappedDataTable:mojarraBugFixPnl, :listForm:totalsPanel" />
+						</h:selectOneMenu>
+					</td>
+					<td>
+						&#160;with status&#160; 
+						<h:selectOneMenu value="#{ backingPage.dataTableState.lazyDataModel.currentlyShowingTransactionStatus }" converter="aplosAbstractBeanConverter">
+							<f:selectItems value="#{ backingPage.dataTableState.lazyDataModel.transactionStatusSelectItemBeans }" />				
+							<p:ajax event="change" update=":listForm:wrappedDataTable:mojarraBugFixPnl, :listForm:totalsPanel" />
+						</h:selectOneMenu>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						from &#160;
+						<aploscc:dateTime id="startDateInput" showCheckbox="#{false}"
+							startYearDiff="#{-25}" endYearDiff="#{0}"
+							value="#{backingPage.dataTableState.lazyDataModel.startDate}" ajaxOnchange=":listForm:wrappedDataTable:mojarraBugFixPnl, :listForm:totalsPanel">
+						</aploscc:dateTime>
+					</td>
+					<td>
+						to &#160;
+						<aploscc:dateTime id="endDateInput" showCheckbox="#{false}"
+							startYearDiff="#{-25}" endYearDiff="#{0}"
+							value="#{backingPage.dataTableState.lazyDataModel.endDate}" ajaxOnchange=":listForm:wrappedDataTable:mojarraBugFixPnl, :listForm:totalsPanel">
+						</aploscc:dateTime>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<aploscc:wrappedDataTable2 id="wrappedDataTable" showNewBtn="false" dataTableState="#{ backingPage.dataTableState }">
+			<p:column sortBy="#{ tableBean.invoiceNumber }" filterBy="#{ tableBean.invoiceNumber }">
+				<f:facet name="header">Inv.</f:facet>
+				#{tableBean.invoiceNumber}
+			</p:column>
+			<p:column sortBy="#{tableBean.ecommerceShoppingCart.customer.subscriber.firstName}" filterBy="#{tableBean.ecommerceShoppingCart.customer.subscriber.firstName}">
+				<f:facet name="header">Customer First Name</f:facet>
+				#{tableBean.ecommerceShoppingCart.customer.subscriber.firstName}
+			</p:column>
+			<p:column sortBy="#{tableBean.ecommerceShoppingCart.customer.subscriber.surname}" filterBy="#{tableBean.ecommerceShoppingCart.customer.subscriber.surname}">
+				<f:facet name="header">Customer Surname</f:facet>
+				#{tableBean.ecommerceShoppingCart.customer.subscriber.surname}
+			</p:column>
+			<p:column>
+				<f:facet name="header">Company</f:facet>
+				#{tableBean.customerCompanyName}
+			</p:column>
+			<p:column sortBy="#{ tableBean.firstInvoicedDate }">
+				<f:facet name="header">Inv. Date</f:facet>
+				<aplos:standardDateTableCell value="#{ tableBean.firstInvoicedDate }" />
+			</p:column>
+			<p:column sortBy="#{tableBean.ecommerceShoppingCart.cachedNetTotalAmount}">
+				<f:facet name="header">Subtotal</f:facet>
+				#{ tableBean.ecommerceShoppingCart.currency.prefix }#{tableBean.ecommerceShoppingCart.cachedNetTotalAmountString}#{ tableBean.ecommerceShoppingCart.currency.suffix }
+			</p:column>
+			<p:column sortBy="#{tableBean.ecommerceShoppingCart.deliveryCost}">
+				<f:facet name="header">Delivery</f:facet>
+				#{ tableBean.ecommerceShoppingCart.currency.prefix }#{tableBean.ecommerceShoppingCart.deliveryCostString}#{ tableBean.ecommerceShoppingCart.currency.suffix }
+			</p:column>
+			<p:column>
+				<f:facet name="header">Total</f:facet>
+				#{ tableBean.ecommerceShoppingCart.currency.prefix }#{tableBean.ecommerceShoppingCart.getGrandTotalString( false ) }#{ tableBean.ecommerceShoppingCart.currency.suffix }
+			</p:column>
+		</aploscc:wrappedDataTable2>
+		<h:panelGroup id="totalsPanel">
+			<table style="float:right ; text-align:right; width:300px ; font-familt:Verdana ; font-weight:bold">
+				<tr>
+					<td>
+						Subtotal
+					</td>
+					<td>
+						&#163;<h:outputText id="subTotalTotal" value="#{ formatUtil.formatTwoDigit( backingPage.dataTableState.lazyDataModel.subTotalTotal ) }" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Delivery total
+					</td>
+					<td>
+						&#163;<h:outputText id="deliveryTotal" value="#{ formatUtil.formatTwoDigit( backingPage.dataTableState.lazyDataModel.deliveryTotal ) }" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Total
+					</td>
+					<td>
+						&#163;<h:outputText id="totalTotal" value="#{ formatUtil.formatTwoDigit( backingPage.dataTableState.lazyDataModel.totalTotal ) }" />
+					</td>
+				</tr>
+			</table>
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>

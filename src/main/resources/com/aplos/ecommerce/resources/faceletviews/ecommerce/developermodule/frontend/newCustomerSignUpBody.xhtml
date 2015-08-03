@@ -1,0 +1,80 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+    xmlns:aploscc="http://java.sun.com/jsf/composite/components">
+
+	<div class="aplos-checkout new-customer-signup">
+	
+		<table class="aplos-form-table aplos-form-table-with-required">
+			<tr>
+				<td><h3 class="checkoutPageTitle">Sign up</h3></td>
+			</tr>
+			<tr>
+				<td style="padding-bottom:5px">
+					<aplos:panel rendered="#{ emailAlreadyInUse != null }">
+						<br/>
+						Would you like to sign in or have you forgotten your password? 
+						 
+						<div style="padding-top:5px;padding-bottom:5px">
+							<h:commandLink
+								action="#{ newCustomerSignUpFeDmb.goToSignIn }" style="float:left" styleClass="shortBtn">
+									<div class="shortLongBtn">Sign In</div>
+							</h:commandLink>
+							
+							<h:commandLink
+								action="#{ newCustomerSignUpFeDmb.goToForgottenPassword}" style="float:left" styleClass="shortBtn">
+									<div class="shortLongBtn">Forgotten Password?</div>
+							</h:commandLink>
+						</div>
+					</aplos:panel>
+				</td>
+			</tr>
+		</table>
+		<div id="payment_page_content">
+			<aplos:panel rendered="#{ emailAlreadyInUse == null }">
+				<table class="aplos-form-table aplos-form-table-with-required">
+					<tr>
+						<td class="aplos-label">Email Address</td>
+						<td class="aplos-required-asterisk">*</td>
+						<td class="aplos-field"><h:inputText value="#{newCustomerSignUpFeDmb.emailAddress}"/></td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Password</td>
+						<td class="aplos-required-asterisk">*</td>
+						<td class="aplos-field"><h:inputSecret value="#{newCustomerSignUpFeDmb.password}"/></td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Confirm Password</td>
+						<td class="aplos-required-asterisk">*</td>
+						<td class="aplos-field"><h:inputSecret value="#{newCustomerSignUpFeDmb.passwordConfirm}" onkeyup="fireOnEnterPressedByClass(event, 'aplosRegisterBtn' )"/></td>
+					</tr>
+					<!-- 
+					<tr>
+					<td class="aplos-label">Referral Code</td>
+					<td class="aplos-required-asterisk">*</td>
+					<td class="aplos-field">
+						<h:inputText value="#{newCustomerSignUpFeDmb.referralCode}" />
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td colspan="2" class="aplos-description aplos-align-left">
+						If you were referred here, enter your referral code above to 
+						ensure your friend gets credit.
+					</td>
+				</tr>
+				-->
+					<tr>
+						<td valign="top" colspan="3">
+							<aploscc:ajaxButton action="#{ newCustomerSignUpFeDmb.signup }" value="Register" styleClass="aplosRegisterBtn" />
+						</td>
+					</tr>
+				</table>
+			</aplos:panel>
+		</div>
+   </div>
+</ui:composition>

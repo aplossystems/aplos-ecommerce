@@ -1,0 +1,35 @@
+
+<ui:composition template="#{ themeManager.listTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="listContent">
+		<aploscc:wrappedDataTable2 dataTableState="#{ backingPage.dataTableState }">
+			<p:column sortBy="#{ tableBean.name }" filterBy="#{ tableBean.name }">
+				<f:facet name="header">Promotion</f:facet>
+				#{tableBean.name}
+			</p:column>
+			<p:column sortBy="#{ tableBean.code }" filterBy="#{ tableBean.code }">
+				<f:facet name="header">Code</f:facet>
+				#{tableBean.code}
+			</p:column>
+			<p:column>
+				<f:facet name="header">Description</f:facet>
+				#{tableBean.generatedDescription}
+			</p:column>
+			<p:column>
+				<f:facet name="header">Active</f:facet>
+				<h:outputText value="#{backingPage.activeText}" escape="false" />
+			</p:column>
+			<p:column sortBy="#{ tableBean.useCount }" filterBy="#{ tableBean.useCount }">
+				<f:facet name="header">Used</f:facet>
+				#{tableBean.usedCountText} times
+			</p:column>
+		</aploscc:wrappedDataTable2>
+	</ui:define>
+</ui:composition>

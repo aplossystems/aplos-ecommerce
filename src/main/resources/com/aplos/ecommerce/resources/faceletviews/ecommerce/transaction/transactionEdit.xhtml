@@ -1,0 +1,400 @@
+<ui:composition template="#{ themeManager.editTemplatePath }" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents"
+	xmlns:aploscc="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+<ui:define name="head">
+		<h:outputScript library="scripts" name="jquery-1.4.min.js" target="head" />
+		<h:outputScript library="jsLibraries" name="jquery-ui-1.8/js/jquery-ui-1.8.6.custom.min.js" target="head" />
+		<h:outputStylesheet library="jsLibraries" name="jquery-ui-1.8/themes/base/jquery.ui.base.css" target="head" />
+			<h:outputStylesheet library="jsLibraries" name="jquery-ui-1.8/themes/base/jquery.ui.theme.css" target="head" />
+
+		<style>
+			.editLabelColumn {
+			 	width : 120px !important;
+			}
+			.totalsLabelColumn {
+				width : 100px;
+			}
+			#billingAddressTable td {
+				height:24px;
+				padding-right:0;
+			}
+			#billingAddressTable {
+				margin-top:15px;
+			}
+			
+			.defaultDetailsColumn {
+				padding-left : 10px;
+			}
+			
+			#deliveryAddressTable td {
+				height:24px;
+				padding-right:0;
+			}
+			#deliveryAddressTable {
+				margin-top:15px;
+			}
+		</style>
+	</ui:define>
+
+	<ui:define name="editContent">
+		<br/>
+		<h:panelGroup id="transactionMenuPanel">
+			<ul style="list-style-type:none;float:left;margin:0px;padding:0px">
+				<ui:repeat id="transactionMenuSteps" value="#{ transaction.backEndMenuWizard.menuSteps }" var="menuStep">
+					
+					<h:panelGroup rendered="#{ menuStep.clickable }" layout="none" >
+						<li style="padding:5px 10px;margin:1px;display:inline;background-color:#{ menuStep.backgroundColour };">
+							<h:commandLink value="#{ menuStep.label }" action="#{ menuStep.redirectToMenuStep() }" reRender="editableContentPanel,transactionMenuPanel,summaryPanel" style="text-decoration:none;" />
+						</li>
+					</h:panelGroup>
+
+					<h:panelGroup rendered="#{ not menuStep.clickable }" layout="none">
+						<li style="background-color:#ede8d9;padding:5px 10px;margin:1px;display:inline">
+							<h:outputText value="#{ menuStep.label }" style="font-size:11px;" />
+						</li>
+					</h:panelGroup>
+
+				</ui:repeat>
+			</ul>
+		</h:panelGroup>
+		
+		<div style="clear:both"></div>
+		<hr/>
+		
+		<aplos:panel id="validUntilWarningPanel" >
+			<aplos:panel rendered="#{ not transaction.isAcknowledgedOrFurther and not transaction.valid }">
+				<span style="color:red;font-weight:bold">This order has past it's valid until date</span>
+				<aploscc:ajaxButton id="updateCachedValuesBtn" value="Update prices" ajaxEnabled="true" reRender="validUntilLabelPanel,validUntilWarningPanel" action="#{ transaction.extendValidUntilDate( true ) }" />
+				<aploscc:ajaxButton id="extendValidUntilBtn" value="Extend date without updating prices" ajaxEnabled="true" reRender="validUntilLabelPanel,validUntilWarningPanel" action="#{ transaction.extendValidUntilDate( false ) }" />
+			</aplos:panel>
+		</aplos:panel>
+		
+		<aplos:panel id="summaryPanel">
+			<aplos:panel autoUpdate="true" rendered="#{ transaction.backEndMenuWizard.currentStepIdx == 4 }">
+				<ui:include src="transactionActionPanel.xhtml"></ui:include>
+				<div style="clear:both"/>
+				<hr/>
+			</aplos:panel>
+			
+			<aplos:panel id="editableContentPanel">
+				<aplos:panel style="float:left;padding-top:10px;" rendered="#{ not transaction.isCancelled }">
+					<ui:include src="#{ transaction.backEndMenuWizard.currentViewUrl }.xhtml"></ui:include>
+				</aplos:panel>
+			</aplos:panel>
+			
+			<div style="clear:both;padding-bottom:20px"/>
+			<div style="float:left">
+				<aplos:panel rendered="#{ not transaction.isDispatchedOrFurther and not transaction.isNew }">
+					<aploscc:ajaxButton value="Mark as cancelled" action="#{ backingPage.markAsCancelled }" rendered="#{ !transaction['new'] }" />
+				</aplos:panel>	
+				<aploscc:ajaxButton value="Raise credit note" action="#{ backingPage.raiseCreditNoteAndRedirect }" rendered="#{ !transaction['new'] and transaction.transactionType.name() != 'CREDIT_NOTE' }" />
+				<aploscc:ajaxButton value="Duplicate transaction" action="#{ backingPage.duplicateTransactionAndRedirect }" rendered="#{ !transaction['new'] and transaction.transactionType.name() != 'CREDIT_NOTE' }" />
+				<aploscc:ajaxButton value="Change to quote" action="#{ backingPage.changeToQuoteType }" rendered="#{ !transaction['new'] and transaction.transactionType.name() == 'LOAN' }" />
+			</div>
+			<div style="clear:both"></div>
+			<hr/>
+			<br />
+			<div style="float:left;margin-top:-15px">
+				<table style="width:100%">
+					<tr>
+						<td class="aplos-label" style="text-align:left">Notes</td>
+						<td class="aplos-label" style="text-align:left">Special delivery instructions</td>
+					</tr>
+					<tr>
+						<td>
+							<h:inputTextarea value="#{transaction.transactionNotes}"  style="width:415px;height:80px"/>
+						</td>
+						<td>
+							<h:inputTextarea value="#{transaction.specialDeliveryInstructions}"  style="width:415px;height:80px"/>
+						</td>
+					</tr>
+				</table>
+				<table style="width:100%">
+					<tr>
+						<td class="aplos-label editLabelColumn">Printed or emailed documents</td>
+						<td class="aplos-field"></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div style="width:770px;float:right">
+								<p:dataTable id="aplosEmailTable" value="#{ transaction.sortedAplosEmailList }" var="aplosEmail" styleClass="listDatatable" style="width:100%;">
+									<p:column style="width:100px">
+										<f:facet name="header">Sent emails</f:facet>
+										<h:commandLink action="#{ aplosEmail.redirectToEditPage }"><h:outputText value="#{aplosEmail.emailTemplate.name}" /></h:commandLink>
+									</p:column>
+									<p:column style="width:350px">
+										<f:facet name="header">Pdf filename</f:facet>
+										<ui:repeat value="#{aplosEmail.saveableAttachments}" var="saveableAttachment">
+											<aploscc:quickView text="#{saveableAttachment.name}" bean="#{saveableAttachment}" action="#{ aplosEmail.openSaveableAttachment(saveableAttachment) }" />
+											<aplos:panel display="none" rendered="#{ status.index lt aplosEmail.saveableAttachments.size() }"><br/></aplos:panel>
+										</ui:repeat>
+									</p:column>
+									<p:column style="width:80px">
+										<f:facet name="header">Emailed</f:facet>			
+										<aplos:standardDateTableCell value="#{ aplosEmail.emailSentDate }" />
+									</p:column>
+								</p:dataTable>
+							</div>
+						</td>
+					</tr>
+				</table>
+				<aplos:panel rendered="#{backingPage.customerACompanyContact}">
+					<table class="aplos-form-table">
+						<tr>
+							<td class="aplos-label editLabelColumn">Company</td>
+							<td class="aplos-field">
+								<!--<h:commandLink value="# {transaction.customer.company.companyName}" action="# { backingPage.redirectToCompanyEdit }" styleClass="stdLink" />-->
+								<aploscc:quickView rendered="#{backingPage.customerACompanyContact}" text="#{backingPage.customerCompany.companyName}" bean="#{backingPage.customerCompany}" action="#{ backingPage.redirectToCompanyEdit() }" />
+							</td>
+						</tr>
+					</table>
+				</aplos:panel>
+				<table class="aplos-form-table">
+					<tr>
+						<td class="aplos-label editLabelColumn">Customer</td>
+						<td class="aplos-field">
+							<!-- <h:commandLink value="# { transaction.ecommerceShoppingCart.customer.displayName }" action="# { backingPage.redirectToCustomerEditPage }" styleClass="stdLink" />-->
+							<aploscc:quickView text="#{ transaction.ecommerceShoppingCart.customer.displayName }" bean="#{transaction.ecommerceShoppingCart.customer}" action="#{ backingPage.redirectToCustomerEditPage() }" />
+						</td>							
+					</tr>
+				</table>
+				<aplos:panel id="invoiceNumberPanel">
+					<aplos:panel rendered="#{ transaction.isAcknowledgedOrFurther }">
+						<table class="aplos-form-table">
+							<tr>
+								<td class="aplos-label editLabelColumn">
+									#{ transaction.invoiceNumberHeading }
+								</td>
+								<td class="aplos-field">#{ transaction.invoiceNumber }</td>
+							</tr>
+						</table>
+					</aplos:panel>
+				</aplos:panel>
+				<table class="aplos-form-table">
+					<tr>
+						<td class="aplos-label editLabelColumn">Customer Reference</td>
+						<td class="aplos-field">#{ transaction.customerReference }</td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Transaction date</td>
+						<td class="aplos-field">#{ transaction.transactionDateStdStr }</td>
+					</tr>
+				</table>
+				<aplos:panel id="validUntilLabelPanel">
+					<aplos:panel rendered="#{ not transaction.isAcknowledgedOrFurther }">
+						<table class="aplos-form-table">
+							<tr>
+								<td class="aplos-label editLabelColumn">Valid until date</td>
+								<td class="aplos-field">#{ transaction.validUntilDateStdStr }</td>
+							</tr>
+						</table>
+					</aplos:panel>
+				</aplos:panel>
+				<table class="aplos-form-table">
+					<tr>
+						<td class="aplos-label editLabelColumn">Status</td>
+						<td class="aplos-field">#{ transaction.transactionStatus.label }</td>
+					</tr>
+					<tr>
+						<td class="aplos-label editLabelColumn">Type</td>
+						<td class="aplos-field">#{ transaction.transactionType.label }</td>
+					</tr>
+				</table>
+				<h:panelGroup rendered="#{ transaction.duplicateTransaction != null }" >
+					<table class="aplos-form-table">
+						<tr>
+							<td class="aplos-label">Duplicate transaction</td>
+							<td class="aplos-field">
+								<h:commandLink value="#{ transaction.duplicateTransaction.id }" action="#{ transaction.duplicateTransaction.goToEditPage() }" />
+							</td>
+						</tr>
+					</table>
+				</h:panelGroup>
+				<table class="aplos-form-table">
+					<tr>
+						<td class="aplos-label">Payment method</td>
+						<td class="aplos-field">#{ transaction.paymentMethod.name }</td>
+					</tr>
+					<tr>
+						<td class="aplos-label">Shipping method</td>
+						<td class="aplos-field">#{ transaction.courierServiceName }</td>
+					</tr>
+				</table>
+				<aplos:panel id="deliveryTrackingPnl">
+					<aplos:panel rendered="#{ transaction.trackingNumber != null }">
+						<table class="aplos-form-table">
+							<tr>
+								<td class="aplos-label editLabelColumn">Tracking number</td>
+								<td class="aplos-field">#{ transaction.trackingNumber }</td>
+							</tr>
+						</table>
+					</aplos:panel>
+				</aplos:panel>
+				
+				<aplos:panel id="realizedProductReturnPanel">
+					<aplos:panel rendered="#{ transaction.realizedProductReturn != null }">
+						<table class="aplos-form-table">
+							<tr>
+								<td class="aplos-label editLabelColumn">Return</td>
+								<td class="aplos-field">
+									<aploscc:quickView text="#{ transaction.realizedProductReturn.determineReturnProduct().productInfo.product.name }" bean="#{transaction.realizedProductReturn}" action="#{ realizedProductReturnEditPage.redirectToPage( transaction.realizedProductReturn ) }" />
+								</td>
+							</tr>
+						</table>
+					</aplos:panel>
+				</aplos:panel>				
+				<aplos:panel layout="block" rendered="#{ backingPage.isTransactionALoan() }">
+					<br style="clear:both" />
+					<table>
+					<tr>
+						<td class="aplos-label"><div style="width:120px">Loan return date</div></td>
+						<td class="aplos-field">#{ backingPage.getFormattedDate(transaction.loanReturnDate) }</td>
+					</tr>
+					</table>
+				</aplos:panel>
+				<table style="float:left">
+					<tr>
+						<td colspan="2">
+							<div style="width:820px;float:right">
+								<p:dataTable id="itemTable" value="#{ transaction.ecommerceShoppingCart.items }" var="cartItem" styleClass="listDatatable" style="width:100%;"> 
+									<p:column style="width:80px">
+										<f:facet name="header">Cust. ref.</f:facet>
+										<h:outputText value="#{cartItem.customerReference}" />
+									</p:column>
+									<p:column style="width:80px" rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingItemCodes}" >
+										<f:facet name="header">Code</f:facet>
+										<!-- <h:commandLink value="#{cartItem.itemCode}" action="# { teletestRealizedProductEditPage.redirectToPage( cartItem.realizedProduct ) }" styleClass="stdLink" rendered="# { !cartItem.customisable }" />-->
+										<aploscc:quickView text="#{cartItem.itemCode}" bean="#{cartItem.realizedProduct}" action="#{ teletestRealizedProductEditPage.redirectToPage( cartItem.realizedProduct ) }" textOnly="#{ !cartItem.customisable }" />
+										<!-- <h:outputText value="# {cartItem.itemCode}" rendered="# { cartItem.customisable }" />-->
+									</p:column>
+									<p:column styleClass="aplos-name" style="width:180px">
+										<f:facet name="header">Item name</f:facet>
+										<h:panelGroup layout="none" rendered="#{cartItem.kitItems == null or cartItem.kitItems.size() &lt; 1}">
+											<aploscc:quickView text="#{cartItem.itemName}" bean="#{cartItem.realizedProduct}" action="#{ teletestRealizedProductEditPage.redirectToPage( cartItem.realizedProduct ) }" textOnly="#{ !cartItem.customisable }" />
+										</h:panelGroup>
+										<h:panelGroup layout="none" rendered="#{cartItem.kitItems != null and cartItem.kitItems.size() &gt; 0}">
+											<h:outputText value="#{cartItem.itemName}" rendered="#{ ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed }" />
+											<h:outputText escape="false" value="#{cartItem.getProductNameText( false ) }" rendered="#{ !ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed }" />
+										</h:panelGroup> 
+									</p:column>
+									<p:column rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingProductSizes}">
+										<f:facet name="header">Size</f:facet>
+										<h:panelGroup layout="none" rendered="#{cartItem.kitItems == null or cartItem.kitItems.size() &lt; 1}">
+											<h:outputText value="#{cartItem.realizedProduct.productSize.name}" />
+										</h:panelGroup>
+										<h:panelGroup layout="none" rendered="#{cartItem.kitItems != null and cartItem.kitItems.size() &gt; 0}">
+											<h:outputText value="#{cartItem.realizedProduct.productSize.name}" rendered="#{ ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed }" />
+											<h:outputText escape="false" value="#{cartItem.productSizeText}" rendered="#{ !ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed }" />
+										</h:panelGroup>
+									</p:column>
+									<p:column rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingProductColours}">
+										<f:facet name="header">Colour</f:facet>
+										<h:panelGroup layout="none" rendered="#{cartItem.kitItems == null or cartItem.kitItems.size() &lt; 1}">
+											<h:outputText value="#{cartItem.realizedProduct.productSize.name}" />
+										</h:panelGroup>
+										<h:panelGroup layout="none" rendered="#{cartItem.kitItems != null and cartItem.kitItems.size() &gt; 0}">
+											<h:outputText value="#{cartItem.realizedProduct.productColour.name}" rendered="#{ ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed }" />
+											<h:outputText escape="false" value="#{cartItem.productColourText}" rendered="#{ !ecommerceConfiguration.getEcommerceSettings( true ).kitItemsFixed }" />
+										</h:panelGroup>
+									</p:column>
+									<p:column style="width:150px">
+										<f:facet name="header">Serial Numbers</f:facet>
+										<h:outputText rendered="#{cartItem.realizedProduct.isGiftVoucher()}" value="#{backingPage.giftVoucherCode}" />
+										<ui:repeat rendered="#{!cartItem.realizedProduct.isGiftVoucher()}" value="#{ backingPage.getSerialNumberAssignments(cartItem) }" var="serialNumberAssignment" varStatus="status">
+											<aploscc:quickView text="#{ serialNumberAssignment.id }" bean="#{ serialNumberAssignment }" action="#{ serialNumberEditPage.redirectToPage( serialNumberAssignment ) }" />
+											&#160;<h:commandLink value="(new return)" action="#{ backingPage.createNewReturn(serialNumberAssignment) }" styleClass="stdLink" />
+											<aplos:panel display="none" rendered="#{ status.index lt backingPage.serialNumberAssignmentSize }"><br/></aplos:panel>
+										</ui:repeat>
+									</p:column>
+									<p:column>
+										<f:facet name="header">Qty</f:facet>
+										#{cartItem.quantity}
+									</p:column>
+									<p:column style="width:60px">
+										<f:facet name="header">Price</f:facet>
+										#{transaction.currency.prefix}#{cartItem.singleItemNetPriceString}#{transaction.currency.suffix}
+									</p:column>
+									<p:column style="width:60px">
+										<f:facet name="header">Discount</f:facet>
+										#{transaction.currency.prefix}#{ cartItem.singleItemDiscountAmountString }#{transaction.currency.suffix}
+									</p:column>
+									<p:column style="width:60px">
+										<f:facet name="header">Line total</f:facet>
+										#{transaction.currency.prefix}#{cartItem.cachedNetLinePriceString}#{transaction.currency.suffix}
+									</p:column>
+								</p:dataTable>
+							</div>
+							<h:panelGroup id="itemTableTotalPanel">
+								<table style="float:right">
+									<h:panelGroup rendered="#{transaction.ecommerceShoppingCart.isPromotionApplied}" layout="none">
+										<tr>
+						        			<td class="aplos-label">
+						        				<h:outputText value="#{transaction.ecommerceShoppingCart.promotion.name}" />
+						        			</td>
+						          			<td class="numericText">
+						        				<h:outputText value="-#{transaction.ecommerceShoppingCart.promotionPercentage}%" />
+						        			</td>
+						        		</tr>
+									</h:panelGroup>
+									 <tr>
+									 	<td class="aplos-label">Sub-total:</td>
+									 	<td class="numericText">#{ transaction.currency.prefix }#{ transaction.ecommerceShoppingCart.cachedNetTotalAmountString }#{transaction.currency.suffix}</td>
+								 	</tr>
+								 	<tr>
+									 	<td class="aplos-label">Delivery cost:</td>
+									 	<td class="numericText">#{ transaction.currency.prefix }#{ transaction.ecommerceShoppingCart.cachedNetDeliveryCostString }#{transaction.currency.suffix}</td>
+								 	</tr>
+								 	<tr>
+									 	<td class="aplos-label">Admin charge:</td>
+									 	<td class="numericText"> 
+									 		<h:panelGroup rendered="#{ transaction.isAcknowledgedOrFurther }" layout="none">
+									 			#{ transaction.currency.prefix }#{ transaction.ecommerceShoppingCart.adminCharge }#{transaction.currency.suffix}
+									 		</h:panelGroup>
+									 		<h:panelGroup rendered="#{ not transaction.isAcknowledgedOrFurther }" layout="none">
+									 			<h:inputText label="admin charge" value="#{ transaction.ecommerceShoppingCart.adminCharge }" class="numericText">
+													<p:ajax process="@form" event="blur" update="itemTableTotalPanel adminChargeText" />
+									 			</h:inputText>
+									 		</h:panelGroup>
+									 		
+									 	</td>
+								 	</tr>
+								 	<tr>
+									 	<td class="aplos-label">VAT:</td>
+									 	<td class="numericText">#{ transaction.currency.prefix }#{ transaction.ecommerceShoppingCart.getGrandTotalVatAmountString( true ) }#{transaction.currency.suffix}</td>
+								 	</tr>
+								 	<h:panelGroup rendered="#{ecommerceConfiguration.getEcommerceSettings( true ).usingStoreCredit and transaction.ecommerceShoppingCart.determineStoreCredit() != null and transaction.ecommerceShoppingCart.determineStoreCredit() &gt; 0}">
+							   			<tr>
+							       			<!-- this is credit from gift vouchers, coupons etc -->
+							       		
+								       		<td class="aplos-label aplos-title">Minus Store Credit Used:</td>
+								       		<td class="aplos-numeric">
+								       			<h:panelGroup id="aplos-checkout-store-credit">
+								       				<h:outputText value="#{transaction.currency.prefix}#{transaction.ecommerceShoppingCart.storeCreditString}#{transaction.currency.suffix}" />
+								       			</h:panelGroup>
+								       		</td>
+							       		</tr>  
+						       		</h:panelGroup>	
+								 	<tr>
+									 	<td class="aplos-label">Total:</td>
+									 	<td class="numericText">#{ transaction.currency.prefix }#{ transaction.ecommerceShoppingCart.getGrandTotalString( true ) }#{transaction.currency.suffix}</td>
+								 	</tr>
+								</table>
+							</h:panelGroup>
+						</td>
+					</tr>
+				</table>
+
+				<aploscc:address id="shippingAddress" style="float:left;min-width:380px" disabled="true" title="Delivery address" bean="#{transaction.shippingAddress}" phone="true" mobile="true" email="true" companyName="true" ecommerceFieldsRequired="true" />
+				
+				<aploscc:address id="billingAddress" style="float:left" disabled="true" title="Billing address" bean="#{transaction.billingAddress}" companyName="true" ecommerceFieldsRequired="true" />
+		
+			</div>
+		</aplos:panel>
+	</ui:define>
+
+</ui:composition>

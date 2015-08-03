@@ -1,0 +1,25 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:aplos="http://www.aplossystems.co.uk/aplosComponents">
+	<div class="aplos-offsite-paypal-atom">
+		<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypalForm" name="paypalForm">
+			<input type="hidden" name="cmd" value="_cart" />
+			<input type="hidden" name="upload" value="1"/>
+			<input type="hidden" name="return" value="#{ offsitePayPalFeDmb.checkoutSuccessExternalUrl }&amp;paymentType=paypal"/>
+			<input type="hidden" name="cancel_return" value="#{ offsitePayPalFeDmb.checkoutFailureExternalUrl }"/>
+			<input type="hidden" id="business" name="business" value="#{ commonConfiguration.moduleConfiguration.payPalEmail }"/>
+			<input type="hidden" name="lc" value="GB"/>
+			<input type="hidden" name="item_name_1" value="Order no. #{ transaction.id }"/>
+			<input type="hidden" name="invoice" value="#{ transaction.id }"/>
+			<input type="hidden" name="amount_1" value="#{ transaction.ecommerceShoppingCart.getGrandTotalString( true ) }"/>
+			<input type="hidden" name="currency_code" value="GBP"/>
+		</form>
+		<script type="text/javascript">
+			document.forms[ 'paypalForm' ].submit();
+		</script>
+	</div>
+</ui:composition>
+

@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Serial numbers</title>
+<style type="text/css">
+
+	.mainTable {
+	 	max-width:505pt;
+	 	min-width:505pt;
+	 	width:505pt;
+	 	max-height:940pt;
+	 	min-height:940pt;
+	 	height:940pt;
+	}
+	.mainTable td {
+		border: solid 1px;
+		vertical-align:top;
+		width:175pt;
+		min-width:175pt;
+		max-width:175pt;
+	}
+	
+	p {
+		margin:0;
+		padding:0;
+	}
+</style>
+</head>
+<body>
+	<table class="mainTable" cellspacing="20">
+		<!-- BEGIN DYNAMIC : serialNumberListTable1 -->
+			<tr>
+				<td>
+					<table style="width:100%">
+						<tr>
+							<td style="width:60%;min-width:60%;max-width:60%;font-weight:bold">Filing label</td>
+							<td style="width:40%;min-width:40%;max-width:40%;">Entered: ___</td>
+						</tr>
+					</table>
+					<p>Part #:___________________</p>
+					<p>OEM #:__________________</p>
+					<p>Date:____/____/_____</p>
+					<p style="font-family:Free 3 of 9">{SERIAL_NUMBER_TABLE1_NUMBER1}</p>
+					<table style="width:100%">
+						<tr>
+							<td style="width:30%;min-width:30%;max-width:30%;font-weight:bold">Serial #: </td>
+							<td style="width:70%;min-width:70%;max-width:70%;">{SERIAL_NUMBER_TABLE1_NUMBER1}</td>
+						</tr>
+					</table>
+				</td>
+				<td>
+					{SERIAL_NUMBER_TABLE1_NUMBER2}
+				</td>
+				<td>
+					{SERIAL_NUMBER_TABLE1_NUMBER3}
+				</td>
+			</tr>		    
+		<!-- END DYNAMIC : serialNumberListTable1 -->
+	</table>
+	<table class="mainTable" cellspacing="20">
+		<!-- BEGIN DYNAMIC : serialNumberListTable2 -->
+			<tr>
+				<td>
+					{SERIAL_NUMBER_TABLE2_NUMBER1}
+				</td>
+				<td>
+					{SERIAL_NUMBER_TABLE2_NUMBER2}
+				</td>
+				<td>
+					{SERIAL_NUMBER_TABLE2_NUMBER3}
+				</td>
+			</tr>		    
+		<!-- END DYNAMIC : serialNumberListTable2 -->
+	</table>
+	<table class="mainTable" cellspacing="20">
+		<!-- BEGIN DYNAMIC : serialNumberListTable3 -->
+			<tr>
+				<td>
+					{SERIAL_NUMBER_TABLE3_NUMBER1}
+				</td>
+				<td>
+					{SERIAL_NUMBER_TABLE3_NUMBER2}
+				</td>
+				<td>
+					{SERIAL_NUMBER_TABLE3_NUMBER3}
+				</td>
+			</tr>		    
+		<!-- END DYNAMIC : serialNumberListTable3 -->
+	</table>
+</body>
+</html>
