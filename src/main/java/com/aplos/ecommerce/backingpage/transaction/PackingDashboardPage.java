@@ -11,6 +11,7 @@ import org.primefaces.model.SortOrder;
 import com.aplos.common.AplosLazyDataModel;
 import com.aplos.common.aql.BeanDao;
 import com.aplos.common.backingpage.ListPage;
+import com.aplos.common.beans.AplosBean;
 import com.aplos.common.beans.DataTableState;
 import com.aplos.common.utils.CommonUtil;
 import com.aplos.common.utils.JSFUtil;
@@ -96,9 +97,10 @@ public class PackingDashboardPage extends ListPage {
 		}
 
 		@Override
-		public void selectBean() {
-			super.selectBean( false );
+		public AplosBean selectBean() {
+			Transaction transaction = (Transaction) super.selectBean( false );
 			JSFUtil.redirect( TransactionEditPage.class );
+			return transaction;
 		}
 
 		@Override
@@ -130,9 +132,10 @@ public class PackingDashboardPage extends ListPage {
 		}
 
 		@Override
-		public void selectBean() {
-			super.selectBean( false );
+		public AplosBean selectBean() {
+			Transaction transaction = (Transaction) super.selectBean( false );
 			JSFUtil.redirect( TransactionEditPage.class );
+			return transaction;
 		}
 
 		@Override
@@ -163,9 +166,10 @@ public class PackingDashboardPage extends ListPage {
 		}
 
 		@Override
-		public void selectBean() {
-			super.selectBean( false );
+		public AplosBean selectBean() {
+			Transaction transaction = (Transaction) super.selectBean( false );
 			JSFUtil.redirect( TransactionEditPage.class );
+			return transaction;
 		}
 
 		@Override

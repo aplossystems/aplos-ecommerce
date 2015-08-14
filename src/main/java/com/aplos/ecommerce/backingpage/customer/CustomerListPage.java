@@ -16,6 +16,7 @@ import com.aplos.common.AplosLazyDataModel;
 import com.aplos.common.annotations.AssociatedBean;
 import com.aplos.common.aql.BeanDao;
 import com.aplos.common.backingpage.ListPage;
+import com.aplos.common.beans.AplosBean;
 import com.aplos.common.beans.DataTableState;
 import com.aplos.common.beans.Subscriber;
 import com.aplos.common.enums.DocumentType;
@@ -206,7 +207,7 @@ public class CustomerListPage extends ListPage  {
 		}
 
 		@Override
-		public void selectBean() {
+		public AplosBean selectBean() {
 			CustomerListBean customerListBean = (CustomerListBean) JSFUtil.getRequest().getAttribute( "tableBean" );
 			Customer loadedCustomer = (Customer) new BeanDao( Customer.class ).get( customerListBean.getId() ).getSaveableBean();
 			loadedCustomer.addToScope();
@@ -214,6 +215,7 @@ public class CustomerListPage extends ListPage  {
 				((CompanyContact)loadedCustomer).getCompany().addToScope();
 			}
 			JSFUtil.redirect( loadedCustomer.getEditPageClass() );
+			return loadedCustomer;
 		}
 
 		@Override

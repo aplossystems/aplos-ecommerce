@@ -9,6 +9,7 @@ import com.aplos.cms.developermodulebacking.DeveloperModuleBacking;
 import com.aplos.common.AplosLazyDataModel;
 import com.aplos.common.aql.BeanDao;
 import com.aplos.common.backingpage.BackingPage;
+import com.aplos.common.beans.AplosBean;
 import com.aplos.common.beans.DataTableState;
 import com.aplos.common.beans.SystemUser;
 import com.aplos.common.interfaces.ForumUser;
@@ -171,7 +172,7 @@ public class CustomerForumFeDmb extends DeveloperModuleBacking {
 		}
 
 		@Override
-		public void selectBean() {
+		public AplosBean selectBean() {
 			ForumThread selectedhread = (ForumThread) JSFUtil.getRequest().getAttribute( "tableBean" );
 			currentThread = getBeanDao().get(selectedhread.getId());
 			//TODO: I've just realised the sysusr and customer id's are going to clash and mark eachother as having been read
@@ -180,6 +181,7 @@ public class CustomerForumFeDmb extends DeveloperModuleBacking {
 				currentThread.saveDetails();
 			}
 			currentPost = null;
+			return null;
 		}
 
 		@Override

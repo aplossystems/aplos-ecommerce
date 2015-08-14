@@ -10,6 +10,7 @@ import org.primefaces.model.SortOrder;
 
 import com.aplos.common.AplosLazyDataModel;
 import com.aplos.common.aql.BeanDao;
+import com.aplos.common.beans.AplosBean;
 import com.aplos.common.beans.DataTableState;
 import com.aplos.common.utils.JSFUtil;
 import com.aplos.ecommerce.beans.RealizedProduct;
@@ -64,13 +65,14 @@ public class GiftVoucherListPage extends FullProductStackListPage {
 		}
 
 		@Override
-		public void selectBean() {
+		public AplosBean selectBean() {
 			RealizedProduct realizedProduct = (RealizedProduct) JSFUtil.getRequest().getAttribute( "tableBean" );
 			BeanDao dao = new BeanDao(ProductInfo.class);
 			ProductInfo loadedProductInfo = dao.get(realizedProduct.getProductInfo().getId());
 //			HibernateUtil.initialise( loadedProductInfo, true );
 			loadedProductInfo.addToScope();
 			JSFUtil.redirect( determineEditPageClass( realizedProduct) );
+			return realizedProduct;
 		}
 
 	}

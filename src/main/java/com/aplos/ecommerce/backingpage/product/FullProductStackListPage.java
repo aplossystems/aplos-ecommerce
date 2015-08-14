@@ -19,7 +19,6 @@ import com.aplos.common.beans.AplosBean;
 import com.aplos.common.beans.DataTableState;
 import com.aplos.common.beans.FileDetails;
 import com.aplos.common.beans.Website;
-import com.aplos.common.beans.communication.BulkMessageSourceGroup;
 import com.aplos.common.enums.DocumentType;
 import com.aplos.common.utils.CommonUtil;
 import com.aplos.common.utils.FileIoUtil;
@@ -260,7 +259,7 @@ public class FullProductStackListPage extends ListPage {
 		}
 		
 		@Override
-		public void selectBean() {
+		public AplosBean selectBean() {
 			ProductInfo productInfo = (ProductInfo) JSFUtil.getRequest().getAttribute( "tableBean" );
 			BeanDao dao = new BeanDao(ProductInfo.class);
 			ProductInfo loadedProductInfo = dao.get(productInfo.getId());
@@ -271,6 +270,7 @@ public class FullProductStackListPage extends ListPage {
 			} else {
 				JSFUtil.redirect( determineEditPageClass( loadedProductInfo ) );
 			}
+			return loadedProductInfo;
 		}
 
 		@Override

@@ -15,6 +15,7 @@ import org.primefaces.model.SortOrder;
 
 import com.aplos.common.AplosLazyDataModel;
 import com.aplos.common.aql.BeanDao;
+import com.aplos.common.beans.AplosBean;
 import com.aplos.common.beans.DataTableState;
 import com.aplos.common.utils.CommonUtil;
 import com.aplos.common.utils.FormatUtil;
@@ -169,10 +170,11 @@ public class TransactionLazyDataModel extends AplosLazyDataModel {
 	}
 
 	@Override
-	public void selectBean() {
+	public AplosBean selectBean() {
 		TransactionListBean transactionListBean = JSFUtil.getBeanFromRequest( "tableBean" );
-		super.selectBean(Transaction.class, transactionListBean.getId(), false );
+		Transaction transaction = (Transaction) super.selectBean(Transaction.class, transactionListBean.getId(), false );
 		JSFUtil.redirect( TransactionEditPage.class );
+		return transaction;
 	}
 
 	public void setCurrentlyShowingTransactionStatus(

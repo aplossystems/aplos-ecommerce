@@ -12,6 +12,7 @@ import com.aplos.common.AplosLazyDataModel;
 import com.aplos.common.annotations.AssociatedBean;
 import com.aplos.common.aql.BeanDao;
 import com.aplos.common.backingpage.ListPage;
+import com.aplos.common.beans.AplosBean;
 import com.aplos.common.beans.DataTableState;
 import com.aplos.common.utils.CommonUtil;
 import com.aplos.common.utils.JSFUtil;
@@ -47,10 +48,10 @@ public class CourierShippingServiceListPage extends ListPage {
 		}
 
 		@Override
-		public void selectBean() {
-			super.selectBean( false );
-			ShippingService shippingService = (ShippingService) JSFUtil.getTableBean();
+		public AplosBean selectBean() {
+			ShippingService shippingService = (ShippingService) super.selectBean( false );
 			JSFUtil.redirect( shippingService.getEditPageClass() );
+			return shippingService;
 		}
 
 		@Override

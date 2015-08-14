@@ -39,10 +39,10 @@ public class ProductTypeCategoryListPage extends ListPage  {
 		}
 
 		@Override
-		public void selectBean() {
-			super.selectBean();
-			ProductType productType = JSFUtil.getBeanFromScope( ProductType.class );
+		public AplosBean selectBean() {
+			ProductType productType = (ProductType) super.selectBean();
 			JSFUtil.addToTabSession( ProductType.PARENT_PRODUCT_TYPE, productType );
+			return productType;
 		}
 
 		@Override

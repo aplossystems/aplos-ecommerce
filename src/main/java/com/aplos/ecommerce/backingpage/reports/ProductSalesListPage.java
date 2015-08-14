@@ -16,21 +16,16 @@ import com.aplos.common.AplosLazyDataModel;
 import com.aplos.common.annotations.AssociatedBean;
 import com.aplos.common.aql.BeanDao;
 import com.aplos.common.backingpage.ListPage;
+import com.aplos.common.beans.AplosBean;
 import com.aplos.common.beans.DataTableState;
-import com.aplos.common.beans.ShoppingCart;
-import com.aplos.common.beans.ShoppingCartItem;
-import com.aplos.common.beans.communication.BulkMessageSourceGroup;
 import com.aplos.common.utils.FormatUtil;
 import com.aplos.common.utils.JSFUtil;
 import com.aplos.ecommerce.backingpage.product.FullKitStackEditPage;
 import com.aplos.ecommerce.backingpage.product.FullProductStackEditPage;
 import com.aplos.ecommerce.beans.EcommerceShoppingCartItem;
-import com.aplos.ecommerce.beans.RealizedProduct;
 import com.aplos.ecommerce.beans.Transaction;
 import com.aplos.ecommerce.beans.Transaction.TransactionStatus;
 import com.aplos.ecommerce.beans.listbeans.ProductSalesListBean;
-import com.aplos.ecommerce.beans.product.Product;
-import com.aplos.ecommerce.beans.product.ProductBrand;
 import com.aplos.ecommerce.beans.product.ProductInfo;
 import com.aplos.ecommerce.enums.TransactionType;
 
@@ -147,7 +142,7 @@ public class ProductSalesListPage extends ListPage {
 		}
 
 		@Override
-		public void selectBean() {
+		public AplosBean selectBean() {
 			EcommerceShoppingCartItem ecommerceShoppingCartItem = (EcommerceShoppingCartItem) JSFUtil.getTableBean();
 			BeanDao dao = new BeanDao(ProductInfo.class);
 			ProductInfo loadedProductInfo = dao.get(ecommerceShoppingCartItem.getRealizedProduct().getProductInfo().getId());
@@ -158,6 +153,7 @@ public class ProductSalesListPage extends ListPage {
 			} else {
 				JSFUtil.redirect( FullProductStackEditPage.class );
 			}
+			return ecommerceShoppingCartItem;
 		}
 		
 		public Date getStartDate() {
